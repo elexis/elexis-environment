@@ -1,0 +1,91 @@
+version: '3'
+
+services:
+
+  web:
+    image: nginx:1.16-alpine
+    volumes:
+      - ./assets/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/web/ssl/certificate.key:/etc/nginx/certificate.key:ro
+      - ./assets/web/ssl/certificate.crt:/etc/nginx/certificate.crt:ro
+    ports:
+      - "443:443"
+      - "636:636"
+    depends_on:
+      - ldap
+      - mongo
+
+  ldap:
+    image: osixia/openldap:1.2.4
+    command:
+      --copy-service --loglevel debug
+    volumes:
+      - ldapStorage:/var/lib/ldap
+      - ldapConfiguration:/etc/ldap/slapd.d
+      - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
+      - ./assets/ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+    expose:
+      - "389"
+    env_file:
+      - './required.env'
+    environment:
+      LDAP_TLS: "false"
+      LDAP_TLS_VERIFY_CLIENT: never
+      LDAP_ADMIN_PASSWORD: "JonSn0w"
+      LDAP_READONLY_USER: "true"
+
+  rocketchat:
+    image: rocket.chat:1.3
+    command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
+    restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
+    env_file:
+      - './required.env'
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/rocketchat
+      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
+      - PORT=3000
+      - ROOT_URL=http://localhost/chat/
+      - Accounts_UseDNSDomainCheck=True
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    depends_on:
+      - mongo
+    expose:
+      - "3000"
+
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    volumes:
+     - rocketchatData:/data/db
+     - rocketchatDump:/dump
+    command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
+
+  # this container's job is just run the command to initialize the replica set.
+  # it will run the command and remove himself (it will not stay running)
+  mongo-init-replica:
+    image: mongo
+    command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
+    depends_on:
+      - mongo
+
+  # Configure the elexis-environment
+  # TODO perform only once
+  #
+  elexis-environment-configurator:
+    build: ./docker/elexis-environment-configurator
+    env_file:
+      - './required.env'
+    depends_on:
+      - rocketchat
+
+volumes:
+  ldapStorage:
+  ldapConfiguration:
+  rocketchatData:
+  rocketchatDump:
