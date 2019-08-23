@@ -2,6 +2,8 @@ version: '3'
 
 services:
 
+  # NginX Reverse Proxy
+  # TODO LetsEncrypt
   web:
     image: nginx:1.16-alpine
     volumes:
@@ -11,6 +13,7 @@ services:
     ports:
       - "443:443"
       - "636:636"
+      - "8443:8443" # wiki
     depends_on:
       - ldap
       - mongo
@@ -34,6 +37,7 @@ services:
       LDAP_ADMIN_PASSWORD: "JonSn0w"
       LDAP_READONLY_USER: "true"
 
+  # TODO mail setup
   rocketchat:
     image: rocket.chat:1.3
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
@@ -43,11 +47,11 @@ services:
     env_file:
       - './required.env'
     environment:
-      - MONGO_URL=mongodb://mongo:27017/rocketchat
-      - MONGO_OPLOG_URL=mongodb://mongo:27017/local
-      - PORT=3000
-      - ROOT_URL=http://localhost/chat/
-      - Accounts_UseDNSDomainCheck=True
+      MONGO_URL: "mongodb://mongo:27017/rocketchat"
+      MONGO_OPLOG_URL: "mongodb://mongo:27017/local"
+      PORT: 3000
+      ROOT_URL: "http://localhost/chat/"
+      Accounts_UseDNSDomainCheck: "True"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
       interval: 30s
@@ -55,6 +59,13 @@ services:
       retries: 3
     depends_on:
       - mongo
+    expose:
+      - "3000"
+
+  wiki:
+    image: requarks/wiki:beta
+    env_file:
+      - './required.env'
     expose:
       - "3000"
 

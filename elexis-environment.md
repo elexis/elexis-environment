@@ -6,7 +6,9 @@ An integrated Elexis environment providing user management, elexis-server, a wik
 
 ### External Requirements
 
-A relational database management system (RDBMS) (tested and developed using MariaDB v8).
+A relational database management system (RDBMS) (tested and developed using MariaDB v8), with
+a database and user for each of the docker containers ``es`` and ``wiki``.
+
 
 ### Required parameters
 
@@ -41,6 +43,7 @@ The following docker containers will be created on ```docker-compose up```
 - ```es``` Elexis-Server instance
 - ```ldap``` LDAP server for user management
 - ```rocketchat```
+- ```wiki```
 - hubot
 - openid
 
@@ -49,6 +52,8 @@ The following docker containers will be created on ```docker-compose up```
 blabla
 
 # TODO
+
+MAIL Setup
 
 Offene Punkte EE
 
@@ -77,3 +82,10 @@ Gedanken
 - 
 
 
+
+
+# Libraries used
+
+https://github.com/baloise/rocket-chat-rest-client
+https://github.com/xo/usql/
+https://github.com/bitnami/bcrypt-cli
