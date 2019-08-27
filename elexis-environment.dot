@@ -8,9 +8,9 @@ digraph elexisenvironment {
         rocketchat -> hubot;
         hubot -> rocketchat;
         rocketchat -> ldap;
-        wikijs -> ldap;
+        bookstack -> ldap;
         web -> rocketchat;
-        web -> wikijs;
+        web -> bookstack;
         web -> es;
         web -> openid;
         openid -> ldap;
@@ -35,7 +35,7 @@ digraph elexisenvironment {
     Elexis -> web;
     Browser -> web;
     Elexis -> RDBMS;
-    wikijs -> RDBMS;
+    bookstack -> RDBMS;
 
     es -> RDBMS;
     es -> FILESHARE;

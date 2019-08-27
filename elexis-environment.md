@@ -7,8 +7,7 @@ An integrated Elexis environment providing user management, elexis-server, a wik
 ### External Requirements
 
 A relational database management system (RDBMS) (tested and developed using MariaDB v8), with
-a database and user for each of the docker containers ``es`` and ``wiki``.
-
+a database and user for each of the docker containers ``es`` and ``bookstack``.
 
 ### Required parameters
 
@@ -19,37 +18,44 @@ a database and user for each of the docker containers ``es`` and ``wiki``.
 
 ## Requirements preparation
 
-### Setup the MongoDB
-
-Initialize replica set ```rs.initiate( { _id: "rs0", members: [{ _id: 0, host: "localhost:27017" } ]} )```
+Copy the file `env.template` to `.env` and set the values.
 
 ## Initial start
 
-Clone this repository. Modify ```docker-compose.yml``
+Clone this repository. Modify ```docker-compose.yml```
 
-```docker-compose up``
+```docker-compose up```
 
-After starting one MUST change the Administrator password in LDAP! HOW?
+After starting one MUST change the Administrator password (by default set to `admin`) in LDAP! HOW?
+
+## Accessing the services
+
+* Bookstack with browser via https://yourhost/bookstack
+* Rocketchat with browser via https://yourhost/chat
+* LDAP with LDAPS client on ldaps://yourhost:636 
 
 # Migrating existing data
+
+Later version
 
 # Technical details
 
 ## Docker containers
 
-The following docker containers will be created on ```docker-compose up```
+The following docker containers will be created:
 
 - ```web``` SSL terminating reverse proxy and static resource provider. The only container exposing ports.
 - ```es``` Elexis-Server instance
 - ```ldap``` LDAP server for user management
-- ```rocketchat```
-- ```wiki```
+- ```rocketchat``` A chat server
+- ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
 - hubot
 - openid
 
 ## Mapping LDAP Groups to Elexis Roles
 
 blabla
+
 
 # TODO
 
@@ -63,7 +69,7 @@ Offene Punkte EE
 - LDAP
   - IP based access restriction for readonly user (?)
 
-Offene Punke Elexis
+Offene Punkte Elexis
 
 - LDAP Anmeldung
 - Einbettung Rocketchat über Browser (user automatisch angemeldet)
@@ -75,6 +81,15 @@ Offene Themen
 - SSO zwischen Web-Applikation und Elexis?!
 - LDAP RO user should be only able to find DN not read attributes like contactId and stuff
 
+Rocketchat
+
+- Fallback passwort wenn ldap nicht funktioniert
+- LDAP wird nicht aktiviert
+
+Bookstack
+
+- Auto Setup Library
+- Further configuration
 
 Gedanken
 
@@ -86,6 +101,6 @@ Gedanken
 
 # Libraries used
 
-https://github.com/baloise/rocket-chat-rest-client
-https://github.com/xo/usql/
-https://github.com/bitnami/bcrypt-cli
+* https://github.com/baloise/rocket-chat-rest-client
+* https://github.com/xo/usql/
+* https://github.com/bitnami/bcrypt-cli

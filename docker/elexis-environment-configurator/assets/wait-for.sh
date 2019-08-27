@@ -1,6 +1,6 @@
 #!/bin/sh
 # wait-for.sh
-# Wait for RocketChat and WikiJs to become ready and
+# Wait for RocketChat to become ready and
 # perform initialisation. Rocketchat takes way longer
 # so we stick with it
 
