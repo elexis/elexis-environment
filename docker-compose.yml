@@ -50,18 +50,31 @@ services:
     volumes:
       - ./uploads:/app/uploads
     environment:
-      - ORGANISATION_NAME
-      - ORGANISATION_BASE_DN
-      - LDAP_READONLY_USER_USERNAME
-      - LDAP_READONLY_USER_PASSWORD
       - ADMIN_USERNAME
       - ADMIN_PASS
       - ADMIN_EMAIL
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
-      - PORT=3000
-      - ROOT_URL=http://localhost/chat/
+      - ROOT_URL=https://${EE_HOSTNAME}/chat/
       - Accounts_UseDNSDomainCheck=true
+      - Organization_Name=$ORGANISATION_NAME
+      - Site_Name=$ORGANISATION_NAME
+      - LDAP_Enable=true
+      - LDAP_Authentication=true
+      - LDAP_Host=ldap
+      - LDAP_BaseDN=$ORGANISATION_BASE_DN
+      - LDAP_User_Search_Field=uid
+      - LDAP_Authentication_UserDN=cn=${LDAP_READONLY_USER_USERNAME},${ORGANISATION_BASE_DN}
+      - LDAP_Authentication_Password=${LDAP_READONLY_USER_PASSWORD}
+      - LDAP_Group_Filter_Group_Name=ROCKET_CHAT
+      - LDAP_Group_Filter_Group_Member_Format=uniqueMember
+      - LDAP_Sync_User_Data=true
+      - LDAP_Username_Field=uid
+      - LDAP_User_Search_Field=uid,mail
+      - Organization_Type=enterprise
+      - Server_Type=privateTeam
+      - Industry=healthcarePharmaceutical
+      - Show_Setup_Wizard=completed
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
       interval: 30s
@@ -118,19 +131,19 @@ services:
   # Configure the elexis-environment
   # TODO perform only once
   # http://blog.dixo.net/2015/02/sending-signals-from-one-docker-container-to-another/
-  elexis-environment-configurator:
-    build: ./docker/elexis-environment-configurator
-    environment:
-      - ADMIN_USERNAME
-      - ADMIN_PASS
-      - ORGANISATION_NAME
-      - ORGANISATION_BASE_DN
-      - LDAP_READONLY_USER_USERNAME
-      - LDAP_READONLY_USER_PASSWORD
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - rocketchat
+  # elexis-environment-configurator:
+  #  build: ./docker/elexis-environment-configurator
+  #  environment:
+  #    - ADMIN_USERNAME
+  #    - ADMIN_PASS
+  #    - ORGANISATION_NAME
+  #    - ORGANISATION_BASE_DN
+  #    - LDAP_READONLY_USER_USERNAME
+  #    - LDAP_READONLY_USER_PASSWORD
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
+  ##  depends_on:
+  #    - rocketchat
 
 volumes:
   ldapStorage:
