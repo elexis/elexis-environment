@@ -11,9 +11,8 @@ services:
       - ./assets/web/ssl/certificate.key:/etc/nginx/certificate.key:ro
       - ./assets/web/ssl/certificate.crt:/etc/nginx/certificate.crt:ro
     ports:
-      - 443:443
-      - 636:636
-      - 8443:8443 # wiki
+      - 443:443 # https
+      - 636:636 # ldaps
     depends_on:
       - ldap
       - mongo
@@ -112,6 +111,26 @@ services:
       - LDAP_VERSION=3
       - APP_DEBUG=true
 
+  #
+  #
+  elexis-server:
+    image: medevit/elexis-server:latest
+    volumes:
+      - elexisServerHome:/elexis
+    environment:
+      - DB_TYPE=$RDBMS_TYPE
+      - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
+      - DB_DATABASE=$RDBMS_ELEXIS_DATABASE
+      - DB_USERNAME=$RDBMS_ELEXIS_USERNAME
+      - DB_PASSWORD=$RDBMS_ELEXIS_PASSWORD
+      - DB_JDBC_PARAMETER_STRING=useSSL=false&serverTimezone=Europe/Zurich
+    expose:
+      - 8380
+    ports:
+      - "7234:7234"
+
+  # Mongo NoSQL database
+  # used by: rocketchat
   mongo:
     image: mongo:3.6
     restart: unless-stopped
@@ -152,3 +171,4 @@ volumes:
   rocketchatDump:
   bookstackUploads:
   bookstackStorageUploads:
+  elexisServerHome:

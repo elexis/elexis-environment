@@ -1,18 +1,16 @@
 # Elexis-Environment v0.1
 
-An integrated Elexis environment providing user management, elexis-server, a wiki and a chat system.
+An integrated Elexis environment providing elexis-server, a wiki and a chat system.
 
-## Requirements
 
-### External Requirements
+# Externally provided service requirements
 
 A relational database management system (RDBMS) (tested and developed using MariaDB v8), with
-a database and user for each of the docker containers ``es`` and ``bookstack``.
+a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
 
-### Required parameters
+A file-system storage space
 
-- RDBMS data
-- Domain-Name
+
 
 # Installation
 
@@ -59,43 +57,31 @@ blabla
 
 # TODO
 
-MAIL Setup
-
-Offene Punkte EE
-
-- Elexis Rollen zu LDAP Gruppen
-- ...
-- OpenID aus ES rauslösen
-- LDAP
-  - IP based access restriction for readonly user (?)
-
-Offene Punkte Elexis
-
-- LDAP Anmeldung
-- Einbettung Rocketchat über Browser (user automatisch angemeldet)
-- Einbettung WikiJs über Browser (user automatisch)
-
-Offene Themen
-
-- LDAP alleine für SSO nicht ausreichend
-- SSO zwischen Web-Applikation und Elexis?!
-- LDAP RO user should be only able to find DN not read attributes like contactId and stuff
-
-Rocketchat
-
-- Fallback passwort wenn ldap nicht funktioniert
-- LDAP wird nicht aktiviert
-
-Bookstack
-
-- Auto Setup Library
-- Further configuration
-
-Gedanken
-
-- EE schreibt über ES eehostname sowie public cert in db (Config#elexis-environment-host)
-- 
-
+* EE
+  - Elexis Rollen zu LDAP Gruppen
+  - ...
+  - OpenID aus ES rauslösen
+  - LDAP
+    - IP based access restriction for readonly user (?)
+  - MAIL Setup (?)
+* Elexis UI
+  - LDAP Anmeldung
+  - Einbettung Rocketchat über Browser (user automatisch angemeldet)
+  - Einbettung WikiJs über Browser (user automatisch)
+* Themen
+  - LDAP alleine für SSO nicht ausreichend
+  - SSO zwischen Web-Applikation und Elexis?!
+  - LDAP RO user should be only able to find DN not read attributes like contactId and stuff
+* Rocketchat
+  - Fallback passwort wenn ldap nicht funktioniert
+  - LDAP wird nicht aktiviert
+* Bookstack
+  - Auto Setup Library
+  - Further configuration
+* Elexis-Server
+  - OpenId an LDAP oder erste Version gar nicht
+* Gedanken
+  - EE schreibt über ES eehostname sowie public cert in db (Config#elexis-environment-host)
 
 
 
