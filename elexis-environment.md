@@ -1,28 +1,35 @@
 # Elexis-Environment v0.1
 
-An integrated Elexis environment providing elexis-server, a wiki and a chat system.
+An integrated Elexis environment providing elexis-server, ldap, wiki and a chat system.
 
+# Installation Requirements
 
-# Externally provided service requirements
-
-A relational database management system (RDBMS) (tested and developed using MariaDB v8), with
+A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
 a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
 
 A file-system storage space
 
-
+A static IP address with a hostname in your domain for the server hosting this environment.
 
 # Installation
 
-## Requirements preparation
+Clone this repository to a directory on your server. Assert docker-compose is [installed](https://docs.docker.com/compose/install/).
 
-Copy the file `env.template` to `.env` and set the values.
+## Pre-Start Configuration
+
+Copy the file `env.template` to `.env` and set the required values.
+
+**IMPORTANT** Set a STRONG password for `ADMIN_PASS` and consider changing `ADMIN_USERNAME`. Having these credentials allows administrator access to all services!
+
+See ssl for details on how to create your own certificate to use for this environment.
+After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy
+the certificate files to `assets/web/ssl`.
+
+Network configuration
 
 ## Initial start
 
-Clone this repository. Modify ```docker-compose.yml```
-
-```docker-compose up```
+```docker-compose up``` will instantiate all containers.
 
 After starting one MUST change the Administrator password (by default set to `admin`) in LDAP! HOW?
 
@@ -31,6 +38,8 @@ After starting one MUST change the Administrator password (by default set to `ad
 * Bookstack with browser via https://yourhost/bookstack
 * Rocketchat with browser via https://yourhost/chat
 * LDAP with LDAPS client on ldaps://yourhost:636 
+
+
 
 # Migrating existing data
 
@@ -43,7 +52,7 @@ Later version
 The following docker containers will be created:
 
 - ```web``` SSL terminating reverse proxy and static resource provider. The only container exposing ports.
-- ```es``` Elexis-Server instance
+- ```elexis-server``` Elexis-Server instance
 - ```ldap``` LDAP server for user management
 - ```rocketchat``` A chat server
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
@@ -67,7 +76,7 @@ blabla
 * Elexis UI
   - LDAP Anmeldung
   - Einbettung Rocketchat über Browser (user automatisch angemeldet)
-  - Einbettung WikiJs über Browser (user automatisch)
+  - Einbettung Bookstack über Browser (user automatisch)
 * Themen
   - LDAP alleine für SSO nicht ausreichend
   - SSO zwischen Web-Applikation und Elexis?!
@@ -82,7 +91,9 @@ blabla
   - OpenId an LDAP oder erste Version gar nicht
 * Gedanken
   - EE schreibt über ES eehostname sowie public cert in db (Config#elexis-environment-host)
-
+* myElexis
+  - LetsEncrypt (for internal usage?)
+  - HTTPS/SSL concept (DDNS)
 
 
 # Libraries used

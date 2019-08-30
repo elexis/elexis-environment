@@ -1,3 +1,5 @@
+# Elexis-Environment
+# Version 0.1
 version: '3'
 
 services:
@@ -7,7 +9,8 @@ services:
   web:
     image: nginx:1.16-alpine
     volumes:
-      - ./assets/web/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/web/html:/template:ro
       - ./assets/web/ssl/certificate.key:/etc/nginx/certificate.key:ro
       - ./assets/web/ssl/certificate.crt:/etc/nginx/certificate.crt:ro
     ports:
@@ -16,6 +19,15 @@ services:
     depends_on:
       - ldap
       - mongo
+    command: >
+      /bin/sh -c "envsubst < /template/eenv.properties.template > /usr/share/nginx/html/eenv.properties 
+      && exec nginx -g 'daemon off;'"
+    environment:
+      - EE_VERSION=0.1
+      - ORGANISATION_NAME
+      - ORGANISATION_BASE_DN
+      - LDAP_READONLY_USER_USERNAME
+      - LDAP_READONLY_USER_PASSWORD
 
   # OpenSlapd
   ldap:
@@ -126,6 +138,7 @@ services:
       - DB_JDBC_PARAMETER_STRING=useSSL=false&serverTimezone=Europe/Zurich
     expose:
       - 8380
+      - 8480
     ports:
       - "7234:7234"
 
@@ -159,8 +172,6 @@ services:
   #    - ORGANISATION_BASE_DN
   #    - LDAP_READONLY_USER_USERNAME
   #    - LDAP_READONLY_USER_PASSWORD
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
   ##  depends_on:
   #    - rocketchat
 
