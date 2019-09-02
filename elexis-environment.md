@@ -2,24 +2,29 @@
 
 An integrated Elexis environment providing elexis-server, ldap, wiki and a chat system.
 
-# Installation Requirements
+# Requirements
 
-A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
-a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
+* A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
+a database and user for each of the docker containers ``elexis-server`` and ``bookstack`` has to be provided. 
 
-A file-system storage space
+* A file-system storage space
 
-A static IP address with a hostname in your domain for the server hosting this environment.
+* A static IP address with a hostname in your domain for the server hosting this environment. This hostname has to be resolvable by all clients.
 
 # Installation
 
-Clone this repository to a directory on your server. Assert docker-compose is [installed](https://docs.docker.com/compose/install/).
+Clone this repository to a directory on your server. Assert `docker-compose` is [installed](https://docs.docker.com/compose/install/).
 
 ## Pre-Start Configuration
 
-Copy the file `env.template` to `.env` and set the required values.
+Copy the file `.env.template` to `.env` and adapt the variables to your installation.
 
-**IMPORTANT** Set a STRONG password for `ADMIN_PASS` and consider changing `ADMIN_USERNAME`. Having these credentials allows administrator access to all services!
+**IMPORTANT** Set a STRONG password for `ADMIN_PASS` and consider changing `ADMIN_USERNAME`. Obtaining these credentials allows administrator access to all services!
+
+Be sure to have the values right - re-configuration is NOT supported!
+
+Execute `docker run --rm configure ...`
+
 
 See ssl for details on how to create your own certificate to use for this environment.
 After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy
@@ -101,3 +106,9 @@ blabla
 * https://github.com/baloise/rocket-chat-rest-client
 * https://github.com/xo/usql/
 * https://github.com/bitnami/bcrypt-cli
+
+
+# Release 0.1 Checklist
+
+* SSL Zertifikatsgenerierung
+* Dynamic configuration

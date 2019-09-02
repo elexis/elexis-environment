@@ -13,18 +13,17 @@ objectClass: organizationalUnit
 objectClass: top
 ou: groups
 
-dn: cn=administrator,ou=people,{{ LDAP_BASE_DN }}
+dn: cn=${ADMIN_USERNAME},ou=people,{{ LDAP_BASE_DN }}
 changetype: add
 objectclass: organizationalPerson
 objectclass: inetOrgPerson
 objectclass: elexisContact
 objectClass: top
-uid: administrator
-userPassword:: e1NTSEF9NXMzUjQ5b3Q0QUZMZTZRS1c5WDFwRHFwK3dzYTJsTlFFM25iMkE9PQ=
- =
+uid: ${ADMIN_USERNAME}
+userPassword: {SSHA}${SHA1_ADMIN_PASS}
 cn: Administrator
 sn: Administrator
-mail: admin@mustermann.ch
+mail: ${ADMIN_EMAIL}
 
 dn: cn=demouser,ou=people,{{ LDAP_BASE_DN }}
 changetype: add
@@ -33,11 +32,10 @@ objectclass: inetOrgPerson
 objectclass: elexisContact
 objectClass: top
 uid: demouser
-userPassword:: e1NTSEF9NXMzUjQ5b3Q0QUZMZTZRS1c5WDFwRHFwK3dzYTJsTlFFM25iMkE9PQ=
- =
+userPassword: demouser
 cn: demouser
 sn: demouser
-mail: demouser@mustermann.ch
+mail: demouser@${ORGANSATION_DOMAIN}
 
 #
 # Elexis base roles
@@ -48,7 +46,7 @@ objectClass: groupOfUniqueNames
 objectClass: top
 cn: ELEXIS_ADMIN
 description: Elexis Administrator
-uniqueMember: cn=administrator,ou=people,{{ LDAP_BASE_DN }}
+uniqueMember: cn=${ADMIN_USERNAME},ou=people,{{ LDAP_BASE_DN }}
 
 dn: cn=ELEXIS_USER,ou=groups,{{ LDAP_BASE_DN }}
 changetype: add
@@ -56,7 +54,7 @@ objectClass: groupOfUniqueNames
 objectClass: top
 cn: ELEXIS_USER
 description: Elexis User Role
-uniqueMember: cn=administrator,ou=people,{{ LDAP_BASE_DN }}
+uniqueMember: cn=${ADMIN_USERNAME},ou=people,{{ LDAP_BASE_DN }}
 uniqueMember: cn=demouser,ou=people,{{ LDAP_BASE_DN }}
 
 #
@@ -68,4 +66,8 @@ objectClass: groupOfUniqueNames
 objectClass: top
 cn: admin
 description: Bookstack Admin Role
-uniqueMember: cn=administrator,ou=people,{{ LDAP_BASE_DN }}
+uniqueMember: cn=${ADMIN_USERNAME},ou=people,{{ LDAP_BASE_DN }}
+
+#
+# Rocketchat
+#

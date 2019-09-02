@@ -1,0 +1,4 @@
+assets/web/ssl/myserver.*
+assets/web/ssl/dhparam.pem
+assets/web/etc/nginx.conf
+assets/ldap/bootstrap.ldif
