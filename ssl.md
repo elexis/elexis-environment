@@ -3,7 +3,7 @@
 A certificate (consisting of two files `certificate.crt`, containing the public and `certificate.key` , containing the private key) is the technological requirement for providing encrypted (not readable by others)
 communication.
 
-Certificates are bound to hostnames. That is, if this server's name is `ee.praxismustermann.ch` we have
+Certificates are bound to hostnames. That is, if this server's name is `ee.demopraxis.ch` we have
 to acquire an SSL certificate for this hostname.
 
 There exist several [types](https://aboutssl.org/type-of-ssl/) of certificates. Cost and effort to acquire one differ.
@@ -36,7 +36,7 @@ https://ssl-trust.com/SSL-Zertifikate/PositiveSSL
 
 https://www.interssl.com/de/cart.php?gid=4
 
-A SSL standard certificate for `ee.praxismustermann.ch` amounts to CHF 54.
+A SSL standard certificate for `ee.demopraxis.ch` amounts to CHF 54.
 
 ## Hardening
 

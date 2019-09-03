@@ -1,3 +1,5 @@
+Work in Progress
+
 # Elexis-Environment v0.1
 
 An integrated Elexis environment providing elexis-server, ldap, wiki and a chat system.
@@ -23,32 +25,24 @@ Copy the file `.env.template` to `.env` and adapt the variables to your installa
 
 Be sure to have the values right - re-configuration is NOT supported!
 
-Execute `docker run --rm configure ...`
-
+Execute `./configure.sh` to generate the files required for startup.
 
 See ssl for details on how to create your own certificate to use for this environment.
 After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy
 the certificate files to `assets/web/ssl`.
 
-Network configuration
-
 ## Initial start
 
 ```docker-compose up``` will instantiate all containers.
 
-After starting one MUST change the Administrator password (by default set to `admin`) in LDAP! HOW?
-
 ## Accessing the services
+
+After initial startup, there will be two users available. The admin user with userid `ADMIN_USERNAME` and a `demouser` with password `demouser`.
 
 * Bookstack with browser via https://yourhost/bookstack
 * Rocketchat with browser via https://yourhost/chat
 * LDAP with LDAPS client on ldaps://yourhost:636 
-
-
-
-# Migrating existing data
-
-Later version
+* Elexis server via https://yourhost/fhir and https://yourhost/services respectively
 
 # Technical details
 
@@ -63,11 +57,6 @@ The following docker containers will be created:
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
 - hubot
 - openid
-
-## Mapping LDAP Groups to Elexis Roles
-
-blabla
-
 
 # TODO
 
@@ -99,16 +88,10 @@ blabla
 * myElexis
   - LetsEncrypt (for internal usage?)
   - HTTPS/SSL concept (DDNS)
-
+* Docker
+  * Bridge mode by default does not allow for subnet based filtering rules in NGINX
+  * NGINX vor NGINX??
 
 # Libraries used
 
-* https://github.com/baloise/rocket-chat-rest-client
 * https://github.com/xo/usql/
-* https://github.com/bitnami/bcrypt-cli
-
-
-# Release 0.1 Checklist
-
-* SSL Zertifikatsgenerierung
-* Dynamic configuration
