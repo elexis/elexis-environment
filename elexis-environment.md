@@ -13,6 +13,8 @@ a database and user for each of the docker containers ``elexis-server`` and ``bo
 
 * A static IP address with a hostname in your domain for the server hosting this environment. This hostname has to be resolvable by all clients.
 
+* A Linux system to host. Linux behaves different to Windows and OS X w.r.t. network handling. Only in a linux system the web container will see the real IP behind the HTTP requests.
+
 # Installation
 
 Clone this repository to a directory on your server. Assert `docker-compose` is [installed](https://docs.docker.com/compose/install/).
@@ -95,3 +97,8 @@ The following docker containers will be created:
 # Libraries used
 
 * https://github.com/xo/usql/
+
+
+# FAQ / Hints
+
+* Bookstack startup fails with `The server requested authentication method unknown to the client': MySQL uses the new authentication method, see https://ma.ttias.be/mysql-8-laravel-the-server-requested-authentication-method-unknown-to-the-client/ for a solution.

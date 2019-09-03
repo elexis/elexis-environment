@@ -51,7 +51,7 @@ else
   echo "   skipping myserver.cnf generation"
 fi
 
-if [ ! -f "/assets/web/ssl/myserver.key" ]; 
+if [ ! -f "/assets/web/ssl/myserver.csr" ]; 
 then
     echo "   generating myserver.key/csr"
     openssl req -new -config /assets/web/ssl/myserver.cnf -keyout /assets/web/ssl/myserver.key -out /assets/web/ssl/myserver.csr
