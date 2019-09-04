@@ -1,0 +1,22 @@
+#!/usr/bin/env bats
+
+#
+# Test RocketChat container
+#
+
+export T="[ROCKETCHAT] "
+
+@test "$T Read setting with admin authorization -> LDAP_Enable" {
+    skip
+    result="$(java -jar /RocketchatSetting.jar -l $ADMIN_USERNAME -p $ADMIN_PASS -u https://$EE_HOSTNAME/chat -t LDAP_Enable)"
+    [ "$result" == "true" ]
+}
+
+# test login as admin
+@test "$T Login as demouser" {
+    skip
+    # https://github.com/RocketChat/Rocket.Chat/pull/14278
+    curl -k https://$EE_HOSTNAME/chat/api/v1/login -d "user=demouser,password=demouser" 
+}
+
+# test login as demouser

@@ -19,7 +19,7 @@ echo "=== Preparing configuration files"
 
 if [ ! -f "/assets/web/ssl/dhparam.pem" ]; 
 then
-    echo "  generating dhparam.pem ... please wait ..."
+    echo "* generating dhparam.pem ... please wait ..."
     openssl dhparam -dsaparam -out /assets/web/ssl/dhparam.pem 4096
 else
     echo "  skipping dhparam.pem generation"
@@ -27,7 +27,7 @@ fi
 
 if [ ! -f "/assets/web/ssl/myserver.cnf" ]; 
 then
-echo "   writing ssl configuration file ..."
+echo "* writing ssl configuration file ..."
 cat <<EOF >/assets/web/ssl/myserver.cnf
 # see https://www.switch.ch/pki/manage/request/csr-openssl/
 FQDN=${EE_HOSTNAME}
@@ -48,28 +48,25 @@ CN = \$FQDN
 subjectAltName = \$ALTNAMES
 EOF
 else
-  echo "   skipping myserver.cnf generation"
+  echo "  skipping myserver.cnf generation"
 fi
 
 if [ ! -f "/assets/web/ssl/myserver.csr" ]; 
 then
-    echo "   generating myserver.key/csr"
+    echo "* generating myserver.key/csr"
     openssl req -new -config /assets/web/ssl/myserver.cnf -keyout /assets/web/ssl/myserver.key -out /assets/web/ssl/myserver.csr
 else
-    echo "   skipping myserver.key/csr generation"
+    echo "  skipping myserver.key/csr generation"
 fi
 
 if [ ! -f "/assets/ldap/bootstrap.ldif" ]; 
 then
-    echo "   generating bootstrap.ldif"
+    echo "* generating bootstrap.ldif"
     SALT="$(openssl rand 3)"
     SHA1="$(printf "%s%s" "$ADMIN_PASS" "$SALT" | openssl dgst -binary -sha1)"
     SHA1_ADMIN_PASS="$(printf "%s%s" "$SHA1" "$SALT" | base64)"
     export SHA1_ADMIN_PASS
     cat /assets/ldap/bootstrap.ldif.template | envsubst > /assets/ldap/bootstrap.ldif
 else
-    echo "   skipping bootstrap.ldif generation"
+    echo "  skipping bootstrap.ldif generation"
 fi
-
-echo "   generating nginx.conf"
-cat /assets/web/etc/nginx.conf.template | envsubst | sed -e 's/§/$/g' > /assets/web/etc/nginx.conf
