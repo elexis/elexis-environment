@@ -57,7 +57,3 @@ The following docker containers are created:
 - ```ldap``` LDAP server
 - ```rocketchat``` A [chat server](https://rocket.chat/)
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
-
-# FAQ / Hints
-
-* Bookstack startup fails with `The server requested authentication method unknown to the client`: MySQL uses the new authentication method, see https://ma.ttias.be/mysql-8-laravel-the-server-requested-authentication-method-unknown-to-the-client/ for a solution.
