@@ -25,7 +25,7 @@ Copy the file `.env.template` to `.env` and adapt the variables to your installa
 
 Be sure to have the values right - re-configuration is NOT supported!
 
-Execute `./configure.sh` to generate the files required for startup.
+Execute `./ee setup reqtest` to generate the files required for startup.
 
 See [ssl configuration](doc/ssl.md) for details on how to create your own certificate to use for this environment.
 After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy

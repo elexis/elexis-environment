@@ -1,0 +1,9 @@
+This will install the packages listed in BCLFile from the
+git repository configured in the same file. The first line
+of the BCLFile should contain the repository address and
+the next lines should contain the published package.
+
+Example BCLFile content:
+git@github.com:sample-org/sample-repo.git
+sample-package1-v1.2.3-release
+sample-package2-v1.2.3-release

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+CUR_DIR=`pwd`
+PRJ_NAME="{{ project_name }}"
+SUFFIX="ctl"
+
+cat > "$HOME/.bash_completion.d/$PRJ_NAME$SUFFIX" <<EOC
+source "$CUR_DIR/$PRJ_NAME/framework/complete"
+complete -F _bash_cli_$PRJ_NAME$SUFFIX $PRJ_NAME$SUFFIX
+EOC
+
+if [[ -f "$CUR_DIR/$PRJ_NAME/$PRJ_NAME$SUFFIX" ]]; then
+    exit 1
+fi

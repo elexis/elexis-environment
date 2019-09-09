@@ -4,3 +4,4 @@ assets/ldap/bootstrap.ldif
 assets/web/ssl/certificate.crt
 assets/web/ssl/certificate.key
 .env
+.DS_Store

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+docker build -t ee-test ${INSTALL_DIR}docker/ee-test/.
+docker run --rm --network="host" --env-file ${INSTALL_DIR}.env -it ee-test
+docker rmi ee-test

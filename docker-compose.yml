@@ -62,7 +62,7 @@ services:
     volumes:
       - ./uploads:/app/uploads
     environment:
-      - ADMIN_USERNAME="RocketChatAdmin" # must be different to $ADMIN_USERNAME, else blocks this account
+      - ADMIN_USERNAME=RocketChatAdmin # must be different to $ADMIN_USERNAME, else blocks this account
       - ADMIN_PASS
       - ADMIN_EMAIL
       - MONGO_URL=mongodb://mongo:27017/rocketchat

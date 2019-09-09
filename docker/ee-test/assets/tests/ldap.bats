@@ -29,3 +29,5 @@ export LDAPTLS_REQCERT=never
     run ldapwhoami -H ldaps://$EE_HOSTNAME -D $PEOPLE_DEMOUSER -w demouser -x
     [ "$output" = "dn:$PEOPLE_DEMOUSER" ]
 }
+
+# TODO bind fail for wrong user pass

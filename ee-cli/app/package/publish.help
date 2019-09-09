@@ -1,0 +1,8 @@
+PROJECT  - The full name of the package you wish to publish.
+           Example: sample-package
+
+This will read a BUILD file contained in the package's directory.
+
+Example BUILD file content:
+sample-package-v1.2.3-release
+git@github.com:sample-org/sample-repo.git

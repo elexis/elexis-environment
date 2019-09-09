@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+echo -e "\033[36mUpgrading BCL framework\033[39m"
+BCL_INSTALLATION_DIR=$(dirname $(dirname $(dirname ${BASH_SOURCE[0]})))
+
+pushd $BCL_INSTALLATION_DIR
+git reset --hard HEAD
+git pull git@github.com:sdsdkkk/bcl.git master
+popd
+
+echo -e "\033[36mBCL framework is upgraded to latest\033[39m"

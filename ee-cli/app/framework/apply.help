@@ -1,0 +1,6 @@
+PROJECT  - The full name of the project you wish to apply the
+           current BCL version to.
+           Example: existing_project
+
+This will apply the current BCL version's framework files for
+an existing BCL project.

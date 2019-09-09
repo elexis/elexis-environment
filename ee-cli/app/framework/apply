@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+if [ $# == 0 ]; then
+    exit 3
+fi
+
+CUR_DIR=`pwd`
+APP_DIR="$CUR_DIR"
+PRJ_NAME="${!#}"
+SUFFIX="ctl"
+AUTOCOMPLETE_DIR="$CUR_DIR/$PRJ_NAME/app/autocomplete"
+
+if [[ ! -d "$CUR_DIR/$PRJ_NAME" ]]; then
+    echo "Project $PRJ_NAME is not found."
+    exit 1
+fi
+
+if [[ ! -d "$CUR_DIR/$PRJ_NAME/blueprint" ]]; then
+    mkdir -p "$CUR_DIR/$PRJ_NAME/blueprint"
+fi
+
+if [[ ! -d "$CUR_DIR/$PRJ_NAME/files" ]]; then
+    mkdir -p "$CUR_DIR/$PRJ_NAME/files"
+fi
+
+if [[ ! -d "$CUR_DIR/$PRJ_NAME/framework" ]]; then
+    mkdir -p "$CUR_DIR/$PRJ_NAME/framework"
+fi
+
+if [[ ! -d "$CUR_DIR/$PRJ_NAME/playbook" ]]; then
+    mkdir -p "$CUR_DIR/$PRJ_NAME/playbook"
+fi
+
+cp $(ls -alh $HOME/.local/bin/bcl | awk '{print $11}' | sed 's/\/cli/\/framework\//g')* "$CUR_DIR/$PRJ_NAME/framework"
+
+if [[ ! -f "$CUR_DIR/$PRJ_NAME/BUILD" ]]; then
+    cat > "$CUR_DIR/$PRJ_NAME/BUILD" <<EOC
+$PRJ_NAME-v0.0.0-release
+git@github.com:sample-organization/sample-package.git
+EOC
+fi
+
+sed -i "s/{{ function_name }}/_bash_cli_$PRJ_NAME$SUFFIX/g" "$CUR_DIR/$PRJ_NAME/framework/complete"
+sed -i "s/{{ project_name }}/$PRJ_NAME/g" "$CUR_DIR/$PRJ_NAME/framework/complete"
+sed -i "s/{{ project_name }}/$PRJ_NAME/g" "$CUR_DIR/$PRJ_NAME/framework/cli"
+
+if [[ -d "$CUR_DIR/$PRJ_NAME/app" ]]; then
+    APP_DIR="$APP_DIR/$PRJ_NAME/app"
+else
+    mkdir -p "$APP_DIR/$PRJ_NAME/app"
+    APP_DIR="$APP_DIR/$PRJ_NAME/app"
+fi
+
+if [[ ! -d "$APP_DIR/autocomplete" ]]; then
+    mkdir -p "$APP_DIR/autocomplete"
+fi
+
+cp $(ls -alh $HOME/.local/bin/bcl | awk '{print $11}' | sed 's/\/cli/\/autocomplete\//g')* "$APP_DIR/autocomplete"
+
+sed -i "s/{{ project_name }}/$PRJ_NAME/g" "$APP_DIR/autocomplete/apply"
+sed -i "s/{{ project_name }}/$PRJ_NAME/g" "$APP_DIR/autocomplete/remove"
+
+>&2 echo "Updated BCL build on project: $PRJ_NAME."
