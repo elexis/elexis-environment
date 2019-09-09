@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-set -x
+
+if [[ ! -f "${INSTALL_DIR}.env" ]]; then
+  echo ".env file does not exist, please initialize"
+  exit -1
+fi
+
 docker build -t ee-configure ${INSTALL_DIR}docker/ee-config/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v $PWD/assets/:/assets -it ee-configure
+docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}assets/:/assets -it ee-configure
 docker rmi ee-configure

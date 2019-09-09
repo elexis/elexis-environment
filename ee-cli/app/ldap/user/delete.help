@@ -1,0 +1,3 @@
+DN  - The distinguished name of the user to delete
+
+Deletes a user from the LDAP database.
