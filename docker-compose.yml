@@ -16,6 +16,7 @@ services:
       - ./assets/web/ssl/certificate.key:/etc/nginx/certificate.key:ro
       - ./assets/web/ssl/certificate.crt:/etc/nginx/certificate.crt:ro
     ports:
+      - 80:80 #http - redirect to https
       - 443:443 # https
       - 636:636 # ldaps
     depends_on:
