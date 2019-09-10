@@ -35,6 +35,8 @@ the certificate files to `assets/web/ssl`.
 
 `docker-compose up -d` will instantiate all containers. `docker-compose ps` shows the current state of all containers.
 
+Please see [notes](doc/notes.md) for FAQs and remarks.
+
 # Operation
 
 ## Accessing the services
