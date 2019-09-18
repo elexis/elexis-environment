@@ -8,7 +8,7 @@ export T="[ROCKETCHAT] "
 
 @test "$T Read setting with admin authorization -> LDAP_Enable" {
     skip
-    result="$(java -jar /RocketchatSetting.jar -l $ADMIN_USERNAME -p $ADMIN_PASS -u https://$EE_HOSTNAME/chat -t LDAP_Enable)"
+    result="$(java -jar /RocketchatSetting.jar -l $ADMIN_USERNAME -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/chat -t LDAP_Enable)"
     [ "$result" == "true" ]
 }
 

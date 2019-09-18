@@ -3,5 +3,6 @@ assets/web/ssl/dhparam.pem
 assets/ldap/bootstrap.ldif
 assets/web/ssl/certificate.crt
 assets/web/ssl/certificate.key
+assets/keycloak/realm.json
 .env
 .DS_Store

@@ -7,4 +7,4 @@ fi
 export LDAPTLS_REQCERT=never
 
 DN="${!#}"
-ldapdelete -H ldaps://$EE_HOSTNAME -D cn=$ADMIN_USERNAME,$ORGANISATION_BASE_DN -w $ADMIN_PASS -x -s $password $DN
+ldapdelete -H ldaps://$EE_HOSTNAME -D cn=$ADMIN_USERNAME,$ORGANISATION_BASE_DN -w $ADMIN_PASSWORD -x -s $password $DN

@@ -1,5 +1,5 @@
 # Elexis-Environment
-# Version 0.1
+# Version 0.2
 version: '3'
 
 services:
@@ -7,7 +7,7 @@ services:
   # NginX Reverse Proxy
   # TODO LetsEncrypt
   web:
-    image: nginx:1.16-alpine
+    image: nginx:1.17-alpine
     volumes:
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
@@ -49,11 +49,30 @@ services:
       - LDAP_DOMAIN=$ORGANSATION_DOMAIN
       - LDAP_READONLY_USER_USERNAME
       - LDAP_READONLY_USER_PASSWORD
-      - LDAP_ADMIN_PASSWORD=$ADMIN_PASS
-      - LDAP_CONFIG_PASSWORD=$ADMIN_PASS
+      - LDAP_ADMIN_PASSWORD=$ADMIN_PASSWORD
+      - LDAP_CONFIG_PASSWORD=$ADMIN_PASSWORD
       - LDAP_TLS=false
       - LDAP_TLS_VERIFY_CLIENT=never
       - LDAP_READONLY_USER=true
+
+  # KeyCloak
+  # TODO expose only to internal subnet
+  keycloak: 
+    build: ./docker/keycloak
+    expose:
+      - 8080
+    volumes:
+      - ./assets/keycloak/realm.json:/tmp/realm.json:ro
+    environment:
+      - DB_VENDOR=$RDBMS_TYPE
+      - DB_ADDR=$RDBMS_HOST
+      - DB_DATABASE=$RDBMS_KEYCLOAK_DATABASE
+      - DB_USER=$RDBMS_KEYCLOAK_USERNAME
+      - DB_PASSWORD=$RDBMS_KEYCLOAK_PASSWORD
+      - KEYCLOAK_USER=$ADMIN_USERNAME
+      - KEYCLOAK_PASSWORD=$ADMIN_PASSWORD
+      - KEYCLOAK_IMPORT=/tmp/realm.json
+      - PROXY_ADDRESS_FORWARDING=true
 
   # RocketChat
   rocketchat:
@@ -64,7 +83,7 @@ services:
       - rocketchatUploads:/app/uploads
     environment:
       - ADMIN_USERNAME=RocketChatAdmin # must be different to $ADMIN_USERNAME, else blocks this account
-      - ADMIN_PASS
+      - ADMIN_PASS=$ADMIN_PASSWORD
       - ADMIN_EMAIL
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local

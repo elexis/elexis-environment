@@ -63,10 +63,18 @@ if [ ! -f "/assets/ldap/bootstrap.ldif" ];
 then
     echo "* generating bootstrap.ldif"
     SALT="$(openssl rand 3)"
-    SHA1="$(printf "%s%s" "$ADMIN_PASS" "$SALT" | openssl dgst -binary -sha1)"
+    SHA1="$(printf "%s%s" "$ADMIN_PASSWORD" "$SALT" | openssl dgst -binary -sha1)"
     SHA1_ADMIN_PASS="$(printf "%s%s" "$SHA1" "$SALT" | base64)"
     export SHA1_ADMIN_PASS
     cat /assets/ldap/bootstrap.ldif.template | envsubst > /assets/ldap/bootstrap.ldif
 else
-    echo "  skipping bootstrap.ldif generation"
+    echo "  skipping ldap/bootstrap.ldif generation"
+fi
+
+if [ ! -f "/assets/keycloak/realm.json" ]; 
+then
+    echo "* generating keycloak/realm.json"
+    cat /assets/keycloak/realm.template.json | envsubst > /assets/keycloak/realm.json
+else
+    echo "  skipping keycloak/realm.json generation"
 fi

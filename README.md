@@ -21,7 +21,7 @@ Clone this repository to a directory on your server. Assert `docker-compose` is 
 
 Copy the file `.env.template` to `.env` and adapt the variables to your installation.
 
-**IMPORTANT** Set a STRONG password for `ADMIN_PASS` and consider changing `ADMIN_USERNAME`. Obtaining these credentials allows administrator access to all services!
+**IMPORTANT** Set a STRONG password for `ADMIN_PASSWORD` and consider changing `ADMIN_USERNAME`. Obtaining these credentials allows administrator access to all services!
 
 Be sure to have the values right - re-configuration is NOT supported!
 

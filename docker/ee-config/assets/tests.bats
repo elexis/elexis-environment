@@ -12,9 +12,15 @@
     ./usql ${RDBMS_TYPE}://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "SELECT 1=1"
 }
 
-# Is Admin_PASS changed ( is it strong? )
+# Is the Keycloak DB accessible
+@test "Check RDBMS_KEYCLOAK_DATABASE accessible" {
+    # Timeout??
+    ./usql ${RDBMS_TYPE}://${RDBMS_KEYCLOAK_USERNAME}:${RDBMS_KEYCLOAK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_KEYCLOAK_DATABASE} -c "SELECT 1=1"
+}
+
+# Is ADMIN_PASSWORD changed ( is it strong? )
 @test "Admin password was changed" {
-    [ "$ADMIN_PASS" != "admin" ]
+    [ "$ADMIN_PASSWORD" != "admin" ]
 }
 
 # Is EE_HOSTNAME resolvable
