@@ -6,16 +6,16 @@
 
 export T="[LDAP] "
 
-export PEOPLE_ADMIN="cn=$ADMIN_USERNAME,ou=people,$ORGANISATION_BASE_DN"
-export PEOPLE_DEMOUSER="cn=demouser,ou=people,$ORGANISATION_BASE_DN"
+export PEOPLE_ADMIN="uid=$ADMIN_USERNAME,ou=people,$ORGANISATION_BASE_DN"
+export PEOPLE_DEMOUSER="uid=demouser,ou=people,$ORGANISATION_BASE_DN"
 export LDAPTLS_REQCERT=never
 
-@test "$T Bind as cn=$ADMIN_USERNAME,$ORGANISATION_BASE_DN user -> search $PEOPLE_ADMIN" {
+@test "$T Bind as uid=$ADMIN_USERNAME,$ORGANISATION_BASE_DN user -> search $PEOPLE_ADMIN" {
     result="$(ldapsearch -H ldaps://$EE_HOSTNAME -D cn=$ADMIN_USERNAME,$ORGANISATION_BASE_DN -w $ADMIN_PASSWORD -x -b $ORGANISATION_BASE_DN uid=$ADMIN_USERNAME | grep dn)"
     [ "$result" == "dn: $PEOPLE_ADMIN" ]
 }
 
-@test "$T Bind as cn=$LDAP_READONLY_USER_USERNAME,$ORGANISATION_BASE_DN user -> search $PEOPLE_ADMIN" {
+@test "$T Bind as uid=$LDAP_READONLY_USER_USERNAME,$ORGANISATION_BASE_DN user -> search $PEOPLE_ADMIN" {
     result="$(ldapsearch -H ldaps://$EE_HOSTNAME -D cn=$LDAP_READONLY_USER_USERNAME,$ORGANISATION_BASE_DN -w $LDAP_READONLY_USER_PASSWORD -x -b $ORGANISATION_BASE_DN uid=$ADMIN_USERNAME | grep dn)"
     [ "$result" == "dn: $PEOPLE_ADMIN" ]
 }

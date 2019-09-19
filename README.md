@@ -1,6 +1,11 @@
-# Elexis-Environment v0.1
+# Elexis-Environment v0.2
 
 An integrated Elexis environment providing elexis-server, ldap, wiki and a chat system.
+
+# Caveat v0.2
+
+Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually
+added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
 
 # Requirements
 
@@ -25,7 +30,7 @@ Copy the file `.env.template` to `.env` and adapt the variables to your installa
 
 Be sure to have the values right - re-configuration is NOT supported!
 
-Execute `./ee setup reqtest` to generate the files required for startup.
+Execute `./ee setup configure` to generate the files required for startup.
 
 See [ssl configuration](doc/ssl.md) for details on how to create your own certificate to use for this environment.
 After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy
@@ -43,6 +48,7 @@ Please see [notes](doc/notes.md) for FAQs and remarks.
 
 After initial startup, there will be two users available. The admin user with userid `ADMIN_USERNAME` and your set password, and a `demouser` with password `demouser`.
 
+* Keycloak with browser via https://yourhost/keycloak
 * Bookstack with browser via https://yourhost/bookstack
 * Rocketchat with browser via https://yourhost/chat
 * LDAP with LDAPS client on ldaps://yourhost:636 
@@ -56,6 +62,7 @@ The following docker containers are created:
 
 - ```web``` SSL terminating reverse proxy and static resource provider
 - ```elexis-server``` Elexis-Server instance
+- ```keycloak``` Single-Sign-On and User-Management solution
 - ```ldap``` LDAP server
 - ```rocketchat``` A [chat server](https://rocket.chat/)
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)

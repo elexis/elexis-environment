@@ -76,7 +76,7 @@ services:
 
   # RocketChat
   rocketchat:
-    image: rocket.chat:1.3
+    image: rocket.chat:2.0.0
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     restart: unless-stopped
     volumes:
@@ -91,6 +91,10 @@ services:
       - Accounts_UseDNSDomainCheck=true
       - Organization_Name=$ORGANISATION_NAME
       - Site_Name=$ORGANISATION_NAME
+      - Organization_Type=enterprise
+      - Server_Type=privateTeam
+      - Industry=healthcarePharmaceutical
+      - Show_Setup_Wizard=completed
       - LDAP_Enable=true
       - LDAP_Authentication=true
       - LDAP_Host=ldap
@@ -103,10 +107,22 @@ services:
       - LDAP_Sync_User_Data=true
       - LDAP_Username_Field=uid
       - LDAP_User_Search_Field=uid,mail
-      - Organization_Type=enterprise
-      - Server_Type=privateTeam
-      - Industry=healthcarePharmaceutical
-      - Show_Setup_Wizard=completed
+      - Accounts_OAuth_Custom-Keycloak=true
+      - Accounts_OAuth_Custom-Keycloak-url=https://${EE_HOSTNAME}/keycloak/auth
+      - Accounts_OAuth_Custom-Keycloak-token_path=/realms/ElexisEnvironment/protocol/openid-connect/token
+      - Accounts_OAuth_Custom-Keycloak-token_sent_via=Header
+      - Accounts_OAuth_Custom-Keycloak-identity_token_sent_via=header
+      - Accounts_OAuth_Custom-Keycloak-identity_path=/realms/ElexisEnvironment/protocol/openid-connect/userinfo
+      - Accounts_OAuth_Custom-Keycloak-authorize_path=/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - Accounts_OAuth_Custom-Keycloak-scope=openid
+      - Accounts_OAuth_Custom-Keycloak-id=rocket-chat-client
+      - Accounts_OAuth_Custom-Keycloak-secret=${X_EE_RC_OAUTH_CLIENT_SECRET}
+      - Accounts_OAuth_Custom-Keycloak-login_style=redirect
+      - Accounts_OAuth_Custom-Keycloak-button_label_text=Login via Keycloak
+      - Accounts_OAuth_Custom-Keycloak-button_label_color="#FFFFFF"
+      - Accounts_OAuth_Custom-Keycloak-button_color="#13679A"
+      - Accounts_OAuth_Custom-Keycloak-username_field=preferred_username
+      - Accounts_OAuth_Custom-Keycloak-merge_users=false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
       interval: 30s
