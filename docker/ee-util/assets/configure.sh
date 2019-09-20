@@ -5,7 +5,7 @@
 #
 echo "=== Testing environment variables"
 
-bats tests.bats
+bats /stage_configure/tests.bats
 if [ $? -ne 0 ]
 then
   echo "Tests showed an error, not performing configuration"

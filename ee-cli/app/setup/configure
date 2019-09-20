@@ -11,7 +11,7 @@ fi
 # generate rocketchat oauth client secret
 sed -i -e "s/X_EE_RC_OAUTH_CLIENT_SECRET=missing/X_EE_RC_OAUTH_CLIENT_SECRET=$(uuidgen)/g" ${INSTALL_DIR}.env
 
-docker build -t ee-configure ${INSTALL_DIR}docker/ee-config/.
+docker build -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}assets/:/assets -it ee-configure
-docker rmi ee-configure
+docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}assets/:/assets -it ee-util /configure.sh
+docker rmi ee-util
