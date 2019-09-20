@@ -1,6 +1,6 @@
 # Elexis-Environment v0.2
 
-An integrated Elexis environment providing elexis-server, ldap, wiki and a chat system.
+An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
 # Caveat v0.2
 
