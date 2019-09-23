@@ -1,5 +1,10 @@
 #!/usr/bin/env bats
 
+# Are all environment variables that are defined in .env.template covered in .eenv
+@@test ".env variables cover all .env.template variables" {
+    skip TODO 
+}
+
 # Is the Elexis DB accessible
 @test "Check RDBMS_ELEXIS_DATABASE accessible" {
     # Timeout??

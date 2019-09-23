@@ -2,10 +2,15 @@
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
+# Update v0.1 to v0.2
+
+* Need to clean everything from v0.1 as the ldap structure has changed.
+* Adapt .env file
+
 # Caveat v0.2
 
-Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually
-added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
+* Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
+* Keycloak: Fresh realm import does not import credentials, especially problematic for rocket-chat-client
 
 # Requirements
 
