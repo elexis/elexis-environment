@@ -1,4 +1,4 @@
-# Elexis-Environment v0.2
+# Elexis-Environment v0.2 - WORK IN PROGRESS
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
