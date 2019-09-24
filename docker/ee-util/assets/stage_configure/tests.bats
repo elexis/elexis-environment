@@ -1,8 +1,10 @@
 #!/usr/bin/env bats
 
 # Are all environment variables that are defined in .env.template covered in .eenv
-@@test ".env variables cover all .env.template variables" {
-    skip TODO 
+@test ".env variables defines all .env.template variable keys" {
+    run java -jar /EnvDiff.jar -s /installdir/.env.template -t /installdir/.env -d
+    echo "output = ${output}"
+    [ "$status" -eq 0 ]
 }
 
 # Is the Elexis DB accessible
