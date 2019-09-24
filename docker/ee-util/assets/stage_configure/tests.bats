@@ -32,6 +32,7 @@
 
 # Is EE_HOSTNAME resolvable
 @test "Is $EE_HOSTNAME resolvable" {
+    skip "DNS does not allow for internal IP to be registered - rethink this test"
     result="$(dig $EE_HOSTNAME +short)"
     [ ! -z "$result" ]
 }
