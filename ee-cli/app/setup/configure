@@ -5,6 +5,18 @@ if [[ ! -f "${INSTALL_DIR}.env" ]]; then
   exit -1
 fi
 
+uuidgen > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "uuidgen command missing"
+    exit -1
+fi
+
+dig > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+    echo "dig command missing"
+    exit -1
+fi
+
 #
 # REPLACING INTERNAL VARIABLES
 #
