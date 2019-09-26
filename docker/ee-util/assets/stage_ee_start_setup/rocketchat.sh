@@ -37,7 +37,7 @@ fi
 echo $EXISTING
 
 TOKEN=$(echo $EXISTING | jq -r .token)
-ID="(echo $EXISTING | jq -r ._id)"
+ID=$(echo $EXISTING | jq -r ._id)
 LASTUPDATE=$(date +%s)000
 MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RC_ES_INTEGRATION_WEBHOOK_TOKEN', '$ID/${TOKEN}') ON DUPLICATE KEY UPDATE wert = '${TOKEN}', lastupdate='${LASTUPDATE}'"
 /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
