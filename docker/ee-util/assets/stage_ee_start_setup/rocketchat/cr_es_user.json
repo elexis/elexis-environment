@@ -1,0 +1,13 @@
+{
+    "name": "elexis-server",
+    "email": "noreply-bot@elexis.info",
+    "username": "elexis-server",
+    "password": "thisUserIsInactive",
+    "roles": [
+        "bot"
+    ],
+    "active": false,
+    "joinDefaultChannels": false,
+    "sendWelcomeEmail": false,
+    "verified": true
+}

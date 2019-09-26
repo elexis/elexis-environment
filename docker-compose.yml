@@ -26,7 +26,7 @@ services:
       /bin/sh -c "envsubst < /template/eenv.properties.template > /usr/share/nginx/html/eenv.properties 
       && exec nginx -g 'daemon off;'"
     environment:
-      - EE_VERSION=0.1
+      - EE_VERSION=0.2
       - ORGANISATION_NAME
       - ORGANISATION_BASE_DN
       - LDAP_READONLY_USER_USERNAME
@@ -161,6 +161,23 @@ services:
       - APP_DEBUG=true
 
   #
+  # Initial configuration, prepare for elexis-server
+  #
+  elexis-server-config:
+    build: ./docker/ee-util
+    command: /ee_start_setup.sh
+    depends_on:
+      - rocketchat
+    environment:
+      - EE_HOSTNAME
+      - ADMIN_PASSWORD
+      - RDBMS_ELEXIS_USERNAME
+      - RDBMS_ELEXIS_DATABASE
+      - RDBMS_ELEXIS_PASSWORD
+      - RDBMS_HOST
+
+  #    
+  # Elexis-Server
   #
   elexis-server:
     image: medevit/elexis-server:latest
