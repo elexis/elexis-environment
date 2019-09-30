@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+
+  web:
+    image: nginx:1.17-alpine
+    volumes:
+      - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/web/etc/conf:/etc/nginx/conf:ro
+      - ./assets/web/html:/template:ro
+      - ./assets/web/ssl/dhparam.pem:/etc/nginx/dhparam.pem:ro
+      - ./assets/web/ssl/certificate.key:/etc/nginx/certificate.key:ro
+      - ./assets/web/ssl/certificate.crt:/etc/nginx/certificate.crt:ro
+    ports:
+      - 80:80 #http - redirect to https
+      - 443:443 # https
+      - 636:636 # ldaps
+    depends_on:
+      - ldap
+    command: >
+      /bin/sh -c "envsubst < /template/eenv.properties.template > /usr/share/nginx/html/eenv.properties 
+      && exec nginx -g 'daemon off;'"
+    environment:
+      - EE_VERSION=0.2
+      - ORGANISATION_NAME
+      - ORGANISATION_BASE_DN
+      - LDAP_READONLY_USER_USERNAME
+      - LDAP_READONLY_USER_PASSWORD

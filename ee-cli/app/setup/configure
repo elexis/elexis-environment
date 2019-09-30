@@ -25,5 +25,4 @@ sed -i -e "s/X_EE_RC_OAUTH_CLIENT_SECRET=missing/X_EE_RC_OAUTH_CLIENT_SECRET=$(u
 
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}assets/:/assets -v ${INSTALL_DIR}:/installdir:ro ee-util /configure.sh
-docker rmi ee-util > /dev/null
+docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}:/installdir:ro ee-util /configure.sh

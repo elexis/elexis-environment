@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 docker build -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}assets/:/assets -it ee-util /ee_start_setup.sh
+docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -it ee-util /ee_start_setup.sh
 docker rmi ee-util

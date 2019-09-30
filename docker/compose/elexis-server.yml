@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+
+  elexis-server-config:
+    build: ../ee-util
+    command: /ee_start_setup.sh
+    environment:
+      - EE_HOSTNAME
+      - ADMIN_PASSWORD
+      - RDBMS_ELEXIS_USERNAME
+      - RDBMS_ELEXIS_DATABASE
+      - RDBMS_ELEXIS_PASSWORD
+      - RDBMS_HOST
+
+  elexis-server:
+    image: medevit/elexis-server:latest
+    volumes:
+      - elexisServerHome:/elexis
+    environment:
+      - DB_TYPE=$RDBMS_TYPE
+      - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
+      - DB_DATABASE=$RDBMS_ELEXIS_DATABASE
+      - DB_USERNAME=$RDBMS_ELEXIS_USERNAME
+      - DB_PASSWORD=$RDBMS_ELEXIS_PASSWORD
+      - DB_JDBC_PARAMETER_STRING=$RDBMS_ELEXIS_JDBC_PARAMETER_STRING
+      - EE_HOSTNAME
+    expose:
+      - 8380
+      - 8480
+    ports:
+      - "7234:7234"
+
+volumes:
+  elexisServerHome:

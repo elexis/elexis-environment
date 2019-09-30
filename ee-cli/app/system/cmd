@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+DOCKER_DIR=${INSTALL_DIR}/docker/compose/
+
+params=()
+params+=(-f ${DOCKER_DIR}/ldap.yml)
+params+=(-f ${DOCKER_DIR}/web.yml)
+params+=(-f ${DOCKER_DIR}/keycloak.yml)
+params+=(-f ${DOCKER_DIR}/elexis-server.yml)
+[[ $ENABLE_BOOKSTACK == true ]] && params+=(-f ${DOCKER_DIR}/bookstack.yml)
+[[ $ENABLE_ROCKETCHAT == true ]] && params+=(-f ${DOCKER_DIR}/rocketchat.yml)
+
+docker-compose -p elexis-environment ${params[@]} "$@"

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  ldap:
+    image: osixia/openldap:1.2.5
+    command:
+      --copy-service --loglevel debug
+    volumes:
+      - ldapStorage:/var/lib/ldap
+      - ldapConfiguration:/etc/ldap/slapd.d
+      - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
+      - ./assets/ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+    expose:
+      - 389
+    environment:
+      - LDAP_ORGANISATION=$ORGANISATION_NAME
+      - LDAP_DOMAIN=$ORGANSATION_DOMAIN
+      - LDAP_READONLY_USER_USERNAME
+      - LDAP_READONLY_USER_PASSWORD
+      - LDAP_ADMIN_PASSWORD=$ADMIN_PASSWORD
+      - LDAP_CONFIG_PASSWORD=$ADMIN_PASSWORD
+      - LDAP_TLS=false
+      - LDAP_TLS_VERIFY_CLIENT=never
+      - LDAP_READONLY_USER=true
+
+volumes:
+  ldapStorage:
+  ldapConfiguration:

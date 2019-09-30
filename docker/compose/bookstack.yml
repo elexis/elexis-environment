@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+
+  bookstack:
+    image: solidnerd/bookstack:0.27.4-1
+    volumes:
+     - bookstackUploads:/var/www/bookstack/public/uploads
+     - bookstackStorageUploads:/var/www/bookstack/storage/uploads
+    expose:
+     - 80
+    environment:
+      - DB_HOST="$RDBMS_HOST:$RDBMS_PORT"
+      - DB_DATABASE="$RDBMS_BOOKSTACK_DATABASE"
+      - DB_USERNAME="$RDBMS_BOOKSTACK_USERNAME"
+      - DB_PASSWORD="$RDBMS_BOOKSTACK_PASSWORD"
+      - APP_URL="https://$EE_HOSTNAME/bookstack"
+      - APP_LANG=de
+      - APP_AUTO_LANG_PUBLIC=false
+      - APP_VIEWS_BOOKS=grid
+      - AUTH_METHOD=ldap
+      - LDAP_SERVER=ldap
+      - LDAP_BASE_DN=ou=people,$ORGANISATION_BASE_DN
+      - LDAP_DN=cn=$LDAP_READONLY_USER_USERNAME,${ORGANISATION_BASE_DN}
+      - LDAP_PASS=$LDAP_READONLY_USER_PASSWORD
+      - LDAP_USER_FILTER=(&(uid=$${user}))
+      - LDAP_USER_TO_GROUPS=true
+      - LDAP_VERSION=3
+      - APP_DEBUG=true
+
+volumes:
+  bookstackUploads:
+  bookstackStorageUploads:
