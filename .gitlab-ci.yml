@@ -14,5 +14,6 @@ core:
   script:
     - cp -v .test/.env.core .env
     - source .env
+    - ./ee system cmd pull
     - sleep 10
     - ./ee setup configure
