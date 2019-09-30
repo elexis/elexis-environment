@@ -2,29 +2,14 @@
 # see https://docs.gitlab.com/ce/ci/yaml/README.html for all available options
 
 before_script:
+  - docker pull mysql:8
   - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -d mysql:8
 
 after_script:
   - docker stop test-mysql-8
 
-build1:
-  stage: build
-  script:
-    - echo "Do your build here"
-
-test1:
+core:
   stage: test
   script:
-    - echo "Do a test here"
-    - echo "For example run a test suite"
-
-test2:
-  stage: test
-  script:
-    - echo "Do another parallel test here"
-    - echo "For example run a lint test"
-
-deploy1:
-  stage: deploy
-  script:
-    - echo "Do your deploy here"
+    - cp .test/.env.core .env
+    - ./ee setup configure
