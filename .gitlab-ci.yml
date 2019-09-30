@@ -13,5 +13,5 @@ core:
   stage: test
   script:
     - cp -v .test/.env.core .env && source .env
-    - .test/wait-for $RDBMS_HOST:$RDBMS_PORT -t 20
+    - sleep 5
     - ./ee setup configure

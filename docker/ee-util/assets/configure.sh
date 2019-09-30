@@ -9,7 +9,7 @@ bats /stage_configure/tests.bats
 if [ $? -ne 0 ]
 then
   echo "Tests showed an error, not performing configuration"
-  exit
+  exit -1
 fi
 
 #
