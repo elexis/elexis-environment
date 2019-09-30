@@ -19,7 +19,7 @@ core:
     - cp -v .test/.env.core .env
     - source .env
     - ./ee system cmd pull -q # while mysql starts up
-    - sleep 5
+    - sleep 10
     - ./ee setup configure
     - echo "startup elexis-environment" #TODO
     - ./ee setup runtest
