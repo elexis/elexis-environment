@@ -12,6 +12,7 @@ after_script:
 core:
   stage: test
   script:
-    - cp -v .test/.env.core .env && source .env
-    - sleep 5
+    - cp -v .test/.env.core .env
+    - source .env
+    - sleep 10
     - ./ee setup configure
