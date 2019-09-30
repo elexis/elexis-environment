@@ -7,9 +7,11 @@ before_script:
 
 after_script:
   - docker stop test-mysql-8
+  - rm .env
 
 core:
   stage: test
   script:
-    - cp -v .test/.env.core .env
+    - cp -v .test/.env.core .env && source .env
+    - .test/wait-for $RDBMS_HOST:$RDBMS_PORT -t 20
     - ./ee setup configure
