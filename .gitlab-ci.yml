@@ -3,7 +3,7 @@
 
 before_script:
   - docker pull mysql:8
-  - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v .test/mysql/:/docker-entrypoint-initdb.d/ -d mysql:8
+  - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -d mysql:8
 
 after_script:
   - docker stop test-mysql-8
