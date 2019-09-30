@@ -3,7 +3,7 @@
 
 before_script:
   - docker pull mysql:8
-  - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -d mysql:8
+  - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v ./test/mysql/:/docker-entrypoint-initdb.d/ -d mysql:8
 
 after_script:
   - docker stop test-mysql-8
@@ -11,5 +11,5 @@ after_script:
 core:
   stage: test
   script:
-    - cp .test/.env.core .env
+    - cp -v .test/.env.core .env
     - ./ee setup configure
