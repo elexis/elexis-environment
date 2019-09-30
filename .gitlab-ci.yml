@@ -7,13 +7,19 @@ before_script:
 
 after_script:
   - docker stop test-mysql-8
+  - ./ee setup clean
   - rm .env
 
-core:
+#
+# EENV Core: ldap, keycloak, web, elexis-server
+#
+core: 
   stage: test
   script:
     - cp -v .test/.env.core .env
     - source .env
-    - ./ee system cmd pull
-    - sleep 10
+    - ./ee system cmd pull -q # while mysql starts up
+    - sleep 5
     - ./ee setup configure
+    - echo "startup elexis-environment" #TODO
+    - ./ee setup runtest

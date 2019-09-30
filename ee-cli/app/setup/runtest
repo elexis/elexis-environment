@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 docker run --rm --network="host" --env-file ${INSTALL_DIR}.env -it ee-util /runtest.sh
-docker rmi ee-util
