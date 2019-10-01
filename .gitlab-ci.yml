@@ -42,7 +42,7 @@ core:
 full:
   stage: testFull
   script:
-    - cp ./test/env.full .env
+    - cp ./test/.env.full .env
     - source .env
     - ./ee system cmd pull -q # while mysql starts up
     - sleep 15 # wait for mysql - lame solution
