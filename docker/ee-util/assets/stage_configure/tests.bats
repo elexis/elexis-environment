@@ -15,6 +15,9 @@
 
 # Is the Bookstack DB accessible
 @test "Check RDBMS_BOOKSTACK_DATABASE accessible" {
+    if [[ $ENABLE_BOOKSTACK == false ]]; then
+        skip
+    fi
     # Timeout??
     ./usql ${RDBMS_TYPE}://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "SELECT 1=1"
 }
