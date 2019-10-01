@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -x
-rm ${INSTALL_DIR}/assets/ldap/bootstrap.ldif
-rm ${INSTALL_DIR}/assets/keycloak/realm.json
+rm ${INSTALL_DIR}/docker/compose/assets/ldap/bootstrap.ldif
+rm ${INSTALL_DIR}/docker/compose/assets/keycloak/realm.json
