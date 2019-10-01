@@ -25,5 +25,5 @@ core:
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure
     - ./ee system cmd up -d
-    - .test/wait_for_http_200_es.sh https://${EE_HOSTNAME}/services/swagger.json
+    - .test/wait_for_http_200.sh https://${EE_HOSTNAME}/services/swagger.json
     - ./ee setup runtest
