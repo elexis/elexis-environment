@@ -1,0 +1,1 @@
+timeout 300 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w ''%{http_code}'' $@)" != "200" ]]; do sleep 5; done' 
