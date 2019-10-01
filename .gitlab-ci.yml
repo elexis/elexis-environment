@@ -11,7 +11,6 @@ after_script:
   - docker volume prune -f
   - docker stop test-mysql-8
   - ./ee setup clean
-  - rm .env
 
 #
 # EENV Core: ldap, keycloak, web, elexis-server
