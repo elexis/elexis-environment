@@ -11,6 +11,7 @@ after_script:
   - docker volume prune -f
   - docker stop test-mysql-8
   - ./ee setup clean
+  - rm .env
 
 stages:
   - testCore
@@ -31,18 +32,14 @@ core:
     - ./ee system cmd up -d
     - .test/wait_for_http_200_es.sh
     - ./ee setup runtest
-    - ./ee system cmd stop
-    - ./ee system cmd rm -f
-    - rm .env
 
 #
 # Elexis-Environment all-modules-enabled
-# - should be able to handle the already initialized volumes
 #
 full:
   stage: testFull
   script:
-    - cp ./test/.env.full .env
+    - cp .test/.env.full .env
     - source .env
     - ./ee system cmd pull -q # while mysql starts up
     - sleep 15 # wait for mysql - lame solution
@@ -51,4 +48,3 @@ full:
     - ./ee system cmd up -d
     - .test/wait_for_http_200_es.sh
     - ./ee setup runtest
-    - rm .env
