@@ -17,8 +17,12 @@ services:
       - 636:636 # ldaps
     depends_on:
       - ldap
+      - keycloak
     command: >
       /bin/sh -c "envsubst < /template/eenv.properties.template > /usr/share/nginx/html/eenv.properties 
+      && echo "" > /etc/nginx/modules.conf 
+      && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
+      && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
       && exec nginx -g 'daemon off;'"
     environment:
       - EE_VERSION=0.2
@@ -26,3 +30,5 @@ services:
       - ORGANISATION_BASE_DN
       - LDAP_READONLY_USER_USERNAME
       - LDAP_READONLY_USER_PASSWORD
+      - ENABLE_BOOKSTACK
+      - ENABLE_ROCKETCHAT
