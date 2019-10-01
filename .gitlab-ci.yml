@@ -6,11 +6,11 @@ before_script:
   - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
 
 after_script:
-  - docker stop test-mysql-8
   - ./ee system cmd stop
-  - ./ee setup clean
   - ./ee system cmd rm -f
   - docker volume prune -f
+  - docker stop test-mysql-8
+  - ./ee setup clean
   - rm .env
 
 #

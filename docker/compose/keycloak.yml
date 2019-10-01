@@ -9,10 +9,11 @@ services:
     expose:
       - 8080
     volumes:
-      - ./assets/keycloak/realm.json:/tmp/realm.json:ro
+      - ./docker/compose/assets/keycloak/realm.json:/tmp/realm.json:ro
     environment:
       - DB_VENDOR=$RDBMS_TYPE
       - DB_ADDR=$RDBMS_HOST
+      - DB_PORT=$RDBMS_PORT
       - DB_DATABASE=$RDBMS_KEYCLOAK_DATABASE
       - DB_USER=$RDBMS_KEYCLOAK_USERNAME
       - DB_PASSWORD=$RDBMS_KEYCLOAK_PASSWORD
