@@ -9,8 +9,8 @@ services:
     volumes:
       - ldapStorage:/var/lib/ldap
       - ldapConfiguration:/etc/ldap/slapd.d
-      - ./docker/compose/assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
-      - ./docker/compose/assets/ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+      - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
+      - ./assets/ldap/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
     expose:
       - 389
     environment:
