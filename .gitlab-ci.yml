@@ -24,6 +24,4 @@ core:
     - ./ee system cmd pull -q # while mysql starts up
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure
-    - ./ee system cmd up -d
-    - .test/wait_for_http_200_es.sh
-    - ./ee setup runtest
+    - echo "Generate certificate.crt"
