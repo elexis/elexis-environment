@@ -2,7 +2,7 @@
 #
 # Configure Rocket.Chat for Elexis Operation
 #
-
+set -x
 RC_BASEURL="https://$EE_HOSTNAME/chat"
 T="[ROCKETCHAT] ($RC_BASEURL) "
 
@@ -12,7 +12,7 @@ STATUS="$?"
 LOOP_COUNT=0
 while [ $STATUS != 0 ] 
 do 
-    echo "Waiting for rocketchat [$STATUS] ($RESPONSE) ..."
+    echo "$T Waiting for rocketchat [$STATUS] ($RESPONSE) ..."
     sleep 15
     RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD") 
     STATUS="$?"
