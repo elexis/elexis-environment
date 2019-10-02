@@ -24,6 +24,7 @@ services:
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
       && exec nginx -g 'daemon off;'"
+    restart: "on-failure" # handle host not found in upstream if not yet ready
     environment:
       - EE_VERSION=0.2
       - ORGANISATION_NAME
@@ -31,4 +32,6 @@ services:
       - LDAP_READONLY_USER_USERNAME
       - LDAP_READONLY_USER_PASSWORD
       - ENABLE_BOOKSTACK
-      - ENABLE_ROCKETCHAT
+      - ENABLE_ROCKETCHAT       
+  #2019/10/01 13:45:51 [emerg] 1#1: host not found in upstream "rocketchat" in /etc/nginx/conf/rocketchat.conf:2
+  # nginx: [emerg] host not found in upstream "rocketchat" in /etc/nginx/conf/rocketchat.conf:2

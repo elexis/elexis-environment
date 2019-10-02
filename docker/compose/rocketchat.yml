@@ -3,7 +3,7 @@ version: '3'
 services:
 
   rocketchat:
-    image: rocket.chat:2.0.0
+    image: rocket.chat:2.1.0
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     restart: unless-stopped
     volumes:
@@ -56,7 +56,7 @@ services:
       timeout: 5s
       retries: 3
     depends_on:
-      - mongo-init-replica
+      - mongo
     expose:
       - 3000
 
