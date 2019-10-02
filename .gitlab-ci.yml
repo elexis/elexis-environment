@@ -6,6 +6,7 @@ before_script:
   - docker pull medevit/eenv-config
 
 after_script:
+  - ./ee system cmd logs elexis-server-config
   - ./ee system cmd stop
   - ./ee system cmd rm -f
   - docker volume prune -f
