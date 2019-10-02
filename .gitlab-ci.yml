@@ -6,7 +6,7 @@ before_script:
   - docker pull medevit/eenv-config
 
 after_script:
-  - ./ee system cmd logs elexis-server-config
+  - ./ee system cmd logs -t elexis-server-config
   - ./ee system cmd stop
   - ./ee system cmd rm -f
   - docker volume prune -f
@@ -35,6 +35,7 @@ core:
     - ./ee system cmd up -d --build # start the elexis-environment
     - .test/wait_for_http_200_es.sh # wait for elexis-server to become ready
     - ./ee system cmd ps # print the status of the elexis-environment containers
+    - docker wait elexis-environment_elexis-server-config_1 # wait for the elexis-server-config to exit
     - ./ee setup runtest # run the core runtest
 
 #
@@ -54,4 +55,5 @@ full:
     - ./ee system cmd up -d --build
     - .test/wait_for_http_200_rocketchat.sh
     - ./ee system cmd ps
+    - docker wait elexis-environment_elexis-server-config_1
     - ./ee setup runtest
