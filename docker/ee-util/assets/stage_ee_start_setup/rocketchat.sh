@@ -3,9 +3,10 @@
 # Configure Rocket.Chat for Elexis Operation
 #
 
-
 RC_BASEURL="http://rocketchat:3000/chat"
 T="[ROCKETCHAT] ($RC_BASEURL) "
+
+ping -c 1 rocketchat
 
 # log-in
 echo "$T Log-in as RocketChatAdmin..."
