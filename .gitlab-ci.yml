@@ -32,7 +32,7 @@ core:
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
     - openssl req -x509 -newkey rsa:2048 -keyout ./site/certificate.key -out ./site/certificate.crt -days 365 -nodes -subj "/CN=localhost"
-    - ./ee system cmd up -d # start the elexis-environment
+    - ./ee system cmd up -d --build # start the elexis-environment
     - .test/wait_for_http_200_es.sh # wait for elexis-server to become ready
     - ./ee system cmd ps # print the status of the elexis-environment containers
     - ./ee setup runtest # run the core runtest
@@ -51,7 +51,7 @@ full:
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
     - openssl req -x509 -newkey rsa:2048 -keyout ./site/certificate.key -out ./site/certificate.crt -days 365 -nodes -subj "/CN=localhost"
-    - ./ee system cmd up -d
+    - ./ee system cmd up -d --build
     - .test/wait_for_http_200_rocketchat.sh
     - ./ee system cmd ps
     - ./ee setup runtest
