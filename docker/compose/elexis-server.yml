@@ -32,6 +32,11 @@ services:
       - 8480
     ports:
       - "7234:7234"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8380/services/system/uptime"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 
 volumes:
   elexisServerHome:

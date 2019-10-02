@@ -3,6 +3,7 @@
 
 before_script:
   - docker pull mysql:8
+  - docker pull medevit/eenv-config
 
 after_script:
   - ./ee system cmd stop
