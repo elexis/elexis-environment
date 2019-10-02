@@ -16,7 +16,7 @@ services:
   elexis-server:
     image: medevit/elexis-server:latest
     volumes:
-      - ../../volumes/elexis-server/:/elexis
+      - elexisServerHome:/elexis
     environment:
       - DB_TYPE=$RDBMS_TYPE
       - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
@@ -30,3 +30,6 @@ services:
       - 8480
     ports:
       - "7234:7234"
+
+volumes:
+  elexisServerHome:
