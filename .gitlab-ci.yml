@@ -24,8 +24,8 @@ core:
   script:
     - cp .test/.env.core .env # copy test environment configuration
     - source .env 
-    - ./ee setup mysql_init_code > .test/mysql/init.sql # prepare mysql init code for mysql startup
-    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
+    - ./ee setup mysql_init_code > .test/init.sql # prepare mysql init code for mysql startup
+    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/init.sql:/docker-entrypoint-initdb.d/init.sql:ro -p 33306:3306 -d mysql:8
     - ./ee system cmd pull -q # while mysql starts up pull required images
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
@@ -43,8 +43,8 @@ full:
   script:
     - cp .test/.env.full .env
     - source .env
-    - ./ee setup mysql_init_code > .test/mysql/init.sql
-    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
+    - ./ee setup mysql_init_code > .test/init.sql
+    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/init.sql:/docker-entrypoint-initdb.d/init.sql:ro -p 33306:3306 -d mysql:8
     - ./ee system cmd pull -q # while mysql starts up
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
