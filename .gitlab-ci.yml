@@ -3,7 +3,6 @@
 
 before_script:
   - docker pull mysql:8
-  - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
 
 after_script:
   - ./ee system cmd stop
@@ -23,16 +22,18 @@ stages:
 core: 
   stage: testCore
   script:
-    - cp .test/.env.core .env
-    - source .env
-    - ./ee system cmd pull -q # while mysql starts up
+    - cp .test/.env.core .env # copy test environment configuration
+    - source .env 
+    - ./ee setup mysql_init_code > .test/mysql/init.sql # prepare mysql init code for mysql startup
+    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
+    - ./ee system cmd pull -q # while mysql starts up pull required images
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
     - openssl req -x509 -newkey rsa:2048 -keyout ./docker/compose/assets/web/ssl/certificate.key -out ./docker/compose/assets/web/ssl/certificate.crt -days 365 -nodes -subj "/CN=localhost"
-    - ./ee system cmd up -d
-    - .test/wait_for_http_200_es.sh
-    - ./ee system cmd ps
-    - ./ee setup runtest
+    - ./ee system cmd up -d # start the elexis-environment
+    - .test/wait_for_http_200_es.sh # wait for elexis-server to become ready
+    - ./ee system cmd ps # print the status of the elexis-environment containers
+    - ./ee setup runtest # run the core runtest
 
 #
 # Elexis-Environment all-modules-enabled
@@ -42,6 +43,8 @@ full:
   script:
     - cp .test/.env.full .env
     - source .env
+    - ./ee setup mysql_init_code > .test/mysql/init.sql
+    - docker run --name test-mysql-8 --rm -e MYSQL_ROOT_PASSWORD=test-pw -v $PWD/.test/mysql/:/docker-entrypoint-initdb.d/ -p 33306:3306 -d mysql:8
     - ./ee system cmd pull -q # while mysql starts up
     - sleep 15 # wait for mysql - lame solution
     - ./ee setup configure # prepare setup and generate self-signed-cert next
