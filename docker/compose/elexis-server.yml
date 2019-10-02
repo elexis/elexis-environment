@@ -12,6 +12,8 @@ services:
       - RDBMS_ELEXIS_DATABASE
       - RDBMS_ELEXIS_PASSWORD
       - RDBMS_HOST
+      - ENABLE_ROCKETCHAT
+      - ENABLE_BOOKSTACK
 
   elexis-server:
     image: medevit/elexis-server:latest

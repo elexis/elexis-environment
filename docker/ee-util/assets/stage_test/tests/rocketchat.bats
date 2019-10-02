@@ -11,6 +11,10 @@ export T="[ROCKETCHAT] "
     [ "$result" == "true" ]
 }
 
+@test "$T Integration for elexis-server exists" {
+    java -jar /RocketchatTester.jar -t -l RocketChatAdmin -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/chat -x es_integration_exist
+}
+
 # test login as admin
 @test "$T Login as demouser" {
     skip
