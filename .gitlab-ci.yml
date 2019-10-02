@@ -31,6 +31,7 @@ core:
     - openssl req -x509 -newkey rsa:2048 -keyout ./docker/compose/assets/web/ssl/certificate.key -out ./docker/compose/assets/web/ssl/certificate.crt -days 365 -nodes -subj "/CN=localhost"
     - ./ee system cmd up -d
     - .test/wait_for_http_200_es.sh
+    - ./ee system cmd ps
     - ./ee setup runtest
 
 #
@@ -47,4 +48,5 @@ full:
     - openssl req -x509 -newkey rsa:2048 -keyout ./docker/compose/assets/web/ssl/certificate.key -out ./docker/compose/assets/web/ssl/certificate.crt -days 365 -nodes -subj "/CN=localhost"
     - ./ee system cmd up -d
     - .test/wait_for_http_200_rocketchat.sh
+    - ./ee system cmd ps
     - ./ee setup runtest
