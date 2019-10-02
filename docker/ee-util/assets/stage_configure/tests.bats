@@ -41,14 +41,14 @@
 }
 
 # Do the ssl keys exist?
-@test "HTTPS key assets/web/ssl/certificate.key available" {
-    if [ ! -f "/assets/web/ssl/certificate.key" ]; then
+@test "HTTPS key site/certificate.key available" {
+    if [ ! -f "/site/certificate.key" ]; then
         skip "WARNING not available"
     fi
 }
 
-@test "HTTPS cert assets/web/ssl/certificate.crt available" {
-    if [ ! -f "/assets/web/ssl/certificate.crt" ]; then
+@test "HTTPS cert site/certificate.crt available" {
+    if [ ! -f "/site/certificate.crt" ]; then
         skip "WARNING not available"
     fi
 }

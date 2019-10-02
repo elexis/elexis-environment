@@ -1,8 +1,2 @@
-docker/compose/assets/web/ssl/myserver.*
-docker/compose/assets/web/ssl/dhparam.pem
-docker/compose/assets/ldap/bootstrap.ldif
-docker/compose/assets/keycloak/realm.json
-**/certificate.crt
-**/certificate.key
 .env
 .DS_Store

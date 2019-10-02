@@ -17,18 +17,18 @@ fi
 #
 echo "=== Preparing configuration files"
 
-if [ ! -f "/assets/web/ssl/dhparam.pem" ]; 
+if [ ! -f "/site/dhparam.pem" ]; 
 then
     echo "* generating dhparam.pem ... please wait ..."
-    openssl dhparam -dsaparam -out /assets/web/ssl/dhparam.pem 4096
+    openssl dhparam -dsaparam -out /site/dhparam.pem 4096
 else
     echo "  skipping dhparam.pem generation"
 fi
 
-if [ ! -f "/assets/web/ssl/myserver.cnf" ]; 
+if [ ! -f "/site/myserver.cnf" ]; 
 then
 echo "* writing ssl configuration file ..."
-cat <<EOF >/assets/web/ssl/myserver.cnf
+cat <<EOF >/site/myserver.cnf
 # see https://www.switch.ch/pki/manage/request/csr-openssl/
 FQDN=${EE_HOSTNAME}
 ORGNAME=${ORGANISATION_NAME}
@@ -51,30 +51,30 @@ else
   echo "  skipping myserver.cnf generation"
 fi
 
-if [ ! -f "/assets/web/ssl/myserver.csr" ]; 
+if [ ! -f "/site/myserver.csr" ]; 
 then
     echo "* generating myserver.key/csr"
-    openssl req -new -config /assets/web/ssl/myserver.cnf -keyout /assets/web/ssl/myserver.key -out /assets/web/ssl/myserver.csr
+    openssl req -new -config /site/myserver.cnf -keyout /site/myserver.key -out /site/myserver.csr
 else
     echo "  skipping myserver.key/csr generation"
 fi
 
-if [ ! -f "/assets/ldap/bootstrap.ldif" ]; 
+if [ ! -f "/site/bootstrap.ldif" ]; 
 then
     echo "* generating bootstrap.ldif"
     SALT="$(openssl rand 3)"
     SHA1="$(printf "%s%s" "$ADMIN_PASSWORD" "$SALT" | openssl dgst -binary -sha1)"
     SHA1_ADMIN_PASS="$(printf "%s%s" "$SHA1" "$SALT" | base64)"
     export SHA1_ADMIN_PASS
-    cat /assets/ldap/bootstrap.ldif.template | envsubst > /assets/ldap/bootstrap.ldif
+    cat /assets/ldap/bootstrap.ldif.template | envsubst > /site/bootstrap.ldif
 else
     echo "  skipping ldap/bootstrap.ldif generation"
 fi
 
-if [ ! -f "/assets/keycloak/realm.json" ]; 
+if [ ! -f "/site/keycloak-realm.json" ]; 
 then
-    echo "* generating keycloak/realm.json"
-    cat /assets/keycloak/realm.template.json | envsubst > /assets/keycloak/realm.json
+    echo "* generating keycloak-realm.json"
+    cat /assets/keycloak/realm.template.json | envsubst > /site/keycloak-realm.json
 else
-    echo "  skipping keycloak/realm.json generation"
+    echo "  skipping keycloak-realm.json generation"
 fi

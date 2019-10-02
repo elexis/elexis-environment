@@ -42,9 +42,9 @@ the certificate files to `assets/web/ssl`.
 
 ## Initial start
 
-`docker-compose up -d` will instantiate all containers. `docker-compose ps` shows the current state of all containers.
+`./ee system cmd up -d` will instantiate all containers. `./ee system cmd ps` shows the current state of all containers.
 
-Please see [notes](doc/notes.md) for FAQs and remarks.
+Please see [notes](docs/notes.md) for FAQs and remarks.
 
 # Operation
 
