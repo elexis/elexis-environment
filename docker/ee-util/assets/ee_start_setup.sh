@@ -2,7 +2,7 @@
 
 cd /stage_ee_start_setup
 ./elexis_db.sh; (( exit_status = exit_status || $? ))
-if [ -$ENABLE_ROCKETCHAT ]; then
+if [ $ENABLE_ROCKETCHAT ]; then
     ./rocketchat.sh; (( exit_status = exit_status || $? ))
 fi
 
