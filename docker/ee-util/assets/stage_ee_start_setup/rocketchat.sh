@@ -13,11 +13,11 @@ LOOP_COUNT=0
 while [ $STATUS != 0 ] 
 do 
     echo "Waiting for rocketchat [$STATUS] ($RESPONSE) ..."
-    sleep 5
+    sleep 15
     RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD") 
     STATUS="$?"
     (( LOOP_COUNT += 1 ))
-    if [ $LOOP_COUNT -eq 10 ]; then exit -1; fi
+    if [ $LOOP_COUNT -eq 20 ]; then exit -1; fi
 done
 
 AUTH_TOKEN=$(echo $RESPONSE | jq -r .data.authToken)
