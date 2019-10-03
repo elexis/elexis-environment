@@ -32,6 +32,4 @@ services:
       - LDAP_READONLY_USER_USERNAME
       - LDAP_READONLY_USER_PASSWORD
       - ENABLE_BOOKSTACK
-      - ENABLE_ROCKETCHAT       
-  #2019/10/01 13:45:51 [emerg] 1#1: host not found in upstream "rocketchat" in /etc/nginx/conf/rocketchat.conf:2
-  # nginx: [emerg] host not found in upstream "rocketchat" in /etc/nginx/conf/rocketchat.conf:2
+      - ENABLE_ROCKETCHAT

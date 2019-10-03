@@ -2,7 +2,7 @@
 #
 # Configure Rocket.Chat for Elexis Operation
 #
-set -x
+
 RC_BASEURL="http://rocketchat:3000/chat"
 T="[ROCKETCHAT] ($RC_BASEURL) "
 

@@ -42,7 +42,7 @@ the certificate files to `assets/web/ssl`.
 
 ## Initial start
 
-`./ee system cmd up -d` will instantiate all containers. `./ee system cmd ps` shows the current state of all containers.
+`./ee system cmd up -d --build` will instantiate all containers. `./ee system cmd ps` shows the current state of all containers.
 
 Please see [notes](docs/notes.md) for FAQs and remarks.
 

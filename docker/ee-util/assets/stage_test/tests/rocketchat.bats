@@ -3,7 +3,6 @@
 #
 # Test RocketChat container
 #
-
 export T="[ROCKETCHAT] "
 
 @test "$T Read setting with rocketchat-local-user RocketChatAdmin -> LDAP_Enable" {
