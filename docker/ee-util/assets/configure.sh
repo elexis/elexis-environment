@@ -1,6 +1,11 @@
 #!/bin/bash
 
 #
+# ASSERT ENVIRONMENT-VARIABLES
+#
+mv /installdir/.env /installdir/.env.bkup
+java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env
+#
 # TEST PRECONDITIONS
 #
 echo "=== Testing environment variables"
