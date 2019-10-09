@@ -11,7 +11,7 @@ export T="[ELEXIS-ENV] "
     [ "$output" == "200" ]
 }
 
-@test "Entry Config#EE_HOSTNAME is $EE_HOSTNAME" {
+@test "$T RDBMS_ELEXIS_DATABASE entry Config#EE_HOSTNAME == $EE_HOSTNAME" {
     MYSQL_STRING="SELECT WERT FROM CONFIG WHERE PARAM = 'EE_HOSTNAME'"
     run /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
     echo "output = ${output}"
