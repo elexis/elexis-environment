@@ -15,5 +15,5 @@ export T="[ELEXIS-ENV] "
     MYSQL_STRING="SELECT WERT FROM CONFIG WHERE PARAM = 'EE_HOSTNAME'"
     run /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
     echo "output = ${output}"
-    [ "$output" == *"$EE_HOSTNAME"* ]
+    [[ "$output" == *"$EE_HOSTNAME"* ]]
 }
