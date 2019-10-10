@@ -1031,6 +1031,32 @@
               }
             },
             {
+              "id": "bfff4590-6a61-4dca-bf23-f797c5c4b7ce",
+              "name": "elexisContactId",
+              "providerId": "user-attribute-ldap-mapper",
+              "subComponents": {},
+              "config": {
+                "ldap.attribute": [
+                  "elexisContactId"
+                ],
+                "is.mandatory.in.ldap": [
+                  "false"
+                ],
+                "is.binary.attribute": [
+                  "false"
+                ],
+                "always.read.value.from.ldap": [
+                  "false"
+                ],
+                "read.only": [
+                  "false"
+                ],
+                "user.model.attribute": [
+                  "elexisContactId"
+                ]
+              }
+            },
+            {
               "id": "6b55af28-1bce-4369-8854-4daeb3bf74b3",
               "name": "first name",
               "providerId": "user-attribute-ldap-mapper",
