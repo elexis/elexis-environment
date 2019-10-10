@@ -13,6 +13,14 @@
     ./usql ${RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "SELECT 1=1"
 }
 
+# Does an Elexis database exist here? New not yet supported.
+@test "Check RDBMS_ELEXIS_DATABASE is populated (Config#ElexisVersion)" {
+     MYSQL_STRING="SELECT WERT FROM CONFIG WHERE PARAM = 'ElexisVersion'"
+    run /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
+    echo "output = ${output}"
+    [[ "$output" == *"3."* ]]
+}
+
 # Is the Keycloak DB accessible
 @test "Check RDBMS_KEYCLOAK_DATABASE accessible" {
     # Timeout??
