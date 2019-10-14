@@ -1,4 +1,4 @@
-# Elexis-Environment v0.2 - WORK IN PROGRESS
+# Elexis-Environment v0.3 - WORK IN PROGRESS
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
@@ -7,7 +7,7 @@ An integrated Elexis environment providing elexis-server, ldap, single-sign-on, 
 * Need to clean everything from v0.1 as the ldap structure has changed.
 * Adapt .env file
 
-# Caveat v0.2
+# Caveat
 
 * Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
 
@@ -19,8 +19,6 @@ An integrated Elexis environment providing elexis-server, ldap, single-sign-on, 
 
 * A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
 a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
-
-* A file-system storage space
 
 # Installation
 

@@ -4,7 +4,14 @@
 # ASSERT ENVIRONMENT-VARIABLES
 #
 mv /installdir/.env /installdir/.env.bkup
-java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env
+java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env -i EE_VERSION
+
+#
+# REPLACING UUID TEMPLATE VARIABLES
+#
+sed -i -e "s/=missing-uuid/=$(uuidgen)/g" /installdir/.env
+
+
 #
 # TEST PRECONDITIONS
 #

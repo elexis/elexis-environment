@@ -1,26 +1,5 @@
 #!/usr/bin/env bash
-uuidgen > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "uuidgen command missing"
-    echo "debian: apt install uuid-runtime"
-    exit -1
-fi
-
-dig > /dev/null 2>&1
-if [ $? -ne 0 ]; then
-    echo "dig command missing"
-    echo "debian: apt install dnsutils"
-    exit -1
-fi
-
 touch ${INSTALL_DIR}.env
-
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
 docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh
-
-#
-# REPLACING INTERNAL VARIABLES
-#
-# generate rocketchat oauth client secret
-sed -i -e "s/X_EE_RC_OAUTH_CLIENT_SECRET=missing/X_EE_RC_OAUTH_CLIENT_SECRET=$(uuidgen)/g" ${INSTALL_DIR}.env
