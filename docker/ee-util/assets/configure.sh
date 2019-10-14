@@ -3,6 +3,8 @@
 #
 # ASSERT ENVIRONMENT-VARIABLES
 #
+NOW=$(date +%s)
+cp /installdir/.env /installdir/.env.bkup.$NOW
 mv /installdir/.env /installdir/.env.bkup
 java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env -i EE_VERSION
 
