@@ -1,8 +1,19 @@
-# Elexis-Environment v0.3 - WORK IN PROGRESS
+# Elexis-Environment v0.3
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
-# Update v0.1 to v0.2
+# Update an installation
+
+In order to update an existing installation, perform the following steps: 
+* `git pull` to fetch the current elexis-environment base
+* `docker pull medevit/eenv-config` to update the ee-configuration image
+* `./ee setup configure` to check the configuration, do not continue if any tests do fail
+* `./ee system cmd stop` to stop the current running EE
+* `./ee system cmd rm -f`to delete the existing containers (NOT the volumes, they store the actual data)
+* `./ee system cmd pull` to fetch the up-to-date versions of the images
+* `./ee system cmd up -d` to start new instances (containers) of the images
+
+## Update v0.1 to v0.2
 
 * Need to clean everything from v0.1 as the ldap structure has changed.
 * Adapt .env file
