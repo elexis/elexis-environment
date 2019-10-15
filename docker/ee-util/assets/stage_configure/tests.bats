@@ -41,9 +41,8 @@
     [ "$ADMIN_PASSWORD" != "admin" ]
 }
 
-# Is EE_HOSTNAME resolvable
-@test "Is $EE_HOSTNAME resolvable" {
-    skip "DNS does not allow for internal IP to be registered - rethink this test"
+# Is EE_HOSTNAME resolvable via DNS
+@test "EE_HOSTNAME=$EE_HOSTNAME is resolvable via DNS" {
     result="$(dig $EE_HOSTNAME +short)"
     [ ! -z "$result" ]
 }
