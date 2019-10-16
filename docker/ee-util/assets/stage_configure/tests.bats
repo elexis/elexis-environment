@@ -41,10 +41,10 @@
     [ "$ADMIN_PASSWORD" != "admin" ]
 }
 
-# Is EE_HOSTNAME resolvable via DNS
-@test "EE_HOSTNAME=$EE_HOSTNAME is resolvable via DNS" {
-    result="$(dig $EE_HOSTNAME +short)"
-    [ ! -z "$result" ]
+# Is EE_HOSTNAME resolvable 
+@test "EE_HOSTNAME=$EE_HOSTNAME is resolvable " {
+    run getent ahost $EE_HOSTNAME
+    [ "$status" -eq 0 ]
 }
 
 # Do the ssl keys exist?
