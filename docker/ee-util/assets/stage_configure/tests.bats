@@ -43,7 +43,7 @@
 
 # Is EE_HOSTNAME resolvable 
 @test "EE_HOSTNAME=$EE_HOSTNAME is resolvable " {
-    run getent ahost $EE_HOSTNAME
+    run getent ahosts $EE_HOSTNAME
     [ "$status" -eq 0 ]
 }
 
