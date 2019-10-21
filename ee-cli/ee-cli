@@ -9,6 +9,15 @@ CLI_ENTRYPOINT=`basename $0`
 export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
 export INSTALL_DIR=${ROOT_DIR}/../
 
+ee-util () {
+    tput setaf 8
+    docker pull -q medevit/eenv-config
+    docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
+    tput sgr0
+    docker run --rm --network="host" --env-file ${INSTALL_DIR}.env ee-util $@
+}
+export -f ee-util
+
 # Locate the correct command to execute by looking through the app directory
 # for folders and files which match the arguments provided on the command line.
 CMD_FILE="$ROOT_DIR/app/"

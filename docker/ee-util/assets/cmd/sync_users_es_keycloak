@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Synchronize users from Elexis-Server to Keycloak
+
+SQL_STRING="SELECT U.ID,U.KONTAKT_ID,K.BEZEICHNUNG1,K.BEZEICHNUNG2,K.BEZEICHNUNG3,K.EMAIL from USER_ AS U JOIN KONTAKT AS K WHERE U.KONTAKT_ID=K.ID"
+/usql --set SHOW_HOST_INFORMATION=false -C mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$SQL_STRING" -o ./users.csv
+if [[ $? -ne 0 ]]
+then
+  echo Error exporting users. Exiting.
+  exit 1 
+fi
+
+sed -i '/^$/d' ./users.csv
+cat ./users.csv
+
+java -jar /KeycloakUtil.jar -l KeycloakAdmin -t -v -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/keycloak/auth -c syncUsersFromElexisCsv -f ./users.csv
