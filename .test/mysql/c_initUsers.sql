@@ -1,3 +1,5 @@
+USE ee_elexis;
+
 CREATE TABLE USER_ (
   ID VARCHAR(25) NOT NULL,				# the username is the id
   DELETED CHAR(1) DEFAULT '0',
