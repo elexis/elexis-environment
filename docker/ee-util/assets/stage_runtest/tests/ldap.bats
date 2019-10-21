@@ -23,13 +23,13 @@ export LDAPTLS_REQCERT=never
 }
 
 @test "$T Bind as $PEOPLE_ADMIN " {
-    run ldapwhoami -l 5 -H ldaps://$EE_HOSTNAME -D $PEOPLE_ADMIN -w $ADMIN_PASSWORD -x
+    run ldapwhoami -H ldaps://$EE_HOSTNAME -D $PEOPLE_ADMIN -w $ADMIN_PASSWORD -x
      echo "output = ${output}"
     [ "$output" = "dn:$PEOPLE_ADMIN" ]
 }
 
 @test "$T Bind as $PEOPLE_DEMOUSER " {
-    run ldapwhoami -l 5 -H ldaps://$EE_HOSTNAME -D $PEOPLE_DEMOUSER -w demouser -x
+    run ldapwhoami -H ldaps://$EE_HOSTNAME -D $PEOPLE_DEMOUSER -w demouser -x
      echo "output = ${output}"
     [ "$output" = "dn:$PEOPLE_DEMOUSER" ]
 }
