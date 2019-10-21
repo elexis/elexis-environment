@@ -37,6 +37,7 @@ core:
     - ./ee system cmd ps # print the status of the elexis-environment containers
     - docker wait elexis-environment_elexis-server-config_1 # wait for the elexis-server-config to exit
     - ./ee setup runtest # run the core runtest
+    - ./ee setup sync_users_es_keycloak # sync users from ES to keycloak
 
 #
 # Elexis-Environment all-modules-enabled
