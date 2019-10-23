@@ -3,12 +3,14 @@ version: '3'
 services:
 
   ldap:
-    image: osixia/openldap:1.2.5
+    image: osixia/openldap:1.3.0
     command:
       --copy-service --loglevel debug
     volumes:
       - ldapStorage:/var/lib/ldap
       - ldapConfiguration:/etc/ldap/slapd.d
+      - ./assets/ldap/01-pp.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/01-pp.ldif
+      - ./assets/ldap/02-ppolicy.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/02-ppolicy.ldif
       - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
       - ../../site/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
     expose:

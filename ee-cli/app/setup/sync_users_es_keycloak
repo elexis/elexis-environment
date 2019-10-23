@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ee-util /cmd.sh sync_users_es_keycloak
+ee_util /cmd.sh sync_users_es_keycloak

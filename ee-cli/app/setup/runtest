@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ee-util /runtest.sh
+ee_util /runtest.sh

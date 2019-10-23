@@ -33,6 +33,7 @@ services:
       - LDAP_Group_Filter_Group_Member_Format=uniqueMember
       - LDAP_Sync_User_Data=true
       - LDAP_Username_Field=uid
+      - LDAP_Merge_Existing_Users=true
       - LDAP_User_Search_Field=uid,mail
       - Accounts_OAuth_Custom-Keycloak=true
       - Accounts_OAuth_Custom-Keycloak-url=https://${EE_HOSTNAME}/keycloak/auth
@@ -49,7 +50,8 @@ services:
       - Accounts_OAuth_Custom-Keycloak-button_label_color="#FFFFFF"
       - Accounts_OAuth_Custom-Keycloak-button_color="#13679A"
       - Accounts_OAuth_Custom-Keycloak-username_field=preferred_username
-      - Accounts_OAuth_Custom-Keycloak-merge_users=false
+      - Accounts_OAuth_Custom-Keycloak-merge_users=true
+      #- NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
       interval: 30s
