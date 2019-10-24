@@ -14,7 +14,7 @@ ee_util () {
     docker pull -q medevit/eenv-config
     docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
     tput sgr0
-    docker run --rm --network="host" --env-file ${INSTALL_DIR}.env ee-util $@
+    docker run --rm -v$PWD:/host_dir --network="host" --env-file ${INSTALL_DIR}.env ee-util $@
 }
 export -f ee_util
 

@@ -22,6 +22,6 @@ export T="[ROCKETCHAT] "
 }
 
 # Test if login works
-@test "$T Test login via ldap and keycloak as demouser" {
-    xvfb-run java -jar /SeleniumTester.jar -h $EE_HOSTNAME -l demouser -p demouser -rr -c /usr/bin/chromedriver 2>/dev/null
+@test "$T Test login via ldap and keycloak as demouser WARN KEYCLOAK NOT TESTED" {
+    xvfb-run java -jar /SeleniumTester.jar -h $EE_HOSTNAME -l demouser -p demouser -rr -c /usr/bin/chromedriver -od /host_dir/ 2>/dev/null
 }
