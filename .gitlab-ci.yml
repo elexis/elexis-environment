@@ -7,7 +7,7 @@ before_script:
   - patch -p0 docker/compose/rocketchat.yml < .test/rocketchat_trust_localhost.patch
 
 after_script:
-  - ./ee system cmd logs -t elexis-server-config
+  - ./ee system cmd logs --no-color > /tmp/ee-docker-logs.txt
   - ./ee system cmd stop
   - ./ee system cmd rm -f
   - docker volume prune -f
@@ -39,6 +39,10 @@ core:
     - docker wait elexis-environment_elexis-server-config_1 # wait for the elexis-server-config to exit
     - ./ee setup runtest # run the core runtest
     - ./ee setup sync_users_es_keycloak # sync users from ES to keycloak
+  artifacts:
+    when: on_failure
+    paths:
+      - /tmp/ee-docker-logs.txt
 
 #
 # Elexis-Environment all-modules-enabled
@@ -59,3 +63,7 @@ full:
     - ./ee system cmd ps
     - docker wait elexis-environment_elexis-server-config_1
     - ./ee setup runtest
+  artifacts:
+    when: on_failure
+    paths:
+      - /tmp/ee-docker-logs.txt
