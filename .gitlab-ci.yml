@@ -7,7 +7,7 @@ before_script:
   - patch -p0 docker/compose/rocketchat.yml < .test/rocketchat_trust_localhost.patch
 
 after_script:
-  - ./ee system cmd logs --no-color > /tmp/ee-docker-logs.txt
+  - ./ee system cmd logs --no-color > ee-docker-logs.txt
   - ./ee system cmd stop
   - ./ee system cmd rm -f
   - docker volume prune -f
@@ -42,7 +42,7 @@ core:
   artifacts:
     when: on_failure
     paths:
-      - /tmp/ee-docker-logs.txt
+      - ee-docker-logs.txt
 
 #
 # Elexis-Environment all-modules-enabled
@@ -66,4 +66,4 @@ full:
   artifacts:
     when: on_failure
     paths:
-      - /tmp/ee-docker-logs.txt
+      - ee-docker-logs.txt
