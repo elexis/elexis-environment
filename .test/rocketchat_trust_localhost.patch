@@ -1,0 +1,4 @@
+54c54
+<       #- NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
+---
+>       - NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
