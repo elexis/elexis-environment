@@ -4,7 +4,7 @@
 before_script:
   - docker pull mysql:8
   - docker pull medevit/eenv-config
-  - patch -p0 docker/compose/rocketchat.yml < ./test/rocketchat_trust_localhost.patch
+  - patch -p0 docker/compose/rocketchat.yml < .test/rocketchat_trust_localhost.patch
 
 after_script:
   - ./ee system cmd logs -t elexis-server-config
