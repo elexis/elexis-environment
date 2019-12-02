@@ -51,7 +51,7 @@ services:
       - Accounts_OAuth_Custom-Keycloak-button_color="#13679A"
       - Accounts_OAuth_Custom-Keycloak-username_field=preferred_username
       - Accounts_OAuth_Custom-Keycloak-merge_users=true
-      - NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
+      #- NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
       interval: 30s
