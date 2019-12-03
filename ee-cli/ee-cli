@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 ROOT_DIR=`dirname "$(perl -e 'use Cwd "abs_path"; print abs_path(shift)' $0)"`
 CLI_ENTRYPOINT=`basename $0`
 
@@ -8,6 +7,7 @@ CLI_ENTRYPOINT=`basename $0`
 
 export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
 export INSTALL_DIR=${ROOT_DIR}/../
+export SITE_DIR=${INSTALL_DIR}site/
 
 ee_util () {
     tput setaf 8

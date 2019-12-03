@@ -5,8 +5,7 @@ services:
   bookstack:
     image: solidnerd/bookstack:0.27.5
     volumes:
-     - bookstackUploads:/var/www/bookstack/public/uploads
-     - bookstackStorageUploads:/var/www/bookstack/storage/uploads
+     - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:
      - 80
     environment:
@@ -26,8 +25,8 @@ services:
       - LDAP_USER_FILTER=(&(uid=$${user}))
       - LDAP_USER_TO_GROUPS=true
       - LDAP_VERSION=3
+      - STORAGE_TYPE=local_secure
       - APP_DEBUG=true
 
 volumes:
-  bookstackUploads:
-  bookstackStorageUploads:
+  bookstack_storage_uploads:

@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+export T="[BACKUP] "
+DATE=$(date +"%d%m%Y_%H%M%S")
+
+
+# 
+# LDAPe
+#
+FILENAME=${SITE_DIR}backup/ldap_slapcat_$DATE.archive
+echo "$T ldap database => $FILENAME"
+${INSTALL_DIR}ee system cmd exec ldap slapcat > ${FILENAME}
+
+#
+# ROCKETCHAT
+# - Database
+# - File Uploads
+#
+if [[ $ENABLE_ROCKETCHAT == true ]]; then
+    FILENAME=${SITE_DIR}backup/rocketchat_mongodump_$DATE.archive
+    echo "$T rocketchat database => $FILENAME"
+    ${INSTALL_DIR}ee system cmd exec mongo 'mongodump --db rocketchat --archive' > ${FILENAME}
+    
+    FILENAME=${SITE_DIR}backup/rocketchat_uploads_tar_$DATE.tar.bz2
+    echo "$T rocketchat uploads => $FILENAME"
+    docker run -v elexis-environment_rocketchat_uploads:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
+fi
+
+#
+# BOOKSTACK UPLOADS
+# Switch to remote fs?
+

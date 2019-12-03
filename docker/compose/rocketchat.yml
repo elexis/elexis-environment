@@ -7,7 +7,7 @@ services:
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     restart: unless-stopped
     volumes:
-      - rocketchatUploads:/app/uploads
+      - rocketchat_uploads:/app/uploads
     environment:
       - ADMIN_USERNAME=RocketChatAdmin # must be different to $ADMIN_USERNAME, else blocks this account
       - ADMIN_PASS=$ADMIN_PASSWORD
@@ -51,6 +51,8 @@ services:
       - Accounts_OAuth_Custom-Keycloak-button_color="#13679A"
       - Accounts_OAuth_Custom-Keycloak-username_field=preferred_username
       - Accounts_OAuth_Custom-Keycloak-merge_users=true
+      - FileUpload_Storage_Type=FileSystem
+      - FileUpload_FileSystemPath=/app/uploads
       #- NODE_TLS_REJECT_UNAUTHORIZED=0 # development only
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/chat/api/info"]
@@ -68,8 +70,7 @@ services:
     image: mongo:3.6
     restart: unless-stopped
     volumes:
-     - mongoData:/data/db
-     - mongoDump:/dump
+     - mongo_data:/data/db
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
 
   # this container's job is just run the command to initialize the replica set.
@@ -81,6 +82,5 @@ services:
       - mongo
 
 volumes:
-  mongoData:
-  mongoDump:
-  rocketchatUploads:
+  mongo_data:
+  rocketchat_uploads:

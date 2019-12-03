@@ -18,9 +18,6 @@ In order to update an existing installation, perform the following steps:
 * Need to clean everything from v0.1 as the ldap structure has changed.
 * Adapt .env file
 
-# Caveat
-
-* Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
 
 # Requirements
 
@@ -54,6 +51,10 @@ the certificate files to `assets/web/ssl`.
 `./ee system cmd up -d --build` will instantiate all containers. `./ee system cmd ps` shows the current state of all containers.
 
 Please see [notes](docs/notes.md) for FAQs and remarks.
+
+### Caveat
+
+* Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
 
 # Operation
 

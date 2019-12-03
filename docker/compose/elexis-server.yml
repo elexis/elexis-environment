@@ -19,7 +19,7 @@ services:
   elexis-server:
     image: medevit/elexis-server:latest
     volumes:
-      - elexisServerHome:/elexis
+      - elexis-server_home:/elexis
     environment:
       - DB_TYPE=$RDBMS_TYPE
       - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
@@ -40,4 +40,4 @@ services:
       retries: 3
 
 volumes:
-  elexisServerHome:
+  elexis-server_home:

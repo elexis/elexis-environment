@@ -7,12 +7,12 @@ services:
     command:
       --copy-service --loglevel debug
     volumes:
-      - ldapStorage:/var/lib/ldap
-      - ldapConfiguration:/etc/ldap/slapd.d
-      - ./assets/ldap/01-pp.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/01-pp.ldif
-      - ./assets/ldap/02-ppolicy.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/02-ppolicy.ldif
-      - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema
-      - ../../site/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
+      - ldap_storage:/var/lib/ldap
+      - ldap_configuration:/etc/ldap/slapd.d
+      - ./assets/ldap/01-pp.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/01-pp.ldif:ro
+      - ./assets/ldap/02-ppolicy.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/02-ppolicy.ldif:ro
+      - ./assets/ldap/elexis.schema:/container/service/slapd/assets/config/bootstrap/schema/elexis.schema:ro
+      - ../../site/bootstrap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif:ro
     expose:
       - 389
     environment:
@@ -27,5 +27,5 @@ services:
       - LDAP_READONLY_USER=true
 
 volumes:
-  ldapStorage:
-  ldapConfiguration:
+  ldap_storage:
+  ldap_configuration:

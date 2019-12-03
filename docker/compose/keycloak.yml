@@ -10,7 +10,7 @@ services:
       - 8080
     volumes:
       - ../../site/keycloak-realm.json:/tmp/realm.json:ro
-      - ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
+      #- ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
     environment:
       - DB_VENDOR=$RDBMS_TYPE
       - DB_ADDR=$RDBMS_HOST

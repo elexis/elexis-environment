@@ -23,7 +23,11 @@ done
 AUTH_TOKEN=$(echo $RESPONSE | jq -r .data.authToken)
 USER_ID=$(echo $RESPONSE | jq -r .data.me._id)
 
-echo "$T Assert channel #elexis-server..."
+echo -e "\n$T Assert asset.background image"
+# https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.png" $RC_BASEURL/api/v1/assets.setAsset 
+
+echo -e "\n$T Assert channel #elexis-server..."
 curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/channels.create -d '{ "name": "elexis-server", "description": "Elexis-Server status messages" }'
 
 echo -e "\n$T Assert bot user for elexis-user..."
