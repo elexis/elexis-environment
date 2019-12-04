@@ -1,0 +1,147 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+}
+
+.row {
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+}
+
+.navbar.navbar-light.navbar-expand-md.navigation-clean {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+}
+
+#Praxishandbuch {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#Praxishandbuch_Titel {
+  text-align: center;
+}
+
+#Praxishandbuch_Box {
+  padding-top: 10%;
+  padding-bottom: 10%;
+  border-radius: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  /*margin-left: auto;*/
+  width: 50%;
+  display: block;
+  box-shadow: 0px 0px 10px 9px rgba(229,229,229,0.5);
+  transition: 0.3s;
+}
+
+#Chat_Box {
+  display: block;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 9px rgba(229,229,229,0.5);
+  transition: 0.3s;
+}
+
+#Chat {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 50%;*/
+}
+
+#column_box {
+  padding-right: 3%;
+  /*padding-left: 0%;*/
+}
+
+#Administration {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  /*width: 50%;*/
+}
+
+#Administration_Box {
+  display: block;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10%;
+  padding-bottom: 10%;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 9px rgba(229,229,229,0.5);
+}
+
+#column_box_rightpadding {
+  /*padding-right: 3%;*/
+  padding: 1%;
+  /*padding-bottom: 3%;*/
+}
+
+#column_box_leftpadding {
+  /*padding-left: 3%;*/
+  padding: 1%;
+  /*padding-bottom: 3%;*/
+}
+
+#column_box_paddingrnl {
+  /*padding-bottom: 3%;*/
+  padding: 1%;
+}
+
+#Praxishandbuch_Titel {
+}
+
+#Chat_Titel {
+  font-size: 23px;
+  font-family: 'Encode Sans', sans serif;
+  color: #929292;
+  margin-top: 3%;
+  text-align: center;
+  padding-top: -5%;
+}
+
+#Praxishandbuch_Box:hover {
+  box-shadow: 0px 0px 20px 13px #e3e3e3;
+  transition: 0.3s;
+}
+
+#Chat_Box:hover {
+  box-shadow: 0px 0px 20px 13px #e3e3e3;
+  transition: 0.3s;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+img {
+}
+
+#topbar {
+  box-shadow: 0px 3px 10px #d9d9d9;
+}
+

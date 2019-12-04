@@ -8,8 +8,7 @@ services:
     build: ../keycloak
     expose:
       - 8080
-    volumes:
-      - ../../site/keycloak-realm.json:/tmp/realm.json:ro
+    #volumes:
       #- ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
     environment:
       - DB_VENDOR=$RDBMS_TYPE
@@ -21,6 +20,5 @@ services:
       - KEYCLOAK_HOSTNAME=$EE_HOSTNAME
       - KEYCLOAK_USER=KeycloakAdmin # Fallback local admin
       - KEYCLOAK_PASSWORD=$ADMIN_PASSWORD
-      - KEYCLOAK_IMPORT=/tmp/realm.json
       - PROXY_ADDRESS_FORWARDING=true
-      - KEYCLOAK_DEFAULT_THEME=elexis-environment
+      #- KEYCLOAK_DEFAULT_THEME=elexis-environment

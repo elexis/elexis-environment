@@ -84,11 +84,3 @@ then
 else
     echo "  skipping ldap/bootstrap.ldif generation"
 fi
-
-if [ ! -f "/site/keycloak-realm.json" ]; 
-then
-    echo "* generating keycloak-realm.json"
-    cat /assets/keycloak/realm.template.json | envsubst > /site/keycloak-realm.json
-else
-    echo "  skipping keycloak-realm.json generation"
-fi

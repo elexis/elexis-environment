@@ -1,0 +1,82 @@
+{
+    "config": {
+        "pagination": [
+            "true"
+        ],
+        "fullSyncPeriod": [
+            "604800"
+        ],
+        "usersDn": [
+            "ou=people,dc=mustermann,dc=ch"
+        ],
+        "connectionPooling": [
+            "true"
+        ],
+        "cachePolicy": [
+            "DEFAULT"
+        ],
+        "useKerberosForPasswordAuthentication": [
+            "false"
+        ],
+        "importEnabled": [
+            "true"
+        ],
+        "enabled": [
+            "true"
+        ],
+        "usernameLDAPAttribute": [
+            "uid"
+        ],
+        "changedSyncPeriod": [
+            "86400"
+        ],
+        "lastSync": [
+            "1568793470"
+        ],
+        "vendor": [
+            "other"
+        ],
+        "uuidLDAPAttribute": [
+            "entryUUID"
+        ],
+        "allowKerberosAuthentication": [
+            "false"
+        ],
+        "connectionUrl": [
+            "ldap://ldap"
+        ],
+        "syncRegistrations": [
+            "true"
+        ],
+        "authType": [
+            "simple"
+        ],
+        "debug": [
+            "false"
+        ],
+        "searchScope": [
+            "1"
+        ],
+        "useTruststoreSpi": [
+            "ldapsOnly"
+        ],
+        "priority": [
+            "0"
+        ],
+        "userObjectClasses": [
+            "inetOrgPerson,organizationalPerson,elexisContact"
+        ],
+        "rdnLDAPAttribute": [
+            "uid"
+        ],
+        "editMode": [
+            "WRITABLE"
+        ],
+        "validatePasswordPolicy": [
+            "false"
+        ],
+        "batchSizeForSync": [
+            "1000"
+        ]
+    }
+}

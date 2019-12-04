@@ -6,6 +6,7 @@ params+=(-f ${DOCKER_DIR}/ldap.yml)
 params+=(-f ${DOCKER_DIR}/web.yml)
 params+=(-f ${DOCKER_DIR}/keycloak.yml)
 params+=(-f ${DOCKER_DIR}/elexis-server.yml)
+params+=(-f ${DOCKER_DIR}/ee-config.yml)
 [[ $ENABLE_BOOKSTACK == true ]] && params+=(-f ${DOCKER_DIR}/bookstack.yml)
 [[ $ENABLE_ROCKETCHAT == true ]] && params+=(-f ${DOCKER_DIR}/rocketchat.yml)
 

@@ -2,20 +2,6 @@ version: '3'
 
 services:
 
-  elexis-server-config:
-    build: ../ee-util
-    command: /ee_start_setup.sh
-    environment:
-      - EE_HOSTNAME
-      - ADMIN_PASSWORD
-      - RDBMS_ELEXIS_USERNAME
-      - RDBMS_ELEXIS_DATABASE
-      - RDBMS_ELEXIS_PASSWORD
-      - RDBMS_HOST
-      - RDBMS_PORT
-      - ENABLE_ROCKETCHAT
-      - ENABLE_BOOKSTACK
-
   elexis-server:
     image: medevit/elexis-server:latest
     volumes:
