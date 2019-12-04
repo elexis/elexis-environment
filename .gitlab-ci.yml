@@ -36,7 +36,7 @@ core:
     - ./ee system cmd up -d --build # start the elexis-environment
     - .test/wait_for_http_200_es.sh # wait for elexis-server to become ready
     - ./ee system cmd ps # print the status of the elexis-environment containers
-    - docker wait elexis-environment_elexis-server-config_1 # wait for the elexis-server-config to exit
+    - docker wait elexis-environment_ee-config_1 # wait for the elexis-server-config to exit
     - ./ee system runtest # run the core runtest
     - ./ee setup sync_users_es_keycloak # sync users from ES to keycloak
   artifacts:
@@ -61,7 +61,7 @@ full:
     - ./ee system cmd up -d --build
     - .test/wait_for_http_200_rocketchat.sh
     - ./ee system cmd ps
-    - docker wait elexis-environment_elexis-server-config_1
+    - docker wait elexis-environment_ee-config_1
     - ./ee system runtest
   artifacts:
     when: on_failure
