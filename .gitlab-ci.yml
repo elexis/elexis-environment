@@ -67,4 +67,4 @@ full:
     when: on_failure
     paths:
       - ee-docker-logs.txt
-      - *.png
+      - "*.png"
