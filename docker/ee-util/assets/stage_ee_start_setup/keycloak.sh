@@ -4,6 +4,9 @@ KCADM=/$V/kcadm.sh
 T="[KEYCLOAK] "
 echo "$T ====================================================================="
 
+#
+# Wait for Login
+#
 echo -n "$T"
 RESPONSE=$($KCADM config credentials --server http://keycloak:8080/keycloak/auth --realm master --user KeycloakAdmin --client admin-cli --password $ADMIN_PASSWORD)
 STATUS="$?"
@@ -30,9 +33,15 @@ if [ -z $REALMID ]; then
 fi
 
 #
+# Provide realm keys to other services
+#
+echo -n "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
+$KCADM get keys -r ElexisEnvironment > /ElexisEnvironmentRealmKeys.json
+
+#
 # Assert ldap user storage provider
 #
-LDAP_USP_ID=$($KCADM get components -r ElexisEnvironment --format csv --fields providerId,id,providerType --noquotes | grep org.keycloak.storage.UserStorageProvider$ | grep ^ldap | cut -d "," -f2)
+LDAP_USP_ID=$($KCADM get components -r ElexisEnvironment --format csv --fields providerId,id,providerType --noquotes | grep org.keycloak.storage.UserStorageProvider\$ | grep ^ldap | cut -d "," -f2)
 if [ -z $LDAP_USP_ID ]; then
     echo -n "$T create ldap storage provider ... "
     LDAP_USP_ID=$($KCADM create components -r ElexisEnvironment -s name=ldap -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider -s parentId=$REALMID \
@@ -43,13 +52,22 @@ if [ -z $LDAP_USP_ID ]; then
     LDAP_UPS_GM_ID=$($KCADM create components -r ElexisEnvironment -s name=ldap_groups -s providerId=group-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper \
     -s parentId=$LDAP_USP_ID -s 'config."groups.dn"=["'ou=groups,$ORGANISATION_BASE_DN'"]' -f keycloak/ldap_groups.json -i)
     echo "ok $LDAP_UPS_GM_ID"
+
+    echo -n "$T create elexisContactId user-attribute-ldap-mapper ..."
+    LDAP_UPS_UALM_EC_ID=$($KCADM create components -r ElexisEnvironment -s name=elexisContactId -s providerId=user-attribute-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper \
+    -s parentId=$LDAP_USP_ID -s 'config."ldap.attribute"=["elexisContactId"]' -s 'config."user.model.attribute"=["elexisContactId"]' -i)
+    echo "ok $LDAP_UPS_UALM_EC_ID"
 fi
 
 echo "$T trigger synchronization of all users ... "
 $KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=triggerFullSync
 
-#
-# Assert rocketchat client
-#
-echo -n "$T assert rocket-chat-client ... "
-$KCADM create clients -r ElexisEnvironment -s clientId=rocket-chat-client -s baseUrl=/chat -s enabled=true -s secret=$X_EE_RC_OAUTH_CLIENT_SECRET -f keycloak/client_rocketchat.json -i
+if [[ $ENABLE_ROCKETCHAT == true ]]; then
+
+    RC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep rocketchat-saml\$ | cut -d "," -f1)
+    if [ ! -z $RC_SAML_CLIENTID ]; then
+        $KCADM delete clients/$RC_SAML_CLIENTID -r ElexisEnvironment
+    fi
+    echo -n "$T assert rocket-chat-client ... "
+    $KCADM create clients -r ElexisEnvironment -s clientId=rocketchat-saml -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -s enabled=true -f keycloak/rocketchat-saml.json -i
+fi
