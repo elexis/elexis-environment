@@ -45,7 +45,7 @@ LDAP_USP_ID=$($KCADM get components -r ElexisEnvironment --format csv --fields p
 if [ -z $LDAP_USP_ID ]; then
     echo -n "$T create ldap storage provider ... "
     LDAP_USP_ID=$($KCADM create components -r ElexisEnvironment -s name=ldap -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider -s parentId=$REALMID \
-    -s 'config.bindCredential=["'$ADMIN_PASSWORD'"]' -s 'config.bindDn=["'cn=admin,$ORGANISATION_BASE_DN'"]' -f keycloak/ldap.json -i)
+    -s 'config.bindCredential=["'$ADMIN_PASSWORD'"]' -s 'config.bindDn=["'cn=admin,$ORGANISATION_BASE_DN'"]' -s 'config.usersDn=["'ou=people,$ORGANISATION_BASE_DN'"]' -f keycloak/ldap.json -i)
     echo "ok $LDAP_USP_ID"
 
     echo -n "$T create group-ldap-mapper ... "

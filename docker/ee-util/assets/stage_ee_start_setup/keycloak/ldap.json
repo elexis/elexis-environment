@@ -6,9 +6,6 @@
         "fullSyncPeriod": [
             "604800"
         ],
-        "usersDn": [
-            "ou=people,dc=mustermann,dc=ch"
-        ],
         "connectionPooling": [
             "true"
         ],
