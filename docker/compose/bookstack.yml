@@ -8,6 +8,11 @@ services:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:
      - 80
+    logging: 
+      driver: json-file
+      options:
+        max-size: "2M"
+        max-file: "10"
     environment:
       - DB_HOST="$RDBMS_HOST:$RDBMS_PORT"
       - DB_DATABASE="$RDBMS_BOOKSTACK_DATABASE"

@@ -28,6 +28,8 @@ body {
   line-height: 1.5;
   color: #212529;
   text-align: left;
+  width: 100%;
+  height: 100%;
 }
 
 #Praxishandbuch {
@@ -143,5 +145,26 @@ img {
 
 #topbar {
   box-shadow: 0px 3px 10px #d9d9d9;
+}
+
+img {
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+img {
+}
+
+#PHB:hover {
+  box-shadow: 0px 0px 10px 9px red;
+}
+
+.col-md-3 {
+  padding: 1%;
+}
+
+.col {
+  padding: 1%;
 }
 

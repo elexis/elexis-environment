@@ -16,6 +16,11 @@ services:
       - 80:80 #http - redirect to https
       - 443:443 # https
       - 636:636 # ldaps
+    logging:  
+      driver: json-file
+      options:
+          max-size: "2M"
+          max-file: "10"
     depends_on:
       - ldap
       - keycloak
@@ -24,6 +29,7 @@ services:
       && echo "" > /etc/nginx/modules.conf 
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
+      && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
       && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     environment:
@@ -34,3 +40,4 @@ services:
       - LDAP_READONLY_USER_PASSWORD
       - ENABLE_BOOKSTACK
       - ENABLE_ROCKETCHAT
+      - ENABLE_ELEXIS_SERVER

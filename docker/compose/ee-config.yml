@@ -7,10 +7,10 @@ services:
     command: /ee_start_setup.sh
     depends_on:
         - keycloak
-        - elexis-server
     environment:
       - EE_HOSTNAME
       - ADMIN_PASSWORD
+      - ORGANISATION_NAME
       - ORGANISATION_BASE_DN
       - RDBMS_ELEXIS_USERNAME
       - RDBMS_ELEXIS_DATABASE

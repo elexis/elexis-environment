@@ -3,11 +3,16 @@ version: '3'
 services:
 
   rocketchat:
-    image: rocket.chat:2.2
+    image: rocket.chat:2.3
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     restart: unless-stopped
     volumes:
       - rocketchat_uploads:/app/uploads
+    logging:  
+      driver: json-file
+      options:
+          max-size: "2M"
+          max-file: "10"
     environment:
       - ADMIN_USERNAME=RocketChatAdmin # must be different to $ADMIN_USERNAME, else blocks this account
       - ADMIN_PASS=$ADMIN_PASSWORD
@@ -16,8 +21,6 @@ services:
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
       - ROOT_URL=https://${EE_HOSTNAME}/chat/
       - Accounts_UseDNSDomainCheck=true
-      - Organization_Name=$ORGANISATION_NAME
-      - Site_Name=$ORGANISATION_NAME
       - Organization_Type=enterprise
       - Server_Type=privateTeam
       - Industry=healthcarePharmaceutical

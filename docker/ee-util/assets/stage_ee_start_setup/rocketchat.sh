@@ -44,7 +44,8 @@ echo "\n"
 #
 #
 java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
-    -s Accounts_PasswordReset=false -s Accounts_RegistrationForm=Disabled -s Accounts_RegistrationForm_LinkReplacementText=""
+    -s Accounts_PasswordReset=false -s Accounts_RegistrationForm=Disabled -s Accounts_RegistrationForm_LinkReplacementText="" \
+    -s API_Enable_Rate_Limiter_Limit_CallsDefault=100 -s Site_Name=$ORGANISATION_NAME -s Organization_Name=$ORGANISATION_NAME
 
 #
 #

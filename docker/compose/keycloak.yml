@@ -8,6 +8,11 @@ services:
     build: ../keycloak
     expose:
       - 8080
+    logging:  
+      driver: json-file
+      options:
+          max-size: "2M"
+          max-file: "10"    
     #volumes:
       #- ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
     environment:

@@ -19,6 +19,11 @@ services:
       - 8480
     ports:
       - "7234:7234"
+    logging:  
+      driver: json-file
+      options:
+          max-size: "2M"
+          max-file: "10"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8380/services/system/uptime"]
       interval: 30s

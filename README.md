@@ -1,30 +1,11 @@
-# Elexis-Environment v0.3
+# Elexis-Environment
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
-
-# Update an installation
-
-In order to update an existing installation, perform the following steps: 
-* `git pull` to fetch the current elexis-environment base
-* `docker pull medevit/eenv-config` to update the ee-configuration image
-* `./ee setup configure` to check the configuration, do not continue if any tests do fail
-* `./ee system cmd stop` to stop the current running EE
-* `./ee system cmd rm -f`to delete the existing containers (NOT the volumes, they store the actual data)
-* `./ee system cmd pull` to fetch the up-to-date versions of the images
-* `./ee system cmd up -d` to start new instances (containers) of the images
-
-## Update v0.1 to v0.2
-
-* Need to clean everything from v0.1 as the ldap structure has changed.
-* Adapt .env file
-
 
 # Requirements
 
 * A static IP address with a hostname in your domain for the server hosting this environment. This hostname has to be resolvable by all clients.
-
 * A Linux system as host. Linux behaves different to Windows and OS X w.r.t. network handling. Only in a linux system the web container will see the real IP behind the HTTP requests.
-
 * A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
 a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
 
