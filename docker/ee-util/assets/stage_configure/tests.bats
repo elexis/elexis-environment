@@ -15,10 +15,10 @@
 
 # Does an Elexis database exist here? New not yet supported.
 @test "Check RDBMS_ELEXIS_DATABASE is populated (Config#ElexisVersion)" {
-     MYSQL_STRING="SELECT WERT FROM CONFIG WHERE PARAM = 'ElexisVersion'"
+    MYSQL_STRING="SELECT 12358 AS AVAILABLE FROM CONFIG WHERE PARAM = 'dbversion'"
     run /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
     echo "output = ${output}"
-    [[ "$output" == *"3."* ]]
+    [[ "$output" == *"12358"* ]]
 }
 
 # Is the Keycloak DB accessible

@@ -14,7 +14,7 @@
     "directAccessGrantsEnabled": false,
     "serviceAccountsEnabled": false,
     "publicClient": false,
-    "frontchannelLogout": true,
+    "frontchannelLogout": false,
     "protocol": "saml",
     "attributes": {
         "saml.assertion.signature": "false",
@@ -54,5 +54,41 @@
         "view": true,
         "configure": true,
         "manage": true
-    }
+    },
+    "protocolMappers": [
+        {
+            "name": "username",
+            "protocol": "saml",
+            "protocolMapper": "saml-user-property-mapper",
+            "consentRequired": false,
+            "config": {
+                "attribute.nameformat": "Basic",
+                "user.attribute": "username",
+                "attribute.name": "username"
+            }
+        },
+        {
+            "name": "cn",
+            "protocol": "saml",
+            "protocolMapper": "saml-javascript-mapper",
+            "consentRequired": false,
+            "config": {
+                "single": "true",
+                "attribute.nameformat": "Basic",
+                "Script": "user.firstName + ' ' + user.lastName;",
+                "attribute.name": "cn"
+            }
+        },
+        {
+            "name": "email",
+            "protocol": "saml",
+            "protocolMapper": "saml-user-property-mapper",
+            "consentRequired": false,
+            "config": {
+                "attribute.nameformat": "Basic",
+                "user.attribute": "email",
+                "attribute.name": "email"
+            }
+        }
+    ]
 }

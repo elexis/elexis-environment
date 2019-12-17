@@ -1,4 +1,4 @@
-# Elexis-Environment
+# Elexis-Environment (EE)
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
@@ -33,21 +33,22 @@ the certificate files to `assets/web/ssl`.
 
 Please see [notes](docs/notes.md) for FAQs and remarks.
 
-### Caveat
-
-* Rocketchat: The custom oauth keycloak gets already configured, but it needs to be manually added by admin logging in and adding custom oauth `Keycloak`. See https://github.com/RocketChat/docs/issues/790.
-
 # Operation
+
+## Syncing Elexis Users
+
+To sync users of an existing Elexis database with keycloak, execute `./ee setup sync_users_es_keycloak`. In EE every user must have
+a unique e-mail address. If a user does not have an associated e-mail address, syncing will generate one in the format `userid@ORGANSATION_DOMAIN`.
 
 ## Accessing the services
 
 After initial startup, there will be two users available. The admin user with userid `ADMIN_USERNAME` and your set password, and a `demouser` with password `demouser`.
 
-* Keycloak with browser via https://yourhost/keycloak
-* Bookstack with browser via https://yourhost/bookstack
-* Rocketchat with browser via https://yourhost/chat
 * LDAP with LDAPS client on ldaps://yourhost:636 
-* Elexis server via https://yourhost/fhir and https://yourhost/services respectively
+* Keycloak with browser via https://yourhost/keycloak
+* Bookstack with browser via https://yourhost/bookstack (if enabled)
+* Rocketchat with browser via https://yourhost/chat (if enabled)
+* Elexis server via https://yourhost/fhir and https://yourhost/services respectively (if enabled)
 
 # Technical details
 

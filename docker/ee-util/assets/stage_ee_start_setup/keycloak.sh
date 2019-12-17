@@ -22,15 +22,20 @@ do
 done
 
 #
-# Assert Elexis-Environment Realm
+# Assert Elexis-Environment Realm exists
 #
 REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
 if [ -z $REALMID ]; then
     echo -n "$T create ElexisEnvironment realm ... "
-    $KCADM create realms -s realm=ElexisEnvironment -s enabled=true -s displayName=Elexis-Environment -s userManagedAccessAllowed=true -s sslRequired=none -i
+    $KCADM create realms -s realm=ElexisEnvironment -s enabled=true -s displayName=Elexis-Environment -s userManagedAccessAllowed=true -s sslRequired=none  -i
     REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
     echo "ok $REALMID"
 fi
+
+#
+# Configure Elexis-Environment Realm
+#
+#$KCADM update realms/ElexisEnvironment -s displayName=Elexis-Environment\ $
 
 #
 # Provide realm keys to other services
@@ -62,6 +67,9 @@ fi
 echo "$T trigger synchronization of all users ... "
 $KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=triggerFullSync
 
+#
+# Keycloak <-> Rocketchat SAML integration
+#
 if [[ $ENABLE_ROCKETCHAT == true ]]; then
 
     RC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep rocketchat-saml\$ | cut -d "," -f1)
