@@ -60,7 +60,7 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s SAML_Custom_Default_idp_slo_redirect_url=/keycloak/auth/realms/ElexisEnvironment/protocol/saml \
     -s SAML_Custom_Default_issuer=rocketchat-saml -s SAML_Custom_Default_button_label_text=Elexis-Environment \
     -s SAML_Custom_Default_cert=$REALM_CERT -s SAML_Custom_Default_logout_behaviour=Local \
-    -s SAML_Custom_Default_name_overwrite=true  -s SAML_Custom_Default_mail_overwrite=true
+    -s SAML_Custom_Default_name_overwrite=true  -s SAML_Custom_Default_mail_overwrite=true \
     -s SAML_Custom_Default_generate_username=false -s SAML_Custom_Default_immutable_property=Username
 
 #
