@@ -89,6 +89,17 @@
                 "user.attribute": "email",
                 "attribute.name": "email"
             }
+        },
+        {
+            "name": "role",
+            "protocol": "saml",
+            "protocolMapper": "saml-role-list-mapper",
+            "consentRequired": false,
+            "config": {
+                "single": "true",
+                "friendly.name": "role",
+                "attribute.name": "Role"
+            }
         }
     ]
 }
