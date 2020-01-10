@@ -69,13 +69,21 @@ $KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=trigger
 
 #
 # Keycloak <-> Rocketchat SAML integration
+# Re-create rocketchat-saml on every startup
 #
 if [[ $ENABLE_ROCKETCHAT == true ]]; then
-
     RC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep rocketchat-saml\$ | cut -d "," -f1)
     if [ ! -z $RC_SAML_CLIENTID ]; then
         $KCADM delete clients/$RC_SAML_CLIENTID -r ElexisEnvironment
     fi
-    echo -n "$T assert rocket-chat-client ... "
-    $KCADM create clients -r ElexisEnvironment -s clientId=rocketchat-saml -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -s enabled=true -f keycloak/rocketchat-saml.json -i
 fi
+
+echo -n "$T assert rocketchat-saml ... "
+RC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=rocketchat-saml -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -s enabled=true -f keycloak/rocketchat-saml.json -i)
+echo "ok $RC_SAML_CLIENTID"
+
+# see https://rocket.chat/docs/administrator-guides/permissions/ for full list, only using relevant roles
+$KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Normal user rights. Most users receive this role when registering.'
+$KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=admin -s 'description=Have access to all settings and administrator tools.'
+$KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=livechat-agent -s 'description=Agents of livechat. They can answer to livechat requests.'
+$KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=livechat-manager -s 'description=Manager of livechat, they can manage agents and guest.'

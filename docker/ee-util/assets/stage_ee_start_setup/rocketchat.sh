@@ -35,7 +35,7 @@ USER_ID=$(echo $RESPONSE | jq -r .data.me._id)
 #
 echo "$T Assert asset.background image ... "
 # https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
-curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.png" $RC_BASEURL/api/v1/assets.setAsset 
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.jpg" $RC_BASEURL/api/v1/assets.setAsset 
 echo "\n"
 
 #
