@@ -1,7 +1,7 @@
 #!/bin/bash
 # TODO other database systems
 T="[ELEXIS-DB] "
-echo "$T ===================================================="
+echo "$T $(date)"
 
 echo "$T Setting EE_HOSTNAME in elexis rdbms config table to [${EE_HOSTNAME}]"
 echo "$T FIXME - Currently supports MySQL only"

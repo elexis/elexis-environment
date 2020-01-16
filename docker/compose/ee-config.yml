@@ -20,3 +20,4 @@ services:
       - RDBMS_PORT
       - ENABLE_ROCKETCHAT
       - ENABLE_BOOKSTACK
+      - ENABLE_NEXTCLOUD

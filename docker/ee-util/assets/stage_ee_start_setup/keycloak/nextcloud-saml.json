@@ -1,10 +1,10 @@
 {
-    "name": "rocketchat-saml",
+    "name": "nextcloud-saml",
     "surrogateAuthRequired": false,
     "enabled": true,
     "clientAuthenticatorType": "client-secret",
     "redirectUris": [
-        "/chat/*"
+        "/cloud/apps/user_saml/saml/acs"
     ],
     "webOrigins": [],
     "notBefore": 0,
@@ -15,19 +15,22 @@
     "directAccessGrantsEnabled": false,
     "serviceAccountsEnabled": false,
     "publicClient": false,
-    "frontchannelLogout": false,
+    "frontchannelLogout": true,
     "protocol": "saml",
     "attributes": {
-        "saml.assertion.signature": "false",
+        "saml.assertion.signature": "true",
         "saml.force.post.binding": "true",
         "saml.multivalued.roles": "false",
         "saml.encrypt": "false",
+        "saml_assertion_consumer_url_post": "/cloud/apps/user_saml/saml/acs",
         "saml.server.signature": "true",
         "saml.server.signature.keyinfo.ext": "false",
         "exclude.session.state.from.auth.response": "false",
+        "saml.signing.certificate": "",
+        "saml_single_logout_service_url_redirect": "/cloud/apps/user_saml/saml/sls",
         "saml.signature.algorithm": "RSA_SHA256",
         "saml_force_name_id_format": "false",
-        "saml.client.signature": "false",
+        "saml.client.signature": "true",
         "tls.client.certificate.bound.access.tokens": "false",
         "saml.authnstatement": "true",
         "display.on.consent.screen": "false",
@@ -36,50 +39,9 @@
         "saml.onetimeuse.condition": "false"
     },
     "authenticationFlowBindingOverrides": {},
-    "fullScopeAllowed": true,
+    "fullScopeAllowed": false,
     "nodeReRegistrationTimeout": -1,
-    "defaultClientScopes": [
-        "web-origins",
-        "role_list",
-        "roles",
-        "profile",
-        "email"
-    ],
-    "optionalClientScopes": [
-        "address",
-        "phone",
-        "offline_access",
-        "microprofile-jwt"
-    ],
-    "access": {
-        "view": true,
-        "configure": true,
-        "manage": true
-    },
     "protocolMappers": [
-        {
-            "name": "username",
-            "protocol": "saml",
-            "protocolMapper": "saml-user-property-mapper",
-            "consentRequired": false,
-            "config": {
-                "attribute.nameformat": "Basic",
-                "user.attribute": "username",
-                "attribute.name": "username"
-            }
-        },
-        {
-            "name": "cn",
-            "protocol": "saml",
-            "protocolMapper": "saml-javascript-mapper",
-            "consentRequired": false,
-            "config": {
-                "single": "true",
-                "attribute.nameformat": "Basic",
-                "Script": "user.firstName + ' ' + user.lastName;",
-                "attribute.name": "cn"
-            }
-        },
         {
             "name": "email",
             "protocol": "saml",
@@ -92,14 +54,36 @@
             }
         },
         {
-            "name": "role",
+            "name": "username",
             "protocol": "saml",
-            "protocolMapper": "saml-role-list-mapper",
+            "protocolMapper": "saml-user-property-mapper",
+            "consentRequired": false,
+            "config": {
+                "attribute.nameformat": "Basic",
+                "user.attribute": "username",
+                "attribute.name": "username"
+            }
+        },
+        {
+            "name": "nextcloudquota",
+            "protocol": "saml",
+            "protocolMapper": "saml-user-property-mapper",
+            "consentRequired": false,
+            "config": {
+                "attribute.nameformat": "Basic",
+                "user.attribute": "nextcloudquota",
+                "attribute.name": "nextcloudquota"
+            }
+        },
+        {
+            "name": "cn",
+            "protocol": "saml",
+            "protocolMapper": "saml-javascript-mapper",
             "consentRequired": false,
             "config": {
                 "single": "true",
-                "friendly.name": "role",
-                "attribute.name": "Role"
+                "Script": "user.firstName + ' ' + user.lastName;",
+                "attribute.name": "cn"
             }
         }
     ]

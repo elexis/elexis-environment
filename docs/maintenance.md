@@ -30,5 +30,5 @@ In order to update an existing installation, perform the following steps:
 3. Fetch the current version from the respository :`git pull`
 4. Update the configuration image:  `docker pull medevit/eenv-config`
 5. Update the configuration: `./ee setup configure`
-6. Pull current version images: `./ee system cmd pull`
+6. Pull current version images: `./ee system cmd pull --include-deps`
 7. Start EE: `./ee system cmd up -d --build`

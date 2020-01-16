@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+    nextcloud:
+        build: ../nextcloud
+        volumes:
+            - nextcloud_html:/var/www/html
+            - nextcloud_data:/var/www/html/data
+        environment:
+            - MYSQL_DATABASE=$RDBMS_NEXTCLOUD_DATABASE
+            - MYSQL_USER=$RDBMS_NEXTCLOUD_USERNAME
+            - MYSQL_PASSWORD=$RDBMS_NEXTCLOUD_PASSWORD
+            - MYSQL_HOST=$RDBMS_HOST
+            - NEXTCLOUD_ADMIN_USER=NextcloudAdmin # must be different to $ADMIN_USERNAME, else blocks this account
+            - NEXTCLOUD_ADMIN_PASSWORD=$ADMIN_PASSWORD
+            - NEXTCLOUD_TRUSTED_DOMAINS=web $EE_HOSTNAME
+
+# TODO http://netshare.containx.io/docs/cifs
+volumes:
+    nextcloud_html:
+    nextcloud_data:

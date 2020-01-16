@@ -4,7 +4,7 @@
 #
 RC_BASEURL="http://rocketchat:3000/chat"
 T="[ROCKETCHAT] "
-echo "$T ===================================================="
+echo "$T $(date)"
 
 #
 #
@@ -12,16 +12,15 @@ echo "$T ===================================================="
 #
 #
 echo "$T Log-in as RocketChatAdmin..."
-RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD") 
+RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD")
 STATUS="$?"
 LOOP_COUNT=0
-while [ $STATUS != 0 ] 
-do 
+while [ $STATUS != 0 ]; do
     echo "$T Waiting for rocketchat [$STATUS] ($RESPONSE) ..."
     sleep 15
-    RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD") 
+    RESPONSE=$(curl -s -k $RC_BASEURL/api/v1/login -d "user=RocketChatAdmin&password=$ADMIN_PASSWORD")
     STATUS="$?"
-    (( LOOP_COUNT += 1 ))
+    ((LOOP_COUNT += 1))
     if [ $LOOP_COUNT -eq 20 ]; then exit -1; fi
 done
 
@@ -35,7 +34,7 @@ USER_ID=$(echo $RESPONSE | jq -r .data.me._id)
 #
 echo "$T Assert asset.background image ... "
 # https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
-curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.jpg" $RC_BASEURL/api/v1/assets.setAsset 
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.jpg" $RC_BASEURL/api/v1/assets.setAsset
 echo "\n"
 
 #
@@ -43,9 +42,13 @@ echo "\n"
 # Basic configuration values
 #
 #
+echo "$T Assert basic configuration ... "
 java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
-    -s Accounts_PasswordReset=false -s Accounts_RegistrationForm=Disabled -s Accounts_RegistrationForm_LinkReplacementText="" \
-    -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 -s Site_Name=$ORGANISATION_NAME -s Organization_Name=$ORGANISATION_NAME
+    -s Accounts_PasswordReset=false -s Accounts_RegistrationForm=Disabled \
+    -s Accounts_RegistrationForm_LinkReplacementText="" \
+    -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 \
+    -s Site_Name=${ORGANISATION_NAME//__/\ } \
+    -s Organization_Name=${ORGANISATION_NAME//__/\ }
 
 #
 #
@@ -60,7 +63,7 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s SAML_Custom_Default_idp_slo_redirect_url=/keycloak/auth/realms/ElexisEnvironment/protocol/saml \
     -s SAML_Custom_Default_issuer=rocketchat-saml -s SAML_Custom_Default_button_label_text=Elexis-Environment \
     -s SAML_Custom_Default_cert=$REALM_CERT -s SAML_Custom_Default_logout_behaviour=Local \
-    -s SAML_Custom_Default_name_overwrite=true  -s SAML_Custom_Default_mail_overwrite=true \
+    -s SAML_Custom_Default_name_overwrite=true -s SAML_Custom_Default_mail_overwrite=true \
     -s SAML_Custom_Default_generate_username=false -s SAML_Custom_Default_immutable_property=Username
 
 #
@@ -75,13 +78,12 @@ echo -e "\n$T Assert Elexis-Server - bot user for elexis-user ..."
 curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/users.create --data-binary @rocketchat/cr_es_user.json
 
 echo -e "\n$T Assert Elexis-Server - bot avatar for elexis-server ..."
-curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "image=@rocketchat/elexis-server.png" -F "username=elexis-server" $RC_BASEURL/api/v1/users.setAvatar 
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "image=@rocketchat/elexis-server.png" -F "username=elexis-server" $RC_BASEURL/api/v1/users.setAvatar
 
 echo -e "\n$T Assert Elexis-Server - webhook integration for elexis-server..."
 EX_INTEGRATIONS=$(curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/integrations.list)
 EXISTING=$(echo $EX_INTEGRATIONS | jq '.integrations[] | select(.name=="elexis-server-messages")')
-if [ -z "$EXISTING" ]
-then
+if [ -z "$EXISTING" ]; then
     echo "Creating webhook ..."
     EXISTING=$(curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/integrations.create --data-binary @rocketchat/cr_es_inc_webhook.json)
 fi

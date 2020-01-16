@@ -30,6 +30,7 @@ services:
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
+      && if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/modules.conf; fi
       && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     environment:
@@ -41,3 +42,4 @@ services:
       - ENABLE_BOOKSTACK
       - ENABLE_ROCKETCHAT
       - ENABLE_ELEXIS_SERVER
+      - ENABLE_NEXTCLOUD

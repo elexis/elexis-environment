@@ -9,5 +9,6 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 [[ $ENABLE_ELEXIS_SERVER == true ]] &&  params+=(-f ${DOCKER_DIR}/elexis-server.yml)
 [[ $ENABLE_BOOKSTACK == true ]] && params+=(-f ${DOCKER_DIR}/bookstack.yml)
 [[ $ENABLE_ROCKETCHAT == true ]] && params+=(-f ${DOCKER_DIR}/rocketchat.yml)
+[[ $ENABLE_NEXTCLOUD == true ]] && params+=(-f ${DOCKER_DIR}/nextcloud.yml -f ${DOCKER_DIR}/web_nextcloud.yml)
 
 docker-compose -p elexis-environment ${params[@]} "$@"
