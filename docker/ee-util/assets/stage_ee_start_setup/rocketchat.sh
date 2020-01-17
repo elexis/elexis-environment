@@ -44,11 +44,12 @@ echo "\n"
 #
 echo "$T Assert basic configuration ... "
 java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
-    -s Accounts_PasswordReset=false -s Accounts_RegistrationForm=Disabled \
+    -s Accounts_PasswordReset=false \
+    -s Accounts_RegistrationForm=Disabled \
     -s Accounts_RegistrationForm_LinkReplacementText="" \
     -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 \
-    -s Site_Name=${ORGANISATION_NAME//__/\ } \
-    -s Organization_Name=${ORGANISATION_NAME//__/\ }
+    -s Site_Name="${ORGANISATION_NAME//__/\ }" \
+    -s Organization_Name="${ORGANISATION_NAME//__/\ }"
 
 #
 #
@@ -57,14 +58,23 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
 #
 echo "$T Assert Keycloak SAML integration ... "
 REALM_CERT=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .certificate' -r /ElexisEnvironmentRealmKeys.json)
+RC_PRIVATE_KEY=$(cat /rocketchat-saml-private.key)
+RC_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert)
 java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
-    -s SAML_Custom_Default=true -s SAML_Custom_Default_provider=rocketchat-saml \
+    -s SAML_Custom_Default=true \
+    -s SAML_Custom_Default_provider=rocketchat-saml \
     -s SAML_Custom_Default_entry_point=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml \
     -s SAML_Custom_Default_idp_slo_redirect_url=/keycloak/auth/realms/ElexisEnvironment/protocol/saml \
-    -s SAML_Custom_Default_issuer=rocketchat-saml -s SAML_Custom_Default_button_label_text=Elexis-Environment \
-    -s SAML_Custom_Default_cert=$REALM_CERT -s SAML_Custom_Default_logout_behaviour=Local \
-    -s SAML_Custom_Default_name_overwrite=true -s SAML_Custom_Default_mail_overwrite=true \
-    -s SAML_Custom_Default_generate_username=false -s SAML_Custom_Default_immutable_property=Username
+    -s SAML_Custom_Default_issuer=rocketchat-saml \
+    -s SAML_Custom_Default_button_label_text=Elexis-Environment \
+    -s SAML_Custom_Default_cert="$REALM_CERT" \
+    -s SAML_Custom_Default_logout_behaviour=Local \
+    -s SAML_Custom_Default_name_overwrite=true \
+    -s SAML_Custom_Default_mail_overwrite=true \
+    -s SAML_Custom_Default_generate_username=false \
+    -s SAML_Custom_Default_immutable_property=Username \
+    -s SAML_Custom_Default_public_cert="$RC_PUBLIC_CERT" \
+    -s SAML_Custom_Default_private_key="$RC_PRIVATE_KEY"
 
 #
 #
