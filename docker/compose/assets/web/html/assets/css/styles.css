@@ -9,11 +9,13 @@ body {
 }
 
 .row {
-  width: 100%;
+  /*width: 100%;*/
+  /*height: 100%;*/
 }
 
 .container {
-  width: 100%;
+  /*width: 100%;*/
+  /*height: 100%;*/
 }
 
 .navbar.navbar-light.navbar-expand-md.navigation-clean {
@@ -36,6 +38,8 @@ body {
   display: block;
   margin-left: auto;
   margin-right: auto;
+  width: 50%;
+  /*height: %;*/
 }
 
 #Praxishandbuch_Titel {
@@ -49,16 +53,18 @@ body {
   margin-left: auto;
   margin-right: auto;
   /*margin-left: auto;*/
-  width: 50%;
+  width: 100%;
   display: block;
+  /*height: 100%;*/
   box-shadow: 0px 0px 10px 9px rgba(229,229,229,0.5);
   transition: 0.3s;
 }
 
 #Chat_Box {
   display: block;
-  width: 50%;
+  width: 100%;
   margin-left: auto;
+  /*height: 100%;*/
   margin-right: auto;
   padding-top: 10%;
   padding-bottom: 10%;
@@ -72,6 +78,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   /*width: 50%;*/
+  /*width: 56%;*/
 }
 
 #column_box {
@@ -154,6 +161,7 @@ img {
 }
 
 img {
+  width: 50%;
 }
 
 #PHB:hover {
