@@ -142,9 +142,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ] || [ "${NEXTCLOUD_UP
 fi
 
 # Elexis-Environment ############################
-echo "Elexis-Environment specific setup"
-ln -sf /var/www/html /var/www/html/cloud
-run_as 'php /var/www/html/occ app:install user_saml'
+su -p www-data -s /bin/sh /ee-init.sh
 ##################################################
 
 exec "$@"
