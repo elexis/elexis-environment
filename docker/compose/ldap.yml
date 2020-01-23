@@ -6,6 +6,8 @@ services:
     image: osixia/openldap:1.3.0
     command:
       --copy-service --loglevel debug
+    networks:
+        - backend
     volumes:
       - ldap_storage:/var/lib/ldap
       - ldap_configuration:/etc/ldap/slapd.d

@@ -1,2 +1,0 @@
-#!/usr/bin/env bash
-grep EE_VERSION ${INSTALL_DIR}.env

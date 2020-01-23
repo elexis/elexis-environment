@@ -6,6 +6,8 @@ services:
         volumes:
             - nextcloud_html:/var/www/html
             - nextcloud_data:/var/www/html/data
+        networks:
+            - backend
         environment:
             - MYSQL_DATABASE=$RDBMS_NEXTCLOUD_DATABASE
             - MYSQL_USER=$RDBMS_NEXTCLOUD_USERNAME

@@ -13,6 +13,8 @@ services:
       options:
         max-size: "2M"
         max-file: "10"
+    networks:
+      - backend
     environment:
       - DB_HOST="$RDBMS_HOST:$RDBMS_PORT"
       - DB_DATABASE="$RDBMS_BOOKSTACK_DATABASE"

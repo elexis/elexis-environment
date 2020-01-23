@@ -8,6 +8,8 @@ services:
     restart: unless-stopped
     volumes:
       - rocketchat_uploads:/app/uploads
+    networks:
+      - backend
     logging:  
       driver: json-file
       options:
@@ -56,6 +58,8 @@ services:
   mongo:
     image: mongo:3.6
     restart: unless-stopped
+    networks:
+      - backend
     volumes:
      - mongo_data:/data/db
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
@@ -64,6 +68,8 @@ services:
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
     image: mongo:3.6
+    networks:
+      - backend
     command: 'bash -c "for i in `seq 1 30`; do mongo mongo/rocketchat --eval \"rs.initiate({ _id: ''rs0'', members: [ { _id: 0, host: ''localhost:27017'' } ]})\" && s=$$? && break || s=$$?; echo \"Tried $$i times. Waiting 5 secs...\"; sleep 5; done; (exit $$s)"'
     depends_on:
       - mongo

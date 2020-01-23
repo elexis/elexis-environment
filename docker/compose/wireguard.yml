@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    wireguard:
+        build: ../wireguard
+        privileged: true
+        volumes:
+            - wireguard_conf:/etc/wireguard
+        cap_add:
+            - NET_ADMIN
+            - SYS_MODULE
+        networks:
+            - myelexis_bridge
+        environment:
+            - WG_SERVER_ENDPOINT
+            - WG_SERVER_PUBKEY
+            - WG_SERVER_PRESHAREDKEY
+            - WG_CLIENT_IP
+
+# healthcheck
+volumes:
+    wireguard_conf:
+
+networks:
+    myelexis_bridge:

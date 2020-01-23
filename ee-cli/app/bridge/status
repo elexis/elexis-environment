@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+${INSTALL_DIR}ee system cmd -f ${DOCKER_DIR}/wireguard.yml exec wireguard wg

@@ -5,6 +5,8 @@ services:
   ee-config:
     build: ../ee-util
     command: /ee_start_setup.sh
+    networks:
+      - backend
     depends_on:
         - keycloak
     environment:

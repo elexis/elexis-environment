@@ -6,6 +6,8 @@ services:
   # TODO expose only to internal subnet
   keycloak: 
     build: ../keycloak
+    networks:
+      - backend
     expose:
       - 8080
     logging:  

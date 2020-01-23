@@ -17,6 +17,8 @@ services:
     expose:
       - 8380
       - 8480
+    networks:
+      - backend
     ports:
       - "7234:7234"
     logging:  
