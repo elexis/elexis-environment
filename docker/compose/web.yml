@@ -19,6 +19,7 @@ services:
     ports:
       - 80:80 #http - redirect to https
       - 443:443 # https
+      - 8444:8444 # https - external view
       - 636:636 # ldaps
     expose:
       - 8443 # ssl proxy-protocol to wireguard
