@@ -43,6 +43,7 @@ $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
 BROWSER_COND_OTP_FLOW_ID=$($KCADM get authentication/flows -r ElexisEnvironment --format csv --fields id,alias,description --noquotes | grep ,EE\ browser | cut -d "," -f1)
 if [ ! -z $BROWSER_COND_OTP_FLOW_ID ]; then
     echo -n "$T remove existing browser conditional otp flow ... "
+    $KCADM update realms/ElexisEnvironment -s browserFlow='browser' # otherwise removal fails
     $KCADM delete authentication/flows/$BROWSER_COND_OTP_FLOW_ID -r ElexisEnvironment
 fi
 
