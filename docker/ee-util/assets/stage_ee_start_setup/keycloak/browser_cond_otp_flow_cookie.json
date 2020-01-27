@@ -1,0 +1,13 @@
+{
+    "requirement": "ALTERNATIVE",
+    "displayName": "Cookie",
+    "requirementChoices": [
+        "REQUIRED",
+        "ALTERNATIVE",
+        "DISABLED"
+    ],
+    "configurable": false,
+    "providerId": "auth-cookie",
+    "level": 0,
+    "index": 0
+}

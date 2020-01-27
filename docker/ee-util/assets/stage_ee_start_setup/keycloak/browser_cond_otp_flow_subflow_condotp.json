@@ -1,0 +1,14 @@
+{
+    "requirement": "REQUIRED",
+    "displayName": "Conditional OTP Form",
+    "alias": "Conditional OTP Authentication",
+    "requirementChoices": [
+        "REQUIRED",
+        "ALTERNATIVE",
+        "DISABLED"
+    ],
+    "configurable": true,
+    "providerId": "auth-conditional-otp-form",
+    "level": 1,
+    "index": 1
+}
