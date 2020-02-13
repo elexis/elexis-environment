@@ -133,6 +133,11 @@ if [[ $ENABLE_BOOKSTACK == true ]]; then
 
     BS_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -s enabled=true -f keycloak/bookstack-saml.json -i)
     echo "ok $BS_SAML_CLIENTID"
+
+    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=admin -s 'description=Administrator of the whole application'
+    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=editor -s 'description=User can edit Books, Chapters & Pages'
+    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=viewer -s 'description=User can view books & their content behind authentication'
+    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=public -s 'description=The role given to public visitors if allowed'
 fi
 
 #
