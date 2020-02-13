@@ -26,10 +26,16 @@ done
 REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
 if [ -z $REALMID ]; then
     echo -n "$T create ElexisEnvironment realm ... "
-    $KCADM create realms -s realm=ElexisEnvironment -s enabled=true -s displayName=Elexis-Environment -s userManagedAccessAllowed=true -s sslRequired=none -i
+    $KCADM create realms -s realm=ElexisEnvironment -s enabled=true -s displayName=Elexis-Environment -s sslRequired=none -i
     REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
     echo "ok $REALMID"
 fi
+
+#
+# Basic Realm configuration options
+#
+echo "$T Basic ElexisEnvironment realm settings ..."
+$KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true
 
 #
 # Provide Elexis-Environment realm keys to other services
@@ -113,17 +119,34 @@ if [[ $ENABLE_ROCKETCHAT == true ]]; then
 fi
 
 #
+# BOOKSTACK-SAML
+# Re-create on every startup
+#
+BS_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep bookstack\/saml2\/metadata | cut -d "," -f1)
+if [ ! -z $BS_SAML_CLIENTID ]; then
+    echo -n "$T remove existing bookstack-saml client... "
+    $KCADM delete clients/$BS_SAML_CLIENTID -r ElexisEnvironment
+fi
+
+if [[ $ENABLE_BOOKStACK == true ]]; then
+    echo -n "$T assert bookstack-saml client ... "
+
+    BS_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -s enabled=true -f keycloak/bookstack-saml.json -i)
+    echo "ok $BS_SAML_CLIENTID"
+fi
+
+#
 # NEXTCLOUD-SAML
 # Re-create on every startup
 #
 NC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep cloud\/apps\/user | cut -d "," -f1)
 if [ ! -z $NC_SAML_CLIENTID ]; then
-    echo -n "$T remove existing nextcloud saml-client... "
+    echo -n "$T remove existing nextcloud-saml client... "
     $KCADM delete clients/$NC_SAML_CLIENTID -r ElexisEnvironment
 fi
 
 if [[ $ENABLE_NEXTCLOUD == true ]]; then
-    echo -n "$T assert Nextcloud saml-client ... "
+    echo -n "$T assert nextcloud-saml client ... "
     openssl req -nodes -new -x509 -keyout /nextcloud-saml-private.key -out /nextcloud-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Nextcloud"
     NC_SAML_PUBLIC_CERT=$(cat /nextcloud-saml-public.cert | sed '1,1d' | sed '$ d')
 
