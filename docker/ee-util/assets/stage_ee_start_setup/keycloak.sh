@@ -128,7 +128,7 @@ if [ ! -z $BS_SAML_CLIENTID ]; then
     $KCADM delete clients/$BS_SAML_CLIENTID -r ElexisEnvironment
 fi
 
-if [[ $ENABLE_BOOKStACK == true ]]; then
+if [[ $ENABLE_BOOKSTACK == true ]]; then
     echo -n "$T assert bookstack-saml client ... "
 
     BS_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -s enabled=true -f keycloak/bookstack-saml.json -i)
