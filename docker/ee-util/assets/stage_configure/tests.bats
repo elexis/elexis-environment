@@ -29,7 +29,7 @@
 
 # Is the Bookstack DB accessible
 @test "Check RDBMS_BOOKSTACK_DATABASE accessible" {
-    if [[ $ENABLE_BOOKSTACK == false ]]; then
+    if [ $ENABLE_BOOKSTACK == false ]; then
         skip "Bookstack module not enabled"
     fi
     # Timeout??
@@ -38,7 +38,7 @@
 
 # Is the Nextcloud DB accessible
 @test "Check RDBMS_NEXTCLOUD_DATABASE accessible" {
-    if [[ $ENABLE_NEXTCLOUD == false ]]; then
+    if [ $ENABLE_NEXTCLOUD == false ]; then
         skip "Nextcloud module not enabled"
     fi
     # Timeout??
