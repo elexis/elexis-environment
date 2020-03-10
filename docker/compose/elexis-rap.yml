@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  elexis-rap:
+    image: medevit/elexis-rap:latest
+    environment:
+      - DB_TYPE=$RDBMS_TYPE
+      - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
+      - DB_DATABASE=$RDBMS_ELEXIS_DATABASE
+      - DB_USERNAME=$RDBMS_ELEXIS_USERNAME
+      - DB_PASSWORD=$RDBMS_ELEXIS_PASSWORD
+      - DB_JDBC_PARAMETER_STRING=$RDBMS_ELEXIS_JDBC_PARAMETER_STRING
+      - EE_HOSTNAME
+      - KEYCLOAK_REALM=ElexisEnvironment
+      - KEYCLOAK_RESOURCE=elexis-rap-openid
+      - KEYCLOAK_AUTH_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth
+      - KEYCLOAK_CREDENTIALS_PASSWORD=$X_EE_ELEXIS_RAP_CLIENT_SECRET
+      #- DEVELOPMENT_MODE=true # remove
+    expose:
+      - 8080
+      - 7234
+    networks:
+      - backend
+    logging:  
+      driver: json-file
+      options:
+          max-size: "2M"
+          max-file: "10"

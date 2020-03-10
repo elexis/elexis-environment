@@ -48,7 +48,7 @@ $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
 #
 BROWSER_COND_OTP_FLOW_ID=$($KCADM get authentication/flows -r ElexisEnvironment --format csv --fields id,alias,description --noquotes | grep ,EE\ browser | cut -d "," -f1)
 if [ ! -z $BROWSER_COND_OTP_FLOW_ID ]; then
-    echo -n "$T remove existing browser conditional otp flow ... "
+    echo "$T remove existing browser conditional otp flow ... "
     $KCADM update realms/ElexisEnvironment -s browserFlow='browser' # otherwise removal fails
     $KCADM delete authentication/flows/$BROWSER_COND_OTP_FLOW_ID -r ElexisEnvironment
 fi
@@ -157,4 +157,26 @@ if [[ $ENABLE_NEXTCLOUD == true ]]; then
 
     NC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/cloud/apps/user_saml/saml/metadata -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -s enabled=true -f keycloak/nextcloud-saml.json -i)
     echo "ok $NC_SAML_CLIENTID"
+fi
+
+#
+# ELEXIS-RAP-OPENID
+# Re-create on every startup
+#
+#
+#
+# TODO: Fix HTTP/HTTPS redirectUri Problem
+#
+#
+#
+ER_OPENID_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep elexis-rap-openid | cut -d "," -f1)
+if [ ! -z $ER_OPENID_CLIENTID ]; then
+    echo "$T remove existing elexis-rap-openid client... "
+    $KCADM delete clients/$ER_OPENID_CLIENTID -r ElexisEnvironment
+fi
+
+if [[ $ENABLE_ELEXIS_RAP == true ]]; then
+    echo -n "$T assert elexis-rap-openid client ... "
+    ER_OPENID_CLIENT=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rap-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_RAP_CLIENT_SECRET -s 'redirectUris=["http://'$EE_HOSTNAME'/rap/*"]' -f keycloak/elexis-rap-openid.json -i)
+    echo "ok $ER_OPENID_CLIENT"
 fi
