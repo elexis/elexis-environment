@@ -35,7 +35,7 @@ fi
 # Basic Realm configuration options
 #
 echo "$T Basic ElexisEnvironment realm settings ..."
-$KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true
+$KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true -s loginTheme=elexis
 
 #
 # Provide Elexis-Environment realm keys to other services

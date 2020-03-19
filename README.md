@@ -5,7 +5,7 @@ An integrated Elexis environment providing elexis-server, ldap, single-sign-on, 
 ## Requirements
 
 * A static IP address with a hostname in your domain for the server hosting this environment. This hostname has to be resolvable by all clients.
-* A Linux system as host. Linux behaves different to Windows and OS X w.r.t. network handling. Only in a linux system the web container will see the real IP behind the HTTP requests.
+* A Linux system as host. Linux behaves different to Windows and OS X with respect to network handling. Only in a linux system the web container will see the real IP behind the HTTP requests.
 * A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
 a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
 
@@ -21,9 +21,11 @@ Copy the file `.env.template` to `.env` and adapt the variables to your installa
 
 Be sure to have the values right - re-configuration is NOT supported!
 
+By default only the `elexis-server` service is active. To activate other services, set the respective variable to `true` in section 3 of `.env`.
+
 Execute `./ee setup configure` to generate the files required for startup.
 
-See [ssl configuration](doc/ssl.md) for details on how to create your own certificate to use for this environment.
+See [ssl configuration](docs/ssl.md) for details on how to create your own certificate to use for this environment.
 After acquiring your certificate be sure to adapt `EE_HOSTNAME` in `.env` and copy
 the certificate files to `assets/web/ssl`.
 
@@ -43,6 +45,7 @@ After initial startup, there will be two users available. The admin user with us
 * Keycloak with browser via https://yourhost/keycloak
 * Bookstack with browser via https://yourhost/bookstack (if enabled)
 * Rocketchat with browser via https://yourhost/chat (if enabled)
+* Nextcloud with browser via https://yourhost/cloud (if enabled)
 * Elexis server via https://yourhost/fhir and https://yourhost/services respectively (if enabled)
 
 ### Syncing Elexis Users
@@ -66,3 +69,4 @@ The following docker containers are created:
 - ```ldap``` LDAP server
 - ```rocketchat``` A [chat server](https://rocket.chat/)
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
+- ```nextcloud``` A self-hosted file and productivity platform (see https://nextcloud.com)
