@@ -4,6 +4,8 @@ services:
 
   elexis-rap:
     image: medevit/elexis-rap:latest
+    volumes:
+      - elexis-rap_home:/home/jetty/elexis
     environment:
       - DB_TYPE=$RDBMS_TYPE
       - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
