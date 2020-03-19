@@ -29,3 +29,6 @@ services:
       options:
           max-size: "2M"
           max-file: "10"
+
+volumes:
+  elexis-rap_home:
