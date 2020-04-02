@@ -18,7 +18,7 @@ services:
       - KEYCLOAK_RESOURCE=elexis-rap-openid
       - KEYCLOAK_AUTH_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth
       - KEYCLOAK_CREDENTIALS_PASSWORD=$X_EE_ELEXIS_RAP_CLIENT_SECRET
-      - BASE_URL=/elexis-rap
+      - BASE_URL=/rap
       #- DEVELOPMENT_MODE=true # remove
     expose:
       - 8080
