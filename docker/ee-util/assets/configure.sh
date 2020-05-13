@@ -4,7 +4,7 @@
 # ASSERT ENVIRONMENT-VARIABLES
 #
 NOW=$(date +%s)
-cp /installdir/.env /installdir/.env.bkup.$NOW
+cp -p /installdir/.env /installdir/.env.bkup.$NOW
 mv /installdir/.env /installdir/.env.bkup
 java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env -i EE_VERSION
 
@@ -13,6 +13,10 @@ java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f
 #
 sed -i -e "s/=missing-uuid/=$(uuidgen)/g" /installdir/.env
 
+#
+# Keep original ownership for .env
+#
+chmod --reference=.env.bkup .env
 
 #
 # TEST PRECONDITIONS
