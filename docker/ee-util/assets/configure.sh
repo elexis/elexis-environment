@@ -14,11 +14,6 @@ java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f
 sed -i -e "s/=missing-uuid/=$(uuidgen)/g" /installdir/.env
 
 #
-# Keep original ownership for .env
-#
-chmod --reference=.env.bkup .env
-
-#
 # TEST PRECONDITIONS
 #
 echo "=== Testing environment variables"

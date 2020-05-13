@@ -2,4 +2,4 @@
 touch ${INSTALL_DIR}.env
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh
+docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh
