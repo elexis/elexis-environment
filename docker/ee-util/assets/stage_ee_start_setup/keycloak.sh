@@ -42,6 +42,11 @@ $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s brute
 #
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
 $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
+echo "$T Add realm public key to DB ${RDBMS_ELEXIS_DATABASE}"
+REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
+LASTUPDATE=$(date +%s)000
+MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
+/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" 
 
 #
 # Assert Browser Conditional Otp flow exists and is set as default
@@ -158,6 +163,33 @@ if [[ $ENABLE_NEXTCLOUD == true ]]; then
     NC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/cloud/apps/user_saml/saml/metadata -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -s enabled=true -f keycloak/nextcloud-saml.json -i)
     echo "ok $NC_SAML_CLIENTID"
 fi
+
+#
+# ELEXIS-RCP-OPENID
+# Re-create on every startup
+#
+ERCP_OPENID_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep elexis-rcp-openid | cut -d "," -f1)
+if [ ! -z $ERCP_OPENID_CLIENTID ]; then
+    echo "$T remove existing elexis-rcp-openid client... "
+    $KCADM delete clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment
+fi
+
+if [[ $ENABLE_ELEXIS_RCP == true ]]; then
+    echo -n "$T assert elexis-rcp-openid client ... "
+    RCP_SECRET_UUID=$(uuidgen)
+    echo secret: $RCP_SECRET_UUID
+    ERCP_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rcp-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$RCP_SECRET_UUID -f keycloak/elexis-rcp-openid.json -i)
+    echo "ok $ERCP_OPENID_CLIENTID"
+
+    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Application user, required to log-in'
+    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=doctor
+    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=executive_doctor 
+
+    LASTUPDATE=$(date +%s)000
+    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${RCP_SECRET_UUID}') ON DUPLICATE KEY UPDATE wert = '${RCP_SECRET_UUID}', lastupdate='${LASTUPDATE}'"
+    /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" 
+fi
+
 
 #
 # ELEXIS-RAP-OPENID
