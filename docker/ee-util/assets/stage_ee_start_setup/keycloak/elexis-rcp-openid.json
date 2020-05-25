@@ -1,14 +1,14 @@
 {
     "name": "elexis-rcp-openid",
+    "redirectUris": [
+        "http://localhost/elexis-rcp-callback"
+    ],
     "protocolMappers": [
         {
             "name": "elexisContactId",
             "protocol": "openid-connect",
             "protocolMapper": "oidc-usermodel-attribute-mapper",
             "consentRequired": false,
-            "redirectUris": [
-                "http://localhost/elexis-rcp-callback"
-            ],
             "config": {
                 "userinfo.token.claim": "true",
                 "user.attribute": "elexisContactId",
