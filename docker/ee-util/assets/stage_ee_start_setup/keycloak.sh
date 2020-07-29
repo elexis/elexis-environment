@@ -1,7 +1,5 @@
 #!/bin/bash
-V=7.0.1
-KCADM=/$V/kcadm.sh
-T="[KEYCLOAK] "
+source keycloak_functions.sh
 echo "$T $(date)"
 
 #
@@ -32,7 +30,7 @@ if [ -z $REALMID ]; then
 fi
 
 #
-# Basic Realm configuration options
+# Update ElexisEnvironment Realm configuration
 #
 echo "$T Basic ElexisEnvironment realm settings ..."
 $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true -s loginTheme=elexis
@@ -45,20 +43,22 @@ $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
 echo "$T Add realm public key to DB ${RDBMS_ELEXIS_DATABASE}"
 REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
 LASTUPDATE=$(date +%s)000
+# Put realm public key into elexis database
 MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
-/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" 
+/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
 
 #
 # Assert Browser Conditional Otp flow exists and is set as default
 #
+T="$S (browser dynamic otp flow)"
 BROWSER_COND_OTP_FLOW_ID=$($KCADM get authentication/flows -r ElexisEnvironment --format csv --fields id,alias,description --noquotes | grep ,EE\ browser | cut -d "," -f1)
 if [ ! -z $BROWSER_COND_OTP_FLOW_ID ]; then
-    echo "$T remove existing browser conditional otp flow ... "
+    echo "$T remove existing ... "
     $KCADM update realms/ElexisEnvironment -s browserFlow='browser' # otherwise removal fails
     $KCADM delete authentication/flows/$BROWSER_COND_OTP_FLOW_ID -r ElexisEnvironment
 fi
 
-echo "$T create [EE browser dynamic otp] flow ... "
+echo "$T create flow ... "
 BROWSER_COND_OTP_FLOW_ID=$($KCADM create authentication/flows -r ElexisEnvironment -s alias='EE browser dynamic otp' -s providerId=basic-flow -s description='browser based authentication with conditional otp' -s topLevel=true -i)
 EXECUTION_ID=$($KCADM create authentication/flows/EE%20browser%20dynamic%20otp/executions/execution -r ElexisEnvironment -s provider=auth-cookie -i)
 $KCADM update authentication/flows/EE%20browser%20dynamic%20otp/executions -r ElexisEnvironment -s id=$EXECUTION_ID -f keycloak/browser_cond_otp_flow_cookie.json
@@ -71,12 +71,13 @@ $KCADM update authentication/flows/EE%20browser%20dynamic%20otp/executions -r El
 EXECUTION_ID=$($KCADM create authentication/flows/EE%20Browser%20Dynamic%20Otp%20Forms/executions/execution -r ElexisEnvironment -s provider=auth-conditional-otp-form -i)
 $KCADM update authentication/flows/EE%20browser%20dynamic%20otp/executions -r ElexisEnvironment -s id=$EXECUTION_ID -f keycloak/browser_cond_otp_flow_subflow_condotp.json
 $KCADM create authentication/executions/$EXECUTION_ID/config -r ElexisEnvironment -f keycloak/browser_cond_otp_flow_subflow_condotp_config.json
-echo "$T setting [EE browser dynamic otp] flow as default browser flow ..."
+echo "$T setting as default browser flow ..."
 $KCADM update realms/ElexisEnvironment -s browserFlow='EE browser dynamic otp'
 
 #
 # Assert ldap user storage provider
 #
+T="$S (ldap-storage-provider)"
 LDAP_USP_ID=$($KCADM get components -r ElexisEnvironment --format csv --fields providerId,id,providerType --noquotes | grep org.keycloak.storage.UserStorageProvider\$ | grep ^ldap | cut -d "," -f2)
 if [ -z $LDAP_USP_ID ]; then
     echo -n "$T create ldap storage provider ... "
@@ -102,94 +103,88 @@ $KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=trigger
 # ROCKETCHAT-SAML
 # Re-create on every startup
 #
-RC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep rocketchat-saml\$ | cut -d "," -f1)
-if [ ! -z $RC_SAML_CLIENTID ]; then
-    echo -n "$T remove existing rocketchat saml-client ... "
-    $KCADM delete clients/$RC_SAML_CLIENTID -r ElexisEnvironment
-fi
-
-if [[ $ENABLE_ROCKETCHAT == true ]]; then
-    echo -n "$T assert rocketchat saml-client ... "
-    openssl req -nodes -new -x509 -keyout /rocketchat-saml-private.key -out /rocketchat-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Rocketchat"
-    RC_SAML_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert | sed '1,1d' | sed '$ d')
-
-    RC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=rocketchat-saml -s 'attributes."saml.signing.certificate"='"$RC_SAML_PUBLIC_CERT" -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -s enabled=true -f keycloak/rocketchat-saml.json -i)
+T="$S (rocketchat-saml)"
+RC_SAML_CLIENTID=$(getClientId rocketchat-saml\$)
+if [ -z $RC_SAML_CLIENTID ]; then
+    echo -n "$T create client ... "
+    RC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=rocketchat-saml -i)
     echo "ok $RC_SAML_CLIENTID"
-
-    # see https://rocket.chat/docs/administrator-guides/permissions/ for full list, only using relevant roles
-    $KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Normal user rights. Most users receive this role when registering.'
-    $KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=admin -s 'description=Have access to all settings and administrator tools.'
-    $KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=livechat-agent -s 'description=Agents of livechat. They can answer to livechat requests.'
-    $KCADM create clients/$RC_SAML_CLIENTID/roles -r ElexisEnvironment -s name=livechat-manager -s 'description=Manager of livechat, they can manage agents and guest.'
 fi
+
+echo "$T update client settings ... "
+openssl req -nodes -new -x509 -keyout /rocketchat-saml-private.key -out /rocketchat-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Rocketchat"
+RC_SAML_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert | sed '1,1d' | sed '$ d')
+$KCADM update clients/$RC_SAML_CLIENTID -r ElexisEnvironment -s 'attributes."saml.signing.certificate"='"$RC_SAML_PUBLIC_CERT" -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -f keycloak/rocketchat-saml.json
+# see https://rocket.chat/docs/administrator-guides/permissions/ for full list, only using relevant roles
+createOrUpdateClientRole $RC_SAML_CLIENTID user 'description=Normal user rights. Most users receive this role when registering.'
+createOrUpdateClientRole $RC_SAML_CLIENTID admin 'description=Have access to all settings and administrator tools.'
+createOrUpdateClientRole $RC_SAML_CLIENTID livechat-agent 'description=Agents of livechat. They can answer to livechat requests.'
+createOrUpdateClientRole $RC_SAML_CLIENTID livechat-manager 'description=Manager of livechat, they can manage agents and guest.'
+echo "$T update client enabled=$ENABLE_ROCKETCHAT"
+$KCADM update clients/$RC_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ROCKETCHAT
 
 #
 # BOOKSTACK-SAML
-# Re-create on every startup
 #
-BS_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep bookstack\/saml2\/metadata | cut -d "," -f1)
-if [ ! -z $BS_SAML_CLIENTID ]; then
-    echo -n "$T remove existing bookstack-saml client... "
-    $KCADM delete clients/$BS_SAML_CLIENTID -r ElexisEnvironment
-fi
-
-if [[ $ENABLE_BOOKSTACK == true ]]; then
-    echo -n "$T assert bookstack-saml client ... "
-
-    BS_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -s enabled=true -f keycloak/bookstack-saml.json -i)
+T="$S (bookstack-saml)"
+BS_SAML_CLIENTID=$(getClientId bookstack\/saml2\/metadata)
+if [ -z $BS_SAML_CLIENTID ]; then
+    echo -n "$T create client ... "
+    BS_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -i)
     echo "ok $BS_SAML_CLIENTID"
-
-    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=admin -s 'description=Administrator of the whole application'
-    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=editor -s 'description=User can edit Books, Chapters & Pages'
-    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=viewer -s 'description=User can view books & their content behind authentication'
-    $KCADM create clients/$BS_SAML_CLIENTID/roles -r ElexisEnvironment -s name=public -s 'description=The role given to public visitors if allowed'
 fi
+
+echo "$T update client settings ... "
+$KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -f keycloak/bookstack-saml.json
+createOrUpdateClientRole $BS_SAML_CLIENTID admin 'description=Administrator of the whole application'
+createOrUpdateClientRole $BS_SAML_CLIENTID editor 'description=User can edit Books, Chapters & Pages'
+createOrUpdateClientRole $BS_SAML_CLIENTID viewer 'description=User can view books & their content behind authentication'
+createOrUpdateClientRole $BS_SAML_CLIENTID public 'description=The role given to public visitors if allowed'
+echo "$T update client enabled=$ENABLE_BOOKSTACK"
+$KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_BOOKSTACK
 
 #
 # NEXTCLOUD-SAML
-# Re-create on every startup
 #
-NC_SAML_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep cloud\/apps\/user | cut -d "," -f1)
-if [ ! -z $NC_SAML_CLIENTID ]; then
-    echo -n "$T remove existing nextcloud-saml client... "
-    $KCADM delete clients/$NC_SAML_CLIENTID -r ElexisEnvironment
-fi
-
-if [[ $ENABLE_NEXTCLOUD == true ]]; then
-    echo -n "$T assert nextcloud-saml client ... "
-    openssl req -nodes -new -x509 -keyout /nextcloud-saml-private.key -out /nextcloud-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Nextcloud"
-    NC_SAML_PUBLIC_CERT=$(cat /nextcloud-saml-public.cert | sed '1,1d' | sed '$ d')
-
-    NC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/cloud/apps/user_saml/saml/metadata -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -s enabled=true -f keycloak/nextcloud-saml.json -i)
+T="$S (nexctcloud-saml)"
+NC_SAML_CLIENTID=$(getClientId cloud\/apps\/user)
+if [ -z $NC_SAML_CLIENTID ]; then
+    echo -n "$T create client ... "
+    NC_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/cloud/apps/user_saml/saml/metadata  -i)
     echo "ok $NC_SAML_CLIENTID"
 fi
+
+echo "$T update client settings ... "
+openssl req -nodes -new -x509 -keyout /nextcloud-saml-private.key -out /nextcloud-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Nextcloud"
+NC_SAML_PUBLIC_CERT=$(cat /nextcloud-saml-public.cert | sed '1,1d' | sed '$ d')
+$KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -f keycloak/nextcloud-saml.json
+echo "$T update client enabled=$ENABLE_NEXTCLOUD"
+$KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_NEXTCLOUD
 
 #
 # ELEXIS-RCP-OPENID
 # Re-create on every startup
 #
-ERCP_OPENID_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep elexis-rcp-openid | cut -d "," -f1)
-if [ ! -z $ERCP_OPENID_CLIENTID ]; then
-    echo "$T remove existing elexis-rcp-openid client... "
-    $KCADM delete clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment
-fi
-
-if [[ $ENABLE_ELEXIS_RCP == true ]]; then
-    echo -n "$T assert elexis-rcp-openid client ... "
-    RCP_SECRET_UUID=$(uuidgen)
-    echo secret: $RCP_SECRET_UUID
-    ERCP_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rcp-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$RCP_SECRET_UUID -f keycloak/elexis-rcp-openid.json -i)
+T="$S (elexis-rcp-openid)"
+ERCP_OPENID_CLIENTID=$(getClientId elexis-rcp-openid)
+if [ -z $ERCP_OPENID_CLIENTID ]; then
+    echo -n "$T create client ... "
+    ERCP_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rcp-openid -i)
     echo "ok $ERCP_OPENID_CLIENTID"
-
-    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Application user, required to log-in'
-    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=doctor
-    $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=executive_doctor 
-
-    LASTUPDATE=$(date +%s)000
-    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${RCP_SECRET_UUID}') ON DUPLICATE KEY UPDATE wert = '${RCP_SECRET_UUID}', lastupdate='${LASTUPDATE}'"
-    /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" 
 fi
 
+echo "$T update client settings ... "
+RCP_SECRET_UUID=$(uuidgen)
+echo "$T secret: $RCP_SECRET_UUID"
+$KCADM update clients/$ERCP_OPENID_CLIENTID -s clientAuthenticatorType=client-secret -s secret=$RCP_SECRET_UUID -f keycloak/elexis-rcp-openid.json
+LASTUPDATE=$(date +%s)000
+MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${RCP_SECRET_UUID}') ON DUPLICATE KEY UPDATE wert = '${RCP_SECRET_UUID}', lastupdate='${LASTUPDATE}'"
+/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
+# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Application user, required to log-in'
+# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=doctor
+# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=executive_doctor
+echo "$T update client enabled=$ENABLE_ELEXIS_RCP"
+$KCADM update clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_RCP
 
 #
 # ELEXIS-RAP-OPENID
@@ -198,10 +193,11 @@ fi
 #
 #
 # TODO: Fix HTTP/HTTPS redirectUri Problem
+# TODO: Apply registration update logic
 #
 #
-#
-ER_OPENID_CLIENTID=$($KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep elexis-rap-openid | cut -d "," -f1)
+T="$S (elexis-rap-openid)"
+ER_OPENID_CLIENTID=$(getClientId elexis-rap-openid | cut -d "," -f1)
 if [ ! -z $ER_OPENID_CLIENTID ]; then
     echo "$T remove existing elexis-rap-openid client... "
     $KCADM delete clients/$ER_OPENID_CLIENTID -r ElexisEnvironment
