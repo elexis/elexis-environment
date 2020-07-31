@@ -34,7 +34,7 @@
             "groupOfUniqueNames"
         ],
         "drop.non.existing.groups.during.sync": [
-            "false"
+            "true"
         ]
     }
 }
