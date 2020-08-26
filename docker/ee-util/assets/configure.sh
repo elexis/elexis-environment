@@ -46,7 +46,7 @@ echo "* writing ssl configuration file ..."
 cat <<EOF >/site/certificate.cnf
 # see https://www.switch.ch/pki/manage/request/csr-openssl/
 FQDN=${EE_HOSTNAME}
-ORGNAME=${ORGANISATION_NAME}
+ORGNAME=${ORGANISATION_NAME//__/ }
 ALTNAMES = DNS:\$FQDN
 [ req ]
 default_bits = 2048
