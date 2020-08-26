@@ -6,7 +6,7 @@ CLI_ENTRYPOINT=$(basename $0)
 . "$ROOT_DIR/utils"
 
 export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
-export INSTALL_DIR=${ROOT_DIR}/../
+export INSTALL_DIR=${ROOT_DIR//ee-cli}
 export DOCKER_DIR=${INSTALL_DIR}/docker/compose/
 export SITE_DIR=${INSTALL_DIR}site/
 

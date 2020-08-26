@@ -40,10 +40,10 @@ else
     echo "  skipping dhparam.pem generation"
 fi
 
-if [ ! -f "/site/myserver.cnf" ]; 
+if [ ! -f "/site/certificate.cnf" ]; 
 then
 echo "* writing ssl configuration file ..."
-cat <<EOF >/site/myserver.cnf
+cat <<EOF >/site/certificate.cnf
 # see https://www.switch.ch/pki/manage/request/csr-openssl/
 FQDN=${EE_HOSTNAME}
 ORGNAME=${ORGANISATION_NAME}
@@ -63,15 +63,15 @@ CN = \$FQDN
 subjectAltName = \$ALTNAMES
 EOF
 else
-  echo "  skipping myserver.cnf generation"
+  echo "  skipping certificate.cnf generation"
 fi
 
-if [ ! -f "/site/myserver.csr" ]; 
+if [ ! -f "/site/certificate.csr" ]; 
 then
-    echo "* generating myserver.key/csr"
-    openssl req -new -config /site/myserver.cnf -keyout /site/myserver.key -out /site/myserver.csr
+    echo "* generating certificate.key/csr"
+    openssl req -new -config /site/certificate.cnf -keyout /site/certificate.key -out /site/certificate.csr
 else
-    echo "  skipping myserver.key/csr generation"
+    echo "  skipping certificate.key/csr generation"
 fi
 
 if [ ! -f "/site/bootstrap.ldif" ]; 

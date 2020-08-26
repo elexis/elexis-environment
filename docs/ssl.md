@@ -51,8 +51,7 @@ commands to do so, or this [link](https://gist.github.com/gangsta/9d011dc0da614d
 
 `cat ee_medevit_at.crt CA_bundle.crt >> certificate.crt`
 
-The resulting `certificate.crt` file hast to be copied to `site/` and the
-existing file `site/myserver.key` (your private key) should also be copied to `site/certificate.key`.
+The resulting `certificate.crt` file hast to be copied to `site/`.
 
 Be careful not to loose these files.
 
