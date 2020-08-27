@@ -1,32 +1,89 @@
 #!/usr/bin/env bash
-
-export T="[BACKUP] "
+export T="### [BACKUP]"
 DATE=$(date +"%d%m%Y_%H%M%S")
+BACKUPDIR=${SITE_DIR}backup/$DATE/
+
+function sepline {
+    echo "#####################################################################################"
+}
+
+sepline
+echo "# $DATE Elexis-Environment Backup"
+sepline
+echo "## Checking EE runstate ..."
+
+IFS=$'\n'
+CONTAINER_STATUS=$(docker ps -a --filter label=com.docker.compose.project=elexis-environment --format "{{.ID}} \"{{.Status}}\" {{.Names}}")
+for container in $CONTAINER_STATUS
+do
+    if [[ $container == *"\"Up "* ]]; then
+        echo "!!!! RUNNING CONTAINER: $container"
+        echo "!!!! A container is still running, you have to stop all containers before executing this script."
+        echo "!!!! Exiting."
+        exit 0
+    fi
+done
+
+echo "## Fetching updated docker backup tool ..."
+docker pull -q loomchild/volume-backup
+
+$(mkdir -p ${BACKUPDIR})
+sepline
+echo "## Start Backup to ${BACKUPDIR}"
+sepline
+
+# write backup metainfo
+cat << EOF > ${BACKUPDIR}ee-backup.info
+ELEXIS-ENVIRONMENT-BACKUP
+date:        $(date)
+hostname:    $(hostname -f)
+ee git rev:  $(cd ${INSTALL_DIR}; git log -1 --oneline)
+installdir:  ${INSTALL_DIR}
 
 
+EOF
+docker version >> ${BACKUPDIR}ee-backup.info
+
+#
+# .env file
+#
+echo "$T .env file => "
+FILENAME=${BACKUPDIR}env
+cp ${INSTALL_DIR}.env ${FILENAME}
+
+#
+# /site data
 # 
-# LDAPe
-#
-FILENAME=${SITE_DIR}backup/ldap_slapcat_$DATE.archive
-echo "$T ldap database => $FILENAME"
-${INSTALL_DIR}ee system cmd exec ldap slapcat > ${FILENAME}
+FILENAME=${BACKUPDIR}site_files.tar
+echo "$T /site files => $FILENAME"
+echo $SITE_DIR
+tar -C ${SITE_DIR} -cvf $FILENAME --exclude='./backup/' .
 
 #
-# ROCKETCHAT
-# - Database
-# - File Uploads
+# named volumes
 #
-if [[ $ENABLE_ROCKETCHAT == true ]]; then
-    FILENAME=${SITE_DIR}backup/rocketchat_mongodump_$DATE.archive
-    echo "$T rocketchat database => $FILENAME"
-    ${INSTALL_DIR}ee system cmd exec mongo 'mongodump --db rocketchat --archive' > ${FILENAME}
-    
-    FILENAME=${SITE_DIR}backup/rocketchat_uploads_tar_$DATE.tar.bz2
-    echo "$T rocketchat uploads => $FILENAME"
-    docker run -v elexis-environment_rocketchat_uploads:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
-fi
+VOLUMES=$(docker volume ls --filter label=com.docker.compose.project=elexis-environment --format "{{.Name}}")
+
+for volume in $VOLUMES
+do
+    FILENAME=${BACKUPDIR}NV_${volume}.tar.bz2
+    echo "$T named volume $volume => $FILENAME"
+    docker run -v $volume:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
+done
 
 #
-# BOOKSTACK UPLOADS
-# Switch to remote fs?
+# tar to single file
+#
+FILENAME=${SITE_DIR}backup/ee-backup_${DATE}.tar
+echo "## Create backup file $FILENAME"
+tar -C ${BACKUPDIR} -cvf ${FILENAME} .
+
+echo "## Removing backup dir $BACKUPDIR"
+rm -Rf ${BACKUPDIR}
+
+sepline 
+echo "### FINISHED - file is $FILENAME"
+echo "### !!!!! SQL Databases are NOT part of this backup !!!!! "
+echo "### !!!!!         you have to take care of this     !!!!! "
+sepline
 
