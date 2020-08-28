@@ -3,29 +3,15 @@ export T="### [BACKUP]"
 DATE=$(date +"%d%m%Y_%H%M%S")
 BACKUPDIR=${SITE_DIR}backup/$DATE/
 
-function sepline {
-    echo "#####################################################################################"
-}
+THISDIR=$(cd `dirname $0` && pwd)
+source $THISDIR/common.sh
 
 sepline
 echo "# $DATE Elexis-Environment Backup"
 sepline
-echo "## Checking EE runstate ..."
 
-IFS=$'\n'
-CONTAINER_STATUS=$(docker ps -a --filter label=com.docker.compose.project=elexis-environment --format "{{.ID}} \"{{.Status}}\" {{.Names}}")
-for container in $CONTAINER_STATUS
-do
-    if [[ $container == *"\"Up "* ]]; then
-        echo "!!!! RUNNING CONTAINER: $container"
-        echo "!!!! A container is still running, you have to stop all containers before executing this script."
-        echo "!!!! Exiting."
-        exit 0
-    fi
-done
-
-echo "## Fetching updated docker backup tool ..."
-docker pull -q loomchild/volume-backup
+assert_docker_stopped
+fetch_current_backup_tool
 
 $(mkdir -p ${BACKUPDIR})
 sepline
@@ -47,8 +33,8 @@ docker version >> ${BACKUPDIR}ee-backup.info
 #
 # .env file
 #
-echo "$T .env file => "
 FILENAME=${BACKUPDIR}env
+echo "$T .env file => $FILENAME"
 cp ${INSTALL_DIR}.env ${FILENAME}
 
 #
@@ -56,8 +42,7 @@ cp ${INSTALL_DIR}.env ${FILENAME}
 # 
 FILENAME=${BACKUPDIR}site_files.tar
 echo "$T /site files => $FILENAME"
-echo $SITE_DIR
-tar -C ${SITE_DIR} -cvf $FILENAME --exclude='./backup/' .
+tar -C ${SITE_DIR} -cf $FILENAME --exclude './.gitignore' --exclude './README.md' --exclude='./backup/' .
 
 #
 # named volumes
@@ -75,8 +60,8 @@ done
 # tar to single file
 #
 FILENAME=${SITE_DIR}backup/ee-backup_${DATE}.tar
-echo "## Create backup file $FILENAME"
-tar -C ${BACKUPDIR} -cvf ${FILENAME} .
+echo "## Create ee-backup file $FILENAME"
+tar -C ${BACKUPDIR} -cf ${FILENAME} .
 
 echo "## Removing backup dir $BACKUPDIR"
 rm -Rf ${BACKUPDIR}

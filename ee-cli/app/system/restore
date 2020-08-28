@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+# Restore the elexis-environment volumes from a backup directory or tar-file
+export T="### [RESTORE]"
+SOURCE=$1
+THISDIR=$(cd `dirname $0` && pwd)
+source $THISDIR/common.sh
+
+# test arg not empty
+if [ -z "$SOURCE" ]
+then
+      echo "Missing required argument: backup directory location or tar file"
+      exit -1
+fi
+SOURCE_TYPE=$(file -bI $SOURCE)
+
+sepline
+echo "# Elexis-Environment Restore"
+sepline
+
+assert_docker_stopped
+fetch_current_backup_tool
+
+# test file types, if tar untar to tempdir
+SOURCE_DIR=""
+if [ "application/x-tar; charset=binary" = "$SOURCE_TYPE" ]; then
+    SOURCE_DIR=$(mktemp -d -t ee-restore-XXXXXXXXXX)
+    echo "## Untaring file to $SOURCE_DIR ..."
+    tar xf $SOURCE -C $SOURCE_DIR
+elif [ "inode/directory; charset=binary" = "$SOURCE_TYPE" ]; then
+    SOURCE_DIR=$SOURCE
+else 
+    echo "Invalid file parameter $SOURCE ... exiting."
+    exit -1
+fi
+
+echo "## Source Directory is $SOURCE_DIR"
+
+# Does this directory contain a valid backup?
+if [ ! -f "${SOURCE_DIR}/ee-backup.info" ]; then
+    echo "Invalid backup file or directory. Exiting."
+    exit -2
+fi
+
+sepline
+echo "## Backup Information"
+head -5 ${SOURCE_DIR}/ee-backup.info
+sepline
+
+echo "## Start Restore ..."
+
+#
+# .env file
+#
+FILENAME=${SOURCE_DIR}/env
+echo "$T .env file (will NOT overwrite existing file) <= $FILENAME"
+cp -n ${FILENAME} ${INSTALL_DIR}.env
+
+#
+# /site data
+# 
+FILENAME=${SOURCE_DIR}/site_files.tar
+echo "$T /site files (will NOT overwrite existing files) <= $FILENAME"
+tar -C ${SITE_DIR} -xvkf $FILENAME
+
+#
+# named volumes
+#
+VOLUME_FILES=$(find ${SOURCE_DIR}/NV_* -type f)
+for VOLUME_FILE in $VOLUME_FILES
+do
+    VOLUME_FILENAME=$(basename $VOLUME_FILE)
+    VOLUME_FILENAME_WOEXT=${VOLUME_FILENAME%%.*}
+    VOLUME_NAME=${VOLUME_FILENAME_WOEXT#"NV_"}
+
+    echo "$T named volume $VOLUME_NAME <= $VOLUME_FILENAME"
+    docker run -v ${VOLUME_NAME}:/volume -v ${SOURCE_DIR}:/backup --rm loomchild/volume-backup restore ${VOLUME_NAME}
+done
+
+echo "## Removing source directory $SOURCE_DIR"
+rm -Rf $SOURCE_DIR
+
+sepline 
+echo "### FINISHED"
+echo "### !!!!! SQL Databases were NOT part of this restore !!!!! "
+echo "### !!!!!         you have to take care of this     !!!!! "
+sepline
