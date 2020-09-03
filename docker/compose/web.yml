@@ -39,6 +39,7 @@ services:
       && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_ELEXIS_RAP == "true" ]; then echo 'include conf/elexis-rap.conf;' >> /etc/nginx/modules.conf; fi
+      && if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
       && echo "" > /etc/nginx/ext_modules.conf
       && if [ $ENABLE_EXT_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
@@ -56,6 +57,7 @@ services:
       - ENABLE_ROCKETCHAT
       - ENABLE_ELEXIS_SERVER
       - ENABLE_NEXTCLOUD
+      - ENABLE_SOLR
       - ENABLE_EXT_ELEXIS_SERVER
       - ENABLE_EXT_BOOKSTACK
       - ENABLE_EXT_ROCKETCHAT

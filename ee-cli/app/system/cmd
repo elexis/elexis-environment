@@ -11,5 +11,6 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 [[ $ENABLE_ROCKETCHAT == true ]] && params+=(-f ${DOCKER_DIR}/rocketchat.yml)
 [[ $ENABLE_NEXTCLOUD == true ]] && params+=(-f ${DOCKER_DIR}/nextcloud.yml -f ${DOCKER_DIR}/web_nextcloud.yml)
 [[ $ENABLE_ELEXIS_RAP == true ]] && params+=(-f ${DOCKER_DIR}/elexis-rap.yml)
+[[ $ENABLE_SOLR == true ]] && params+=(-f ${DOCKER_DIR}/solr.yml)
 
 docker-compose -p elexis-environment ${params[@]} "$@"

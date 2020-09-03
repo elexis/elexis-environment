@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+    solr:
+        image: solr:8.5
+        expose:
+            - 8983
+        networks:
+            - backend
+        volumes:
+            - ./assets/solr/configsets/elexis:/opt/solr/server/solr/configsets/elexis:ro
+            - solr_data:/var/solr
+        command:
+            - solr-precreate
+            - elexis
+            - /opt/solr/server/solr/configsets/elexis
+
+volumes:
+    solr_data:
