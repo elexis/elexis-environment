@@ -49,7 +49,8 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s Accounts_RegistrationForm_LinkReplacementText="" \
     -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 \
     -s Site_Name="${ORGANISATION_NAME//__/\ }" \
-    -s Organization_Name="${ORGANISATION_NAME//__/\ }"
+    -s Organization_Name="${ORGANISATION_NAME//__/\ }" \
+    -s RetentionPolicy_Enabled=true
 
 #
 #
