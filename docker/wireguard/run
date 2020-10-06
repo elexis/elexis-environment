@@ -15,6 +15,7 @@ iptables -A POSTROUTING -t nat -j MASQUERADE
 
 PRIVATE_KEY=$(cat /etc/wireguard/private-key)
 PUBLIC_KEY=$(cat /etc/wireguard/private-key | wg pubkey)
+echo $PUBLIC_KEY > /site/pubkey.txt
 echo "Public Key: ${PUBLIC_KEY}"
 
 # generate /etc/wireguard/wg0.conf

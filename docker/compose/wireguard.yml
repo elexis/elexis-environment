@@ -6,6 +6,7 @@ services:
         privileged: true
         volumes:
             - wireguard_conf:/etc/wireguard
+            - ../../site/wireguard/:/site/
         cap_add:
             - NET_ADMIN
             - SYS_MODULE
