@@ -7,6 +7,8 @@ echo "$(date): Check big int conversion ..."
 php /var/www/html/occ db:convert-filecache-bigint
 echo "$(date): Check indices ..."
 php /var/www/html/occ db:add-missing-indices
+echo "$(date): Add missing optional columns ..."
+php /var/www/html/occ db:add-missing-columns
 
 # TODO external storage support aktivieren?
 
