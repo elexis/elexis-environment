@@ -160,6 +160,10 @@ NC_SAML_PUBLIC_CERT=$(cat /nextcloud-saml-public.cert | sed '1,1d' | sed '$ d')
 $KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -f keycloak/nextcloud-saml.json
 echo "$T update client enabled=$ENABLE_NEXTCLOUD"
 $KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_NEXTCLOUD
+createSamlClientMapper $NC_SAML_CLIENTID username saml-user-property-mapper
+createSamlClientMapper $NC_SAML_CLIENTID email saml-user-property-mapper
+createSamlClientMapper $NC_SAML_CLIENTID nextcloudquota saml-user-property-mapper
+createSamlClientMapper $NC_SAML_CLIENTID cn saml-javascript-mapper keycloak/nextcloud-saml-mapper-cn.json
 
 #
 # ELEXIS-RCP-OPENID
