@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+
+  ocrmypdf:
+    image: jbarlow83/ocrmypdf
+    entrypoint: ["python3", "webservice.py"]
+    networks:
+      - backend
+    expose:
+      - 5000
