@@ -11,7 +11,7 @@ then
       echo "Missing required argument: backup directory location or tar file"
       exit -1
 fi
-SOURCE_TYPE=$(file -bI $SOURCE)
+SOURCE_TYPE=$(file -b $SOURCE)
 
 sepline
 echo "# Elexis-Environment Restore"
@@ -22,15 +22,12 @@ fetch_current_backup_tool
 
 # test file types, if tar untar to tempdir
 SOURCE_DIR=""
-if [ "application/x-tar; charset=binary" = "$SOURCE_TYPE" ]; then
+if [ "directory" = "$SOURCE_TYPE" ]; then
+    SOURCE_DIR=$SOURCE
+else 
     SOURCE_DIR=$(mktemp -d -t ee-restore-XXXXXXXXXX)
     echo "## Untaring file to $SOURCE_DIR ..."
     tar xf $SOURCE -C $SOURCE_DIR
-elif [ "inode/directory; charset=binary" = "$SOURCE_TYPE" ]; then
-    SOURCE_DIR=$SOURCE
-else 
-    echo "Invalid file parameter $SOURCE ... exiting."
-    exit -1
 fi
 
 echo "## Source Directory is $SOURCE_DIR"
