@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Restore the elexis-environment volumes from a backup directory or tar-file
 export T="### [RESTORE]"
-SOURCE=$1
+SOURCE="${1/$'\r'/}"
 THISDIR=$(cd `dirname $0` && pwd)
 source $THISDIR/common.sh
 
@@ -11,7 +11,13 @@ then
       echo "Missing required argument: backup directory location or tar file"
       exit -1
 fi
-SOURCE_TYPE=$(file -b $SOURCE)
+
+# check file/directory exists
+if [ ! -e "$SOURCE" ]
+then
+      echo "File or directory does not exist: $SOURCE"
+      exit -1
+fi
 
 sepline
 echo "# Elexis-Environment Restore"
@@ -22,7 +28,7 @@ fetch_current_backup_tool
 
 # test file types, if tar untar to tempdir
 SOURCE_DIR=""
-if [ "directory" = "$SOURCE_TYPE" ]; then
+if [ -d "$SOURCE" ]; then
     SOURCE_DIR=$SOURCE
 else 
     SOURCE_DIR=$(mktemp -d -t ee-restore-XXXXXXXXXX)
