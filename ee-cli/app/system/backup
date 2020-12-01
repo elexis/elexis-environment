@@ -49,11 +49,12 @@ tar -C ${SITE_DIR} -cf $FILENAME --exclude './.gitignore' --exclude './README.md
 #
 VOLUMES=$(docker volume ls --filter label=com.docker.compose.project=elexis-environment --format "{{.Name}}")
 
-for volume in $VOLUMES
+for VOLUME in $VOLUMES
 do
-    FILENAME=${BACKUPDIR}NV_${volume}.tar.bz2
-    echo "$T named volume $volume => $FILENAME"
-    docker run -v $volume:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
+    FILENAME=${BACKUPDIR}NV_${VOLUME}.tar.bz2
+    echo "$T named volume $VOLUME => $FILENAME"
+    docker volume inspect $VOLUME > $FILENAME.inspect
+    docker run -v $VOLUME:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
 done
 
 #
