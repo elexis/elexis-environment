@@ -53,7 +53,6 @@ for VOLUME in $VOLUMES
 do
     FILENAME=${BACKUPDIR}NV_${VOLUME}.tar.bz2
     echo "$T named volume $VOLUME => $FILENAME"
-    docker volume inspect $VOLUME > $FILENAME.inspect
     docker run -v $VOLUME:/volume --rm loomchild/volume-backup backup - > ${FILENAME}
 done
 

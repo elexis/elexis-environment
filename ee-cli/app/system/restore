@@ -2,21 +2,19 @@
 # Restore the elexis-environment volumes from a backup directory or tar-file
 export T="### [RESTORE]"
 SOURCE="${1/$'\r'/}"
-THISDIR=$(cd `dirname $0` && pwd)
+THISDIR=$(cd $(dirname $0) && pwd)
 source $THISDIR/common.sh
 
 # test arg not empty
-if [ -z "$SOURCE" ]
-then
-      echo "Missing required argument: backup directory location or tar file"
-      exit -1
+if [ -z "$SOURCE" ]; then
+    echo "Missing required argument: backup directory location or tar file"
+    exit -1
 fi
 
 # check file/directory exists
-if [ ! -e "$SOURCE" ]
-then
-      echo "File or directory does not exist: $SOURCE"
-      exit -1
+if [ ! -e "$SOURCE" ]; then
+    echo "File or directory does not exist: $SOURCE"
+    exit -1
 fi
 
 sepline
@@ -30,7 +28,7 @@ fetch_current_backup_tool
 SOURCE_DIR=""
 if [ -d "$SOURCE" ]; then
     SOURCE_DIR=$SOURCE
-else 
+else
     SOURCE_DIR=$(mktemp -d -t ee-restore-XXXXXXXXXX)
     echo "## Untaring file to $SOURCE_DIR ..."
     tar xf $SOURCE -C $SOURCE_DIR
@@ -55,34 +53,39 @@ echo "## Start Restore ..."
 # .env file
 #
 FILENAME=${SOURCE_DIR}/env
-echo "$T .env file (will NOT overwrite existing file) <= $FILENAME"
-cp -n ${FILENAME} ${INSTALL_DIR}.env
+echo "$T .env file <= $FILENAME"
+if [ -f "${INSTALL_DIR}.env" ]; then
+    $BACKUP_ENV_NAME="${INSTALL_DIR}.env.$RANDOM"
+    echo "$T Backing up existing .env file to $BACKUP_ENV_NAME"
+    mv ${INSTALL_DIR}.env $BACKUP_ENV_NAME
+fi
+cp ${FILENAME} ${INSTALL_DIR}.env
 
 #
 # /site data
-# 
+#
 FILENAME=${SOURCE_DIR}/site_files.tar
-echo "$T /site files (will NOT overwrite existing files) <= $FILENAME"
-tar -C ${SITE_DIR} -xvkf $FILENAME
+echo "$T /site files (will OVERWRITE existing files) <= $FILENAME"
+tar -C ${SITE_DIR} -xvf --overwrite $FILENAME
 
 #
 # named volumes
 #
 VOLUME_FILES=$(find ${SOURCE_DIR}/NV_* -type f)
-for VOLUME_FILE in $VOLUME_FILES
-do
+for VOLUME_FILE in $VOLUME_FILES; do
     VOLUME_FILENAME=$(basename $VOLUME_FILE)
     VOLUME_FILENAME_WOEXT=${VOLUME_FILENAME%%.*}
     VOLUME_NAME=${VOLUME_FILENAME_WOEXT#"NV_"}
 
     echo "$T named volume $VOLUME_NAME <= $VOLUME_FILENAME"
+    docker volume create --label "com.docker.compose.project=elexis-environment" --label "com.docker.compose.volume=${VOLUME_NAME#"elexis-environment_"}" ${VOLUME_NAME}
     docker run -v ${VOLUME_NAME}:/volume -v ${SOURCE_DIR}:/backup --rm loomchild/volume-backup restore ${VOLUME_NAME}
 done
 
 echo "## Removing source directory $SOURCE_DIR"
 rm -Rf $SOURCE_DIR
 
-sepline 
+sepline
 echo "### FINISHED"
 echo "### !!!!! SQL Databases were NOT part of this restore !!!!! "
 echo "### !!!!!         you have to take care of this     !!!!! "
