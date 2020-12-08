@@ -14,14 +14,12 @@
   <copyField source="content" dest="text"/>
 
   <!-- ELEXIS SPECIFIC-->
+  <!-- lastupdate as represented in the db for the object / to compare actuality -->
+  <field name="lastupdate" type="plong" indexed="false" stored="true" multiValued="false" />
   <!-- the id of the patient in the contact table-->
   <field name="patient_id" type="string" indexed="true" stored="true" multiValued="false"/>
-  <!-- the id of the mandator in the contact table-->
-  <field name="mandator_id" type="string" indexed="true" stored="true" multiValued="false"/>
   <!-- label to show for the corresponding set -->
   <field name="label" type="string" indexed="false" stored="true" multiValued="false" />
-  <!-- lastupdate as represented in the db for the object / to compare actuality -->
-  <field name="lastupdate" type="pdate" indexed="false" stored="true" multiValued="false" />
   <!-- the originating objects creation date -->
   <field name="cr_date" type="pdate" indexed="true" stored="true" multiValued="false"/>
   <!-- END -->

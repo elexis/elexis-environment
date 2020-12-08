@@ -8,12 +8,13 @@ services:
         networks:
             - backend
         volumes:
-            - ./assets/solr/configsets/elexis:/opt/solr/server/solr/configsets/elexis:ro
+            - ./assets/solr/bin/solr-ee-startup:/opt/docker-solr/scripts/solr-ee-startup:ro
+            - ./assets/solr/configsets/el-encounters:/opt/solr/server/solr/configsets/el-encounters:ro
+            - ./assets/solr/configsets/el-letters:/opt/solr/server/solr/configsets/el-letters:ro
+            - ./assets/solr/configsets/el-documents:/opt/solr/server/solr/configsets/el-documents:ro
             - solr_data:/var/solr
         command:
-            - solr-precreate
-            - elexis
-            - /opt/solr/server/solr/configsets/elexis
+            - solr-ee-startup
 
 volumes:
     solr_data:

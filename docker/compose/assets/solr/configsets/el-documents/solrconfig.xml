@@ -3,6 +3,7 @@
 <config>
   <luceneMatchVersion>8.6.3</luceneMatchVersion>
   <lib dir="${solr.install.dir:../../../..}/contrib/extraction/lib" regex=".*\.jar" />
+  <lib dir="${solr.install.dir:../../..}/dist/" regex="solr-cell-\d.*\.jar" />
   <dataDir>${solr.data.dir:}</dataDir>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
   <codecFactory class="solr.SchemaCodecFactory"/>
@@ -97,6 +98,24 @@
       <str name="df">_text_</str>
     </lst>
   </initParams>
+
+  <!-- Solr Cell Update Request Handler
+    http://wiki.apache.org/solr/ExtractingRequestHandler
+    http://amac4.blogspot.com/2013/07/setting-up-tika-extracting-request.html
+    https://lucene.apache.org/solr/guide/8_6/uploading-data-with-solr-cell-using-apache-tika.html
+    -->
+  <requestHandler name="/update/extract" startup="lazy" class="solr.extraction.ExtractingRequestHandler">
+    <lst name="defaults">
+      <str name="lowernames">true</str>
+      <str name="uprefix">ignored_</str>
+
+      <!-- capture link hrefs but ignore div attributes -->
+      <str name="fmap.content">text</str>
+      <str name="captureAttr">true</str>
+      <str name="fmap.a">links</str>
+      <str name="fmap.div">ignored_</str>
+    </lst>
+  </requestHandler>
 
   <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
 
