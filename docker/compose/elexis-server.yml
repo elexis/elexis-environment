@@ -22,16 +22,13 @@ services:
       - backend
     ports:
       - "7234:7234"
+    extra_hosts:
+      - ${EE_HOSTNAME}:${X_EE_HOST_INTERNAL_IP}
     logging:  
       driver: json-file
       options:
           max-size: "2M"
           max-file: "10"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8380/services/system/uptime"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
 
 volumes:
   elexis-server_home:

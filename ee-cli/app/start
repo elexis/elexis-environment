@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+docker pull medevit/eenv-config
+${INSTALL_DIR}ee system cmd up -d --build
