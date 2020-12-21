@@ -28,12 +28,6 @@ then
 fi
 
 #
-# RESOLVE HOSTNAME TO IP
-#
-INTERNAL_IP=$(hostname -i)
-sed -i -e "s/^X_EE_HOST_INTERNAL_IP=.*/X_EE_HOST_INTERNAL_IP=${INTERNAL_IP}/g" /installdir/.env
-
-#
 # PERFORM CONFIGURATION
 #
 echo "=== Preparing configuration files"
