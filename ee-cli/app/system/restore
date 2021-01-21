@@ -79,7 +79,9 @@ for VOLUME_FILE in $VOLUME_FILES; do
 
     echo "$T named volume $VOLUME_NAME <= $VOLUME_FILENAME"
     docker volume create --label "com.docker.compose.project=elexis-environment" --label "com.docker.compose.volume=${VOLUME_NAME#"elexis-environment_"}" ${VOLUME_NAME}
+    mv ${SOURCE_DIR}/$VOLUME_FILENAME ${SOURCE_DIR}/${VOLUME_FILENAME#"NV_"}
     docker run -v ${VOLUME_NAME}:/volume -v ${SOURCE_DIR}:/backup --rm loomchild/volume-backup restore ${VOLUME_NAME}
+    mv ${SOURCE_DIR}/${VOLUME_FILENAME#"NV_"} ${SOURCE_DIR}/$VOLUME_FILENAME
 done
 
 echo "## Removing source directory $SOURCE_DIR"
