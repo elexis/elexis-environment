@@ -1,0 +1,1 @@
+This directory contains EE backups done via webmin or `ee system backup` 
