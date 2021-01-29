@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+${INSTALL_DIR}ee system cmd exec $1 sh
