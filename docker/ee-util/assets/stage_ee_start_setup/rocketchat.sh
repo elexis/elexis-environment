@@ -100,6 +100,21 @@ if [ -z "$EXISTING" ]; then
 fi
 echo $EXISTING
 
+#
+#
+# Pre-Configure Federation
+#
+#
+echo "$T Print Federation Public Key ..."
+java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v FEDERATION_Public_Key
+echo "$T Set Federation domain ..."
+java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v -s FEDERATION_Domain=$EE_HOSTNAME
+
+#
+#
+# Log Out
+#
+#
 echo "$T Log-Out as RocketChatAdmin..."
 curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" $RC_BASEURL/api/v1/logout
 
