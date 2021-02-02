@@ -23,7 +23,7 @@ services:
     ports:
       - "7234:7234"
     extra_hosts:
-      - ${EE_HOSTNAME}:${X_EE_HOST_INTERNAL_IP}
+      - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
     logging:  
       driver: json-file
       options:
