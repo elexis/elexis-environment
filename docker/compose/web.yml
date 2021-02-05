@@ -23,11 +23,6 @@ services:
       - 636:636 # ldaps
     expose:
       - 8443 # ssl proxy-protocol to wireguard
-    logging:  
-      driver: json-file
-      options:
-          max-size: "2M"
-          max-file: "10"
     depends_on:
       - ldap
       - keycloak

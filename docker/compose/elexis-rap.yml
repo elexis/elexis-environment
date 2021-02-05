@@ -25,11 +25,6 @@ services:
       - 7234
     networks:
       - backend
-    logging:  
-      driver: json-file
-      options:
-          max-size: "2M"
-          max-file: "10"
 
 volumes:
   elexis-rap_home:

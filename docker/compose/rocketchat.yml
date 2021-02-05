@@ -10,11 +10,6 @@ services:
       - rocketchat_uploads:/app/uploads
     networks:
       - backend
-    logging:  
-      driver: json-file
-      options:
-          max-size: "2M"
-          max-file: "10"
     environment:
       - ADMIN_USERNAME=RocketChatAdmin # must be different to $ADMIN_USERNAME, else blocks this account
       - ADMIN_PASS=$ADMIN_PASSWORD

@@ -24,11 +24,6 @@ services:
       - "7234:7234"
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
-    logging:  
-      driver: json-file
-      options:
-          max-size: "2M"
-          max-file: "10"
 
 volumes:
   elexis-server_home:

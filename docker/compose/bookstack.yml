@@ -8,11 +8,6 @@ services:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:
      - 80
-    logging: 
-      driver: json-file
-      options:
-        max-size: "2M"
-        max-file: "10"
     networks:
       - backend
     environment:
