@@ -16,6 +16,8 @@ services:
       - EE_HOSTNAME
       - ORGANISATION_NAME
       - REDMINE_APIKEY
+      - MIS_APIKEY
+      - MIS_PROJECTID
     expose:
       - 8380
     networks:
