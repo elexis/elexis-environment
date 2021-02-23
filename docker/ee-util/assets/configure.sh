@@ -1,4 +1,19 @@
 #!/bin/bash
+set -x
+# parse arguments
+POSITIONAL=()
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+    -ni|--non-interactive)
+    NON_INTERACTIVE=true
+    shift # past argument
+    ;;
+esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 
 #
 # ASSERT ENVIRONMENT-VARIABLES
@@ -6,7 +21,7 @@
 NOW=$(date +%s)
 cp -p /installdir/.env /installdir/.env.bkup.$NOW
 mv /installdir/.env /installdir/.env.bkup
-java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env -i EE_VERSION
+java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f /installdir/.env ${NON_INTERACTIVE:+-a NoNoNoNo}
 
 #
 # REPLACING UUID TEMPLATE VARIABLES
