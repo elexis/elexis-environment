@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 # parse arguments
 POSITIONAL=()
 while [[ $# -gt 0 ]]
