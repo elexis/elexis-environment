@@ -1,4 +1,4 @@
-FROM nextcloud:19-fpm-alpine
+FROM nextcloud:21-fpm-alpine
 
 RUN apk add --no-cache procps libsmbclient imagemagick
 # https://www.reddit.com/r/NextCloud/comments/9e5ljv/nextcloud_and_phpfpm_adjustments/
