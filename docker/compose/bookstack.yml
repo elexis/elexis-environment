@@ -30,6 +30,8 @@ services:
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true
       - APP_DEBUG=true
+    extra_hosts:
+      - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
 
 volumes:
   bookstack_storage_uploads:
