@@ -34,6 +34,9 @@ function createSamlClientMapper() {
         if [ "saml-javascript-mapper" = "$3" ]
         then
             $KCADM create clients/$1/protocol-mappers/models -r ElexisEnvironment -s name=$2 -s protocol=saml -s protocolMapper=$3 -f $4
+        elif [ "saml-role-list-mapper" = "$3" ]
+        then
+            $KCADM create clients/$1/protocol-mappers/models -r ElexisEnvironment -s name=$2 -s protocol=saml -s protocolMapper=$3 -f $4
         else
             $KCADM create clients/$1/protocol-mappers/models -r ElexisEnvironment -s name=$2 -s protocol=saml -s protocolMapper=$3 -s 'config."attribute.nameformat"=Basic' -s 'config."user.attribute"='"$2" -s 'config."attribute.name"='"$2"
         fi

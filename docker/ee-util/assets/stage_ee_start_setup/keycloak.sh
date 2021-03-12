@@ -101,7 +101,6 @@ $KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=trigger
 
 #
 # ROCKETCHAT-SAML
-# Re-create on every startup
 #
 T="$S (rocketchat-saml)"
 RC_SAML_CLIENTID=$(getClientId rocketchat-saml\$)
@@ -136,6 +135,10 @@ fi
 
 echo "$T update client settings ... "
 $KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -f keycloak/bookstack-saml.json
+createSamlClientMapper $BS_SAML_CLIENTID username saml-user-property-mapper
+createSamlClientMapper $BS_SAML_CLIENTID email saml-user-property-mapper
+createSamlClientMapper $BS_SAML_CLIENTID cn saml-javascript-mapper keycloak/bookstack-saml-mapper-cn.json
+createSamlClientMapper $BS_SAML_CLIENTID role saml-role-list-mapper keycloak/bookstack-saml-mapper-role.json
 createOrUpdateClientRole $BS_SAML_CLIENTID admin 'description=Administrator of the whole application'
 createOrUpdateClientRole $BS_SAML_CLIENTID editor 'description=User can edit Books, Chapters & Pages'
 createOrUpdateClientRole $BS_SAML_CLIENTID viewer 'description=User can view books & their content behind authentication'

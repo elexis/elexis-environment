@@ -1,0 +1,11 @@
+{
+    "name": "cn",
+    "protocol": "saml",
+    "protocolMapper": "saml-javascript-mapper",
+    "consentRequired": false,
+    "config": {
+        "single": "true",
+        "Script": "user.firstName + ' ' + user.lastName;",
+        "attribute.name": "cn"
+    }
+}
