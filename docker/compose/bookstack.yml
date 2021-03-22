@@ -20,6 +20,7 @@ services:
       - APP_AUTO_LANG_PUBLIC=false # USED?
       - MAIL_DRIVER=smtp
       - MAIL_HOST="$EE_HOST_INTERNAL_IP"
+      - MAIL_PORT=25
       - MAIL_FROM="bookstack@$EE_HOSTNAME"
       - STORAGE_TYPE=local_secure
       - APP_VIEWS_BOOKS=grid
