@@ -18,6 +18,9 @@ services:
       - APP_URL="https://$EE_HOSTNAME/bookstack"
       - APP_LANG=de # USED?
       - APP_AUTO_LANG_PUBLIC=false # USED?
+      - MAIL_DRIVER=smtp
+      - MAIL_HOST="$EE_HOST_INTERNAL_IP"
+      - MAIL_FROM="bookstack@$EE_HOSTNAME"
       - STORAGE_TYPE=local_secure
       - APP_VIEWS_BOOKS=grid
       - AUTH_METHOD=saml2
