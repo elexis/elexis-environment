@@ -33,7 +33,8 @@ fi
 # Update ElexisEnvironment Realm configuration
 #
 echo "$T Basic ElexisEnvironment realm settings ..."
-$KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true -s loginTheme=elexis
+$KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true -s loginTheme=elexis \
+    -s smtpServer.host=$EE_HOST_INTERNAL_IP  -s smtpServer.from=keycloak@$EE_HOSTNAME -s smtpServer.auth=false -s smtpServer.ssl=false
 
 #
 # Provide Elexis-Environment realm keys to other services
