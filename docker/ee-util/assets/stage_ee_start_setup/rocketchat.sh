@@ -50,6 +50,9 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 \
     -s Site_Name="${ORGANISATION_NAME//__/\ }" \
     -s Organization_Name="${ORGANISATION_NAME//__/\ }" \
+    -s SMTP_Host="${EE_HOST_INTERNAL_IP}" \
+    -s SMTP_Port="25" \
+    -s From_Email="rocketchat@${EE_HOSTNAME}" \
     -s RetentionPolicy_Enabled=true
 
 #

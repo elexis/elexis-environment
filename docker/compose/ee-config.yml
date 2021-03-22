@@ -11,6 +11,7 @@ services:
         - keycloak
     environment:
       - EE_HOSTNAME
+      - EE_HOST_INTERNAL_IP
       - ADMIN_PASSWORD
       - ORGANISATION_NAME
       - ORGANSATION_DOMAIN
