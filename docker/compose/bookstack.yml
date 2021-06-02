@@ -6,6 +6,8 @@ services:
     image: marcode79/bookstack:0.31.8
     volumes:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
+     - ../bookstack/resources/:/var/www/bookstack/resources/:ro
+     - ../bookstack/public/dist/:/var/www/bookstack/public/dist/:ro
     expose:
      - 8080
     networks:

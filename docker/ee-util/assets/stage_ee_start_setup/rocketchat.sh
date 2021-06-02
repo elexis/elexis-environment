@@ -34,7 +34,20 @@ USER_ID=$(echo $RESPONSE | jq -r .data.me._id)
 #
 echo "$T Assert asset.background image ... "
 # https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
-curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.jpg" $RC_BASEURL/api/v1/assets.setAsset
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "logo=@rocketchat/ee-logo-2x.png" $RC_BASEURL/api/v1/assets.setAsset
+echo "\n"
+
+#
+#
+# Assert Custom_Script_Logged_In
+#
+#
+echo "$T Assert Custom_Script_Logged_In ... "
+THEME_JS=$(cat ./rocketchat/theme-custom.min.js)
+SHA_256_HASH=$(echo -n $ADMIN_PASSWORD | sha256sum | cut -d' ' -f 1)
+# https://developer.rocket.chat/api/rest-api/methods/settings/update
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "X-2fa-code: $SHA_256_HASH" -H "X-2fa-method: password" -H "Content-type: application/json" $RC_BASEURL/api/v1/settings/Custom_Script_Logged_In -d '{"value":"'"$THEME_JS"'"}'
+
 echo "\n"
 
 #
@@ -43,6 +56,7 @@ echo "\n"
 #
 #
 echo "$T Assert basic configuration ... "
+THEME_CSS=$(cat ./rocketchat/theme-custom.css)
 java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
     -s Accounts_PasswordReset=false \
     -s Accounts_RegistrationForm=Disabled \
@@ -53,7 +67,8 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s SMTP_Host="${EE_HOST_INTERNAL_IP}" \
     -s SMTP_Port="25" \
     -s From_Email="rocketchat@${EE_HOSTNAME}" \
-    -s RetentionPolicy_Enabled=true
+    -s RetentionPolicy_Enabled=true \
+    -s theme-custom-css="$THEME_CSS"
 
 #
 #
