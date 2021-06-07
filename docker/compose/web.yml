@@ -27,7 +27,7 @@ services:
       - ldap
       - keycloak
     command: >
-      /bin/sh -c "envsubst < /template/eenv.properties.template > /usr/share/nginx/html/eenv.properties 
+      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json 
       && echo "" > /etc/nginx/modules.conf 
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
@@ -47,6 +47,7 @@ services:
     environment:
       - ORGANISATION_NAME
       - ORGANISATION_BASE_DN
+      - ORGANSATION_DOMAIN
       - LDAP_READONLY_USER_USERNAME
       - LDAP_READONLY_USER_PASSWORD
       - ENABLE_BOOKSTACK
