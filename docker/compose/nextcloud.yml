@@ -19,5 +19,6 @@ services:
 
 # TODO http://netshare.containx.io/docs/cifs
 volumes:
+    # for FPM share usage - see web_nextcloud.yml
     nextcloud_html:
     nextcloud_data:

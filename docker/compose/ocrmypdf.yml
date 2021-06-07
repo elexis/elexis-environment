@@ -3,7 +3,7 @@ version: '3'
 services:
 
   ocrmypdf:
-    image: jbarlow83/ocrmypdf
+    image: jbarlow83/ocrmypdf:v12.0.3
     entrypoint: ["python3", "webservice.py"]
     networks:
       - backend

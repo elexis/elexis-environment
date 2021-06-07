@@ -3,7 +3,7 @@ version: '3'
 services:
 
   elexis-server:
-    image: medevit/elexis-server:latest
+    image: medevit/elexis-server:1.8
     volumes:
       - elexis-server_home:/elexis
     environment:
