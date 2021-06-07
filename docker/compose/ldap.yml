@@ -27,6 +27,7 @@ services:
       - LDAP_TLS=false
       - LDAP_TLS_VERIFY_CLIENT=never
       - LDAP_READONLY_USER=true
+      - DISABLE_CHOWN=true
 
 volumes:
   ldap_storage:

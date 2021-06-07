@@ -1,4 +1,4 @@
-# Elexis-Environment (EE)
+# Elexis-Environment (EE) R1
 
 An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
 
@@ -7,7 +7,7 @@ An integrated Elexis environment providing elexis-server, ldap, single-sign-on, 
 * A static IP address with a hostname in your domain for the server hosting this environment. This hostname has to be resolvable by all clients.
 * A Linux system as host. Linux behaves different to Windows and OS X with respect to network handling. Only in a linux system the web container will see the real IP behind the HTTP requests.
 * A relational database management system (RDBMS) (tested and developed using MySQL v8.0.16), with
-a database and user for each of the docker containers ``elexis-server`` and ``bookstack``.
+a database and user for each of the docker containers ``keycloak``, ``elexis-server`` and ``bookstack``.
 
 ## Installation
 
