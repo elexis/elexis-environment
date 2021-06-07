@@ -39,6 +39,18 @@ echo "\n"
 
 #
 #
+# Load Custom_Script_Logged_In (Theme setup)
+#
+#
+echo "$T Assert Custom_Script_Logged_In (Theme setup) ... "
+THEME_JS=$(cat ./rocketchat/theme/theme-custom.min.js)
+SHA_256_HASH=$(echo -n $ADMIN_PASSWORD | sha256sum | cut -d' ' -f 1)
+# https://developer.rocket.chat/api/rest-api/methods/settings/update
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "X-2fa-code: $SHA_256_HASH" -H "X-2fa-method: password" -H "Content-type: application/json" $RC_BASEURL/api/v1/settings/Custom_Script_Logged_In -d '{"value":"'"$THEME_JS"'"}'
+echo "\n"
+
+#
+#
 # Basic configuration values
 #
 #
