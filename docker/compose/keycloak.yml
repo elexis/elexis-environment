@@ -10,8 +10,8 @@ services:
       - backend
     expose:
       - 8080 
-    #volumes:
-      #- ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
+    volumes:
+      - ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
     environment:
       - DB_VENDOR=$RDBMS_TYPE
       - DB_ADDR=$RDBMS_HOST
@@ -24,4 +24,4 @@ services:
       - KEYCLOAK_USER=KeycloakAdmin # Fallback local admin
       - KEYCLOAK_PASSWORD=$ADMIN_PASSWORD
       - PROXY_ADDRESS_FORWARDING=true
-      #- KEYCLOAK_DEFAULT_THEME=elexis-environment
+      - KEYCLOAK_DEFAULT_THEME=elexis-environment
