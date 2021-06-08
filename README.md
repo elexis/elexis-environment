@@ -35,8 +35,6 @@ the certificate files to `assets/web/ssl`.
 
 Please see [notes](docs/notes.md) for FAQs and remarks.
 
-## Operation
-
 ### Accessing the services
 
 After initial startup, there will be two users available. The admin user with userid `ADMIN_USERNAME` and your set password, and a `demouser` with password `demouser`.
@@ -47,26 +45,10 @@ After initial startup, there will be two users available. The admin user with us
 * Rocketchat with browser via https://yourhost/chat (if enabled)
 * Nextcloud with browser via https://yourhost/cloud (if enabled)
 * Elexis server via https://yourhost/fhir and https://yourhost/services respectively (if enabled)
-
-### Syncing Elexis Users
-
-To sync users of an existing Elexis database with keycloak, execute `./ee setup sync_users_es_keycloak`. In EE every user must have
-a unique e-mail address. If a user does not have an associated e-mail address, syncing will generate one in the format `userid@ORGANSATION_DOMAIN`.
-
 ### Maintenance
 
 Please see [maintenance](docs/maintenance.md).
 
-## Technical details
+## Development and Technical details
 
-### Docker containers
-
-The following docker containers are created:
-
-- ```web``` SSL terminating reverse proxy and static resource provider
-- ```elexis-server``` Elexis-Server instance
-- ```keycloak``` Single-Sign-On and User-Management solution
-- ```ldap``` LDAP server
-- ```rocketchat``` A [chat server](https://rocket.chat/)
-- ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
-- ```nextcloud``` A self-hosted file and productivity platform (see https://nextcloud.com)
+Please see [development](docs/development.md).
