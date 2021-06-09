@@ -35,8 +35,7 @@
         "display.on.consent.screen": "false",
         "saml_name_id_format": "username",
         "saml_signature_canonicalization_method": "http://www.w3.org/2001/10/xml-exc-c14n#",
-        "saml.onetimeuse.condition": "false",
-        "login_theme": "elexis-environment"
+        "saml.onetimeuse.condition": "false"
     },
     "authenticationFlowBindingOverrides": {},
     "fullScopeAllowed": false,
