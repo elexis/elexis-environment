@@ -231,7 +231,7 @@ const elxsNavigation = {
         document.head.appendChild(styles);
     },
     loadConfig() {
-        const url = '/web-config.json';
+        const url = '/.eenv.properties.json';
         return fetch(url)
             .then((resp) => resp.json())
             .then((data) => data)

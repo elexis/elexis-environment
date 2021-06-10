@@ -32,9 +32,20 @@ USER_ID=$(echo $RESPONSE | jq -r .data.me._id)
 # Assert Styling
 #
 #
-echo "$T Assert asset.background image ... "
+echo "$T Assert asset.logo image (Theme setup) ... "
 # https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
-curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "background=@rocketchat/Login-screen.jpg" $RC_BASEURL/api/v1/assets.setAsset
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "logo=@rocketchat/theme/ee-logo-2x.png" $RC_BASEURL/api/v1/assets.setAsset
+echo "\n"
+
+#
+#
+# Load Custom CSS (Theme setup)
+#
+#
+echo "$T Assert Custom CSS (Theme setup) ... "
+THEME_CSS=$(cat ./rocketchat/theme/theme-custom.css)
+java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
+    -s theme-custom-css="$THEME_CSS"
 echo "\n"
 
 #
