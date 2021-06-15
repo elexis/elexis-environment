@@ -521,9 +521,18 @@ body {
 
 /* LOGIN PART */
 
-#login-card .oauth-login{
-	display: none;
+#login-card .oauth-login  button{
+	background-color: #f2f2f2 !important;
+	color: #484c93 !important;
+	fill: currentColor !important;
+	border: 1px solid #484C93 !important;
+	border-radius: 29px !important;
 }
+
+#login-card .oauth-login button:hover {
+	background-color: #e8e8e8 !important;
+}
+
 
 #login-card {
 	background: #FFFFFF;
