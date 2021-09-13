@@ -12,8 +12,7 @@
     if [ $ENABLE_ELEXIS_SERVER == false ]; then
         skip "Elexis-Server module not enabled"
     fi
-    # Timeout??
-    ./usql ${RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "SELECT 1=1"
+    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "SELECT 1=1"
 }
 
 # Does an Elexis database exist here? New not yet supported.
@@ -23,15 +22,14 @@
     fi
 
     MYSQL_STRING="SELECT 12358 AS AVAILABLE FROM CONFIG WHERE PARAM = 'dbversion'"
-    run /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
+    run timeout 5 /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
     echo "output = ${output}"
     [[ "$output" == *"12358"* ]]
 }
 
 # Is the Keycloak DB accessible
 @test "Check RDBMS_KEYCLOAK_DATABASE accessible" {
-    # Timeout??
-    ./usql ${RDBMS_TYPE}://${RDBMS_KEYCLOAK_USERNAME}:${RDBMS_KEYCLOAK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_KEYCLOAK_DATABASE} -c "SELECT 1=1"
+    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_KEYCLOAK_USERNAME}:${RDBMS_KEYCLOAK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_KEYCLOAK_DATABASE} -c "SELECT 1=1"
 }
 
 # Is the Bookstack DB accessible
@@ -39,8 +37,7 @@
     if [ $ENABLE_BOOKSTACK == false ]; then
         skip "Bookstack module not enabled"
     fi
-    # Timeout??
-    ./usql ${RDBMS_TYPE}://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "SELECT 1=1"
+    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "SELECT 1=1"
 }
 
 # Is the Nextcloud DB accessible
@@ -48,8 +45,7 @@
     if [ $ENABLE_NEXTCLOUD == false ]; then
         skip "Nextcloud module not enabled"
     fi
-    # Timeout??
-    ./usql ${RDBMS_TYPE}://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE} -c "SELECT 1=1"
+    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE} -c "SELECT 1=1"
 }
 
 # Is ADMIN_PASSWORD changed ( is it strong? )
