@@ -20,11 +20,9 @@ services:
       - 80:80 #http - redirect to https
       - 443:443 # https
       - 8444:8444 # https - external view
-      - 636:636 # ldaps
     expose:
       - 8443 # ssl proxy-protocol to wireguard
     depends_on:
-      - ldap
       - keycloak
     command: >
       /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json 
@@ -48,8 +46,6 @@ services:
       - ORGANISATION_NAME
       - ORGANISATION_BASE_DN
       - ORGANSATION_DOMAIN
-      - LDAP_READONLY_USER_USERNAME
-      - LDAP_READONLY_USER_PASSWORD
       - ENABLE_BOOKSTACK
       - ENABLE_ROCKETCHAT
       - ENABLE_ELEXIS_SERVER

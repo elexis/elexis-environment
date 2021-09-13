@@ -2,7 +2,6 @@
 DOCKER_DIR=${INSTALL_DIR}/docker/compose/
 
 params=()
-params+=(-f ${DOCKER_DIR}/ldap.yml)
 params+=(-f ${DOCKER_DIR}/web.yml)
 params+=(-f ${DOCKER_DIR}/keycloak.yml)
 params+=(-f ${DOCKER_DIR}/ee-config.yml)

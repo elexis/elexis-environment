@@ -77,31 +77,6 @@ echo "$T setting as default browser flow ..."
 $KCADM update realms/ElexisEnvironment -s browserFlow='EE browser dynamic otp'
 
 #
-# Assert ldap user storage provider
-#
-T="$S (ldap-storage-provider)"
-LDAP_USP_ID=$($KCADM get components -r ElexisEnvironment --format csv --fields providerId,id,providerType --noquotes | grep org.keycloak.storage.UserStorageProvider\$ | grep ^ldap | cut -d "," -f2)
-if [ -z $LDAP_USP_ID ]; then
-    echo -n "$T create ldap storage provider ... "
-    LDAP_USP_ID=$($KCADM create components -r ElexisEnvironment -s name=ldap -s providerId=ldap -s providerType=org.keycloak.storage.UserStorageProvider -s parentId=$REALMID \
-        -s 'config.bindCredential=["'$ADMIN_PASSWORD'"]' -s 'config.bindDn=["'cn=admin,$ORGANISATION_BASE_DN'"]' -s 'config.usersDn=["'ou=people,$ORGANISATION_BASE_DN'"]' -f keycloak/ldap.json -i)
-    echo "ok $LDAP_USP_ID"
-
-    echo -n "$T create group-ldap-mapper ... "
-    LDAP_UPS_GM_ID=$($KCADM create components -r ElexisEnvironment -s name=ldap_groups -s providerId=group-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper \
-        -s parentId=$LDAP_USP_ID -s 'config."groups.dn"=["'ou=groups,$ORGANISATION_BASE_DN'"]' -f keycloak/ldap_groups.json -i)
-    echo "ok $LDAP_UPS_GM_ID"
-
-    echo -n "$T create elexisContactId user-attribute-ldap-mapper ..."
-    LDAP_UPS_UALM_EC_ID=$($KCADM create components -r ElexisEnvironment -s name=elexisContactId -s providerId=user-attribute-ldap-mapper -s providerType=org.keycloak.storage.ldap.mappers.LDAPStorageMapper \
-        -s parentId=$LDAP_USP_ID -s 'config."ldap.attribute"=["elexisContactId"]' -s 'config."user.model.attribute"=["elexisContactId"]' -i)
-    echo "ok $LDAP_UPS_UALM_EC_ID"
-fi
-
-echo "$T trigger synchronization of all users ... "
-$KCADM create -r ElexisEnvironment user-storage/$LDAP_USP_ID/sync?action=triggerFullSync
-
-#
 # ROCKETCHAT-SAML
 #
 T="$S (rocketchat-saml)"

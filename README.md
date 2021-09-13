@@ -1,6 +1,6 @@
 # Elexis-Environment (EE) R1
 
-An integrated Elexis environment providing elexis-server, ldap, single-sign-on, wiki and a chat system.
+An integrated Elexis environment providing elexis-server, single-sign-on, wiki and a chat system.
 
 ## Requirements
 
@@ -39,7 +39,6 @@ Please see [notes](docs/notes.md) for FAQs and remarks.
 
 After initial startup, there will be two users available. The admin user with userid `ADMIN_USERNAME` and your set password, and a `demouser` with password `demouser`.
 
-* LDAP with LDAPS client on ldaps://yourhost:636 
 * Keycloak with browser via https://yourhost/keycloak
 * Bookstack with browser via https://yourhost/bookstack (if enabled)
 * Rocketchat with browser via https://yourhost/chat (if enabled)
