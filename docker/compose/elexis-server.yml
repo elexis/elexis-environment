@@ -5,7 +5,7 @@ services:
   elexis-server:
     image: medevit/elexis-server:1.8
     volumes:
-      - elexis-server_home:/elexis
+      - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:
       - DB_TYPE=$RDBMS_TYPE
       - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
@@ -24,8 +24,11 @@ services:
       - backend
     ports:
       - "7234:7234"
+    logging:                # limit logging, as its done to the mounted volume
+      driver: "local"
+      options:
+        max-size: 20m
+        max-file: "5"
+        compress: "false"
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
-
-volumes:
-  elexis-server_home:
