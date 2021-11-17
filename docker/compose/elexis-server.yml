@@ -24,7 +24,7 @@ services:
       - backend
     ports:
       - "7234:7234"
-    logging:                # limit logging, as its done to the mounted volume
+    logging:                # limit logging, as its already done by ES within home volume
       driver: "local"
       options:
         max-size: 20m

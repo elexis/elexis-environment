@@ -3,7 +3,7 @@ version: '3'
 services:
 
   bookstack:
-    image: marcode79/bookstack:21.05.2-ee
+    image: marcode79/bookstack:21.10.3-ee
     volumes:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:

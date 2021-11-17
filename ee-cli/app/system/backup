@@ -21,10 +21,11 @@ sepline
 # write backup metainfo
 cat << EOF > ${BACKUPDIR}ee-backup.info
 ELEXIS-ENVIRONMENT-BACKUP
-date:        $(date)
-hostname:    $(hostname -f)
-ee git rev:  $(cd ${INSTALL_DIR}; git log -1 --oneline)
-installdir:  ${INSTALL_DIR}
+date:          $(date)
+hostname:      $(hostname -f)
+ee git branch: R1
+ee git rev:    $(cd ${INSTALL_DIR}; git log -1 --oneline)
+installdir:    ${INSTALL_DIR}
 
 
 EOF
