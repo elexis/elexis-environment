@@ -27,8 +27,7 @@ java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f
 # REPLACING UUID TEMPLATE VARIABLES
 # we need a new line for every replaced value in order to re-init a unique id
 #
-sed -i -e "0,/=missing-uuid/{s//=$(uuidgen)/}" /installdir/.env
-sed -i -e "0,/=missing-uuid/{s//=$(uuidgen)/}" /installdir/.env
+sed -i -e "/=missing-uuid/{s//=$(uuidgen)/}" /installdir/.env
 
 #
 # TEST PRECONDITIONS
