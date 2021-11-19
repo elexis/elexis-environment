@@ -13,6 +13,7 @@ services:
       - ../../site/dhparam.pem:/etc/nginx/dhparam.pem:ro
       - ../../site/certificate.key:/etc/nginx/certificate.key:ro
       - ../../site/certificate.crt:/etc/nginx/certificate.crt:ro
+      - ../../site/status.json:/tmp/status.json:ro
     networks:
       - backend
       - myelexis_bridge

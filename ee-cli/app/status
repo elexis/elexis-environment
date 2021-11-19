@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+import argparse
+import datetime
+import json
+import os
+import socket
+import subprocess
+
+import git
+import psutil
+from dotenv import load_dotenv
+from OpenSSL import crypto as c
+from requests import get, put
+from requests.api import put
+
+eeConfig = load_dotenv("${INSTALL_DIR}/.env")
+
+site_status = {}
+
+# site
+site_status["site-uuid"] = os.environ.get('X_EE_SITE_UUID')
+site_status["report-time"] = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+
+# system
+system = {}
+site_status["system"] = system
+
+system['fqdn'] = socket.getfqdn()
+
+boot_time = datetime.datetime.fromtimestamp(psutil.boot_time())
+system['boot-time'] = boot_time.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+system['uname'] = os.uname()
+
+cmd = "tune2fs -l /dev/sda1 | sed -n -e 's/.*created\:\s*//gp'"
+output = subprocess.check_output(cmd, shell=True).strip()
+system['setup-time'] = output.decode()
+
+# system.network
+network = {}
+system['network'] = network
+
+external_ip = get('https://tools.medelexis.ch/myip').text
+network['external-ip'] = external_ip
+
+# system.disk
+disk = {}
+system['disk'] = disk
+
+for partition in psutil.disk_partitions():
+    diskUsage = {}
+    disk[partition.mountpoint] = diskUsage
+    _diskUsage = psutil.disk_usage(partition.mountpoint)
+    diskUsage['total'] = _diskUsage.total
+    diskUsage['used'] = _diskUsage.used
+    diskUsage['free'] = _diskUsage.free
+    diskUsage['percent'] = _diskUsage.percent
+
+# ee
+ee = {}
+site_status['ee'] = ee
+
+repo = git.Repo(os.environ.get('INSTALL_DIR'))
+git = {}
+ee['git'] = git
+git['branch'] = repo.active_branch.name
+git['head-commit'] = str(repo.head.commit)
+
+# ee.config
+config = {}
+ee['config'] = config
+
+config['hostname'] = os.environ.get('EE_HOSTNAME')
+config['organisation-name'] = os.environ.get('ORGANISATION_NAME')
+config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
+config['enable-elexis-rcp'] = os.environ.get('ENABLE_ELEXIS_RCP')
+config['enable-elexis-server'] = os.environ.get('ENABLE_ELEXIS_SERVER')
+config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
+config['enable-rocketchat'] = os.environ.get('ENABLE_ROCKETCHAT')
+
+# ee.site
+site = {}
+ee['site'] = site
+
+certfile = open(os.environ.get('SITE_DIR')+"/certificate.crt", "rb")
+cert = c.load_certificate(c.FILETYPE_PEM, certfile.read())
+cert_not_after = datetime.datetime.strptime(
+    cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
+site['cert-not-after'] = cert_not_after.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+certfile.close
+
+json_dump = json.dumps(site_status, indent=2)
+
+with open(os.environ.get('SITE_DIR')+'/status.json', 'w') as f:
+    json.dump(site_status, f, indent=2)
+
+# upload result
+put_url = "https://ee.medelexis.ch/reports/" + \
+    os.environ.get('X_EE_SITE_UUID')+".json"   
+put(put_url, json=site_status)
