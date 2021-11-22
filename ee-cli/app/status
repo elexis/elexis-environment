@@ -13,8 +13,16 @@ from OpenSSL import crypto as c
 from requests import get, put
 from requests.api import put
 
-eeConfig = load_dotenv("${INSTALL_DIR}/.env")
+parser = argparse.ArgumentParser(description='EE status report')
+parser.add_argument('--output', default=True, action=argparse.BooleanOptionalAction, dest='output',
+                    help='print report')
+parser.add_argument('--generate-report', default=False, action=argparse.BooleanOptionalAction, dest='generatereport',
+                    help='generate report for http access')
+parser.add_argument('--send-report', default=False, action=argparse.BooleanOptionalAction, dest='sendreport',
+                    help='send report to medelexis')
+args = parser.parse_args()
 
+eeConfig = load_dotenv("${INSTALL_DIR}/.env")
 site_status = {}
 
 # site
@@ -31,7 +39,11 @@ boot_time = datetime.datetime.fromtimestamp(psutil.boot_time())
 system['boot-time'] = boot_time.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
 system['uname'] = os.uname()
 
-cmd = "tune2fs -l /dev/sda1 | sed -n -e 's/.*created\:\s*//gp'"
+# determine device behind "/"" partition
+partitions = psutil.disk_partitions(all="false")
+_devices = filter(lambda part: part.mountpoint == '/', partitions)
+device = list(_devices)[0].device
+cmd = "tune2fs -l "+device+" | sed -n -e 's/.*created\:\s*//gp'"
 output = subprocess.check_output(cmd, shell=True).strip()
 system['setup-time'] = output.decode()
 
@@ -88,12 +100,15 @@ cert_not_after = datetime.datetime.strptime(
 site['cert-not-after'] = cert_not_after.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
 certfile.close
 
-json_dump = json.dumps(site_status, indent=2)
+if args.output:
+    json_dump = json.dumps(site_status, indent=2)
+    print(json_dump)
 
-with open(os.environ.get('SITE_DIR')+'/status.json', 'w') as f:
-    json.dump(site_status, f, indent=2)
+if args.generatereport:
+    with open(os.environ.get('SITE_DIR')+'/status.json', 'w') as f:
+        json.dump(site_status, f, indent=2)
 
-# upload result
-put_url = "https://ee.medelexis.ch/reports/" + \
-    os.environ.get('X_EE_SITE_UUID')+".json"   
-put(put_url, json=site_status)
+if args.sendreport:
+    put_url = "https://ee.medelexis.ch/reports/" + \
+        os.environ.get('X_EE_SITE_UUID')+".json"
+    put(put_url, json=site_status)
