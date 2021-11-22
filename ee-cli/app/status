@@ -25,8 +25,10 @@ args = parser.parse_args()
 eeConfig = load_dotenv("${INSTALL_DIR}/.env")
 site_status = {}
 
+SITE_UUID = os.environ.get('X_EE_SITE_UUID') or "missing-uuid"
+
 # site
-site_status["site-uuid"] = os.environ.get('X_EE_SITE_UUID')
+site_status["site-uuid"] = SITE_UUID
 site_status["report-time"] = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f%z')
 
 # system
@@ -37,7 +39,7 @@ system['fqdn'] = socket.getfqdn()
 
 boot_time = datetime.datetime.fromtimestamp(psutil.boot_time())
 system['boot-time'] = boot_time.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-system['uname'] = os.uname()
+system['uname'] = " ".join(os.uname())
 
 # determine device behind "/"" partition
 partitions = psutil.disk_partitions(all="false")
@@ -93,12 +95,16 @@ config['enable-rocketchat'] = os.environ.get('ENABLE_ROCKETCHAT')
 site = {}
 ee['site'] = site
 
-certfile = open(os.environ.get('SITE_DIR')+"/certificate.crt", "rb")
-cert = c.load_certificate(c.FILETYPE_PEM, certfile.read())
-cert_not_after = datetime.datetime.strptime(
-    cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
-site['cert-not-after'] = cert_not_after.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
-certfile.close
+# file does not exist on fresh installation
+try:
+    certfile = open(os.environ.get('SITE_DIR')+"/certificate.crt", "rb")
+    cert = c.load_certificate(c.FILETYPE_PEM, certfile.read())
+    cert_not_after = datetime.datetime.strptime(
+        cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
+    site['cert-not-after'] = cert_not_after.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+    certfile.close
+except:
+    site['cert-not-after'] = "error reading file"
 
 if args.output:
     json_dump = json.dumps(site_status, indent=2)
@@ -109,6 +115,5 @@ if args.generatereport:
         json.dump(site_status, f, indent=2)
 
 if args.sendreport:
-    put_url = "https://ee.medelexis.ch/reports/" + \
-        os.environ.get('X_EE_SITE_UUID')+".json"
+    put_url = "https://ee.medelexis.ch/reports/" + SITE_UUID+".json"
     put(put_url, json=site_status)
