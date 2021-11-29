@@ -41,13 +41,11 @@ boot_time = datetime.datetime.fromtimestamp(psutil.boot_time())
 system['boot-time'] = boot_time.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
 system['uname'] = " ".join(os.uname())
 
-# determine device behind "/"" partition
-partitions = psutil.disk_partitions(all="false")
-_devices = filter(lambda part: part.mountpoint == '/', partitions)
-device = list(_devices)[0].device
-cmd = "tune2fs -l "+device+" | sed -n -e 's/.*created\:\s*//gp'"
-output = subprocess.check_output(cmd, shell=True).strip()
-system['setup-time'] = output.decode()
+# determine installation time via /lost+found
+if os.path.isdir('/lost+found'):
+    lost_and_found = os.stat('/lost+found')
+    lost_and_found_ctime_dt = datetime.datetime.fromtimestamp(lost_and_found.st_ctime)
+    system['installation-time'] = lost_and_found_ctime_dt.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
 
 # system.network
 network = {}
