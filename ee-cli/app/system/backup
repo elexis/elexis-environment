@@ -43,7 +43,7 @@ cp ${INSTALL_DIR}.env ${FILENAME}
 # 
 FILENAME=${BACKUPDIR}site_files.tar
 echo "$T /site files => $FILENAME"
-tar -C ${SITE_DIR} -cf $FILENAME --exclude './.gitignore' --exclude './README.md' --exclude='./backup/' .
+tar -C ${SITE_DIR} -cvf $FILENAME --exclude './.gitignore' --exclude './README.md' --exclude='./backup/' --exclude='*.tar' .
 
 #
 # named volumes
