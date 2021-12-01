@@ -1,5 +1,5 @@
 #!/bin/bash
-V=10.0.2
+V=12.0.4
 KCADM=/$V/kcadm.sh
 S="[KEYCLOAK]"
 T=$S
