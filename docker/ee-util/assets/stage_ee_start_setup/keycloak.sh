@@ -38,6 +38,12 @@ $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s brute
     -s smtpServer.host=$EE_HOST_INTERNAL_IP  -s smtpServer.from=keycloak@$EE_HOSTNAME -s smtpServer.auth=false -s smtpServer.ssl=false
 
 #
+# Master Realm Theme setting
+#
+echo "$T Master realm theme settings ..."
+$KCADM update realms/master -s loginTheme=keycloak -s accountTheme=keycloak -s adminTheme=keycloak -s emailTheme=keycloak
+
+#
 # Provide Elexis-Environment realm keys to other services
 #
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
