@@ -27,7 +27,7 @@ done
 #
 echo -e "$T Assert basic configuration ..."
 java -jar /NextcloudSetter.jar -t -l NextcloudAdmin -p $ADMIN_PASSWORD -u $NC_BASEURL -v \
-    -s theming/name="${ORGANISATION_NAME//__/\ }" -s theming/url="$EE_HOSTNAME/cloud"
+    -s theming/name="Dateien - ${ORGANISATION_NAME//__/\ }" -s theming/url="$EE_HOSTNAME/cloud"
 
 #
 #

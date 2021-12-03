@@ -35,7 +35,8 @@ fi
 echo "$T Basic ElexisEnvironment realm settings ..."
 $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s bruteForceProtected=true \
     -s loginTheme=elexis-environment -s accountTheme=elexis-environment -s adminTheme=keycloak -s emailTheme=elexis-environment \
-    -s smtpServer.host=$EE_HOST_INTERNAL_IP  -s smtpServer.from=keycloak@$EE_HOSTNAME -s smtpServer.auth=false -s smtpServer.ssl=false
+    -s smtpServer.host=$EE_HOST_INTERNAL_IP  -s smtpServer.from=keycloak@$EE_HOSTNAME -s smtpServer.auth=false -s smtpServer.ssl=false \
+    -s registrationAllowed=false -s internationalizationEnabled=true -s defaultLocale=de
 
 #
 # Master Realm Theme setting

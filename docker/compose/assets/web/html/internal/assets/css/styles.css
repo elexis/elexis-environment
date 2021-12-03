@@ -91,10 +91,54 @@ body {
 
 .main-box-wrap{
   padding-top: 4%;
+  width: 33.3%;
 }
+@media(max-width: 767px) {
+  .main-box-wrap{
+    width: 100%;
+  }
+}
+
+.main-box-inner {
+  width: 100%;
+  display: flex;
+}
+
+.main-box-wrap-left .main-box-inner {
+  justify-content: flex-start;
+}
+
+.main-box-wrap-center .main-box-inner{
+  justify-content: center;
+}
+
+.main-box-wrap-right .main-box-inner{
+  justify-content: flex-end;
+}
+
+@media(max-width: 767px) {
+  .main-box-wrap-left .main-box-inner, .main-box-wrap-center .main-box-inner, .main-box-wrap-right .main-box-inner{
+    justify-content: center;
+  }
+}
+
 .main-box-wrap a{
   display: block;
+  max-width: 340px;
+  width: 100%;
 }
+@media(max-width: 1100px) {
+  .main-box-wrap a{
+    max-width: 90%;
+  }
+}
+
+@media(max-width: 767px) {
+  .main-box-wrap a{
+    max-width: 340px;
+  }
+}
+
 .main-box{
   padding-top: 13%;
   padding-bottom: 13%;
@@ -107,8 +151,8 @@ body {
   box-shadow: 0px 0px 20px 2px rgba(112, 112, 112, 0.25);
   border-radius: 4px;
   transition: 0.3s;
-  max-width: 340px;
 }
+
 .main-box img{
   width: 40%;
   max-width: 105px;
@@ -233,7 +277,6 @@ img {
   box-shadow: 0px 0px 20px 2px rgba(112, 112, 112, 0.25);
   border-radius: 4px;
   padding: 24px 40px;
-  margin-right: calc(((100% * 0.33 ) - 30px) * 0.02);
 }
 
 .popup-back-button {
@@ -396,3 +439,8 @@ img {
   overflow: hidden;
 }
 /* POPUP STYLES END */
+
+.enable-card {
+  width: 33.3%;
+  max-width: 340px;
+}

@@ -24,4 +24,10 @@ if [[ $ENABLE_NEXTCLOUD == true ]]; then
     ((exit_status = exit_status || $?))
 fi
 
+if [[ $ENABLE_BOOKSTACK == true ]]; then
+    echo "$B"
+    ./bookstack.sh
+    ((exit_status = exit_status || $?))
+fi
+
 exit $exit_status # 0 if they all succeeded, 1 if any failed

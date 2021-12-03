@@ -39,6 +39,19 @@ echo "\n"
 
 #
 #
+# Load custom favicon
+#
+#
+echo "$T Assert asset.favicon image (Theme setup) ... "
+# https://rocket.chat/docs/developer-guides/rest-api/assets/setasset/
+curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -F "favicon=@rocketchat/theme/favicon.svg" $RC_BASEURL/api/v1/assets.setAsset
+echo "\n"
+echo "Use SVG favicon ... "
+java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BASEURL -v \
+    -s Assets_SvgFavicon_Enable=true
+
+#
+#
 # Load Custom CSS (Theme setup)
 #
 #
@@ -71,7 +84,7 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s Accounts_RegistrationForm=Disabled \
     -s Accounts_RegistrationForm_LinkReplacementText="" \
     -s API_Enable_Rate_Limiter_Limit_Calls_Default=100 \
-    -s Site_Name="${ORGANISATION_NAME//__/\ }" \
+    -s Site_Name="Chat - ${ORGANISATION_NAME//__/\ }" \
     -s Organization_Name="${ORGANISATION_NAME//__/\ }" \
     -s SMTP_Host="${EE_HOST_INTERNAL_IP}" \
     -s SMTP_Port="25" \
