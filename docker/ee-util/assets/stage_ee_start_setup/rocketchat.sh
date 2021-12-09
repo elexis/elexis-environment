@@ -112,6 +112,7 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
     -s SMTP_Host="${EE_HOST_INTERNAL_IP}" \
     -s SMTP_Port="25" \
     -s From_Email="rocketchat@${EE_HOSTNAME}" \
+    -s LDAP_Enable=false \
     -s RetentionPolicy_Enabled=true
 
 #
