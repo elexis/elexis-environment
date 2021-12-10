@@ -8,8 +8,9 @@ services:
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
       - ./assets/web/html-template:/template:ro
-      - ./assets/web/html/internal/:/usr/share/nginx/html/public/:ro
-      - ./assets/web/html/external/:/usr/share/nginx/html/public_external/:ro
+      - ./assets/web/html/internal/:/usr/share/nginx/html/internal/:ro
+      - ./assets/web/html/external/:/usr/share/nginx/html/external/:ro
+      - ./assets/web/html/both/:/usr/share/nginx/html/both/:ro
       - ../../site/dhparam.pem:/etc/nginx/dhparam.pem:ro
       - ../../site/certificate.key:/etc/nginx/certificate.key:ro
       - ../../site/certificate.crt:/etc/nginx/certificate.crt:ro
