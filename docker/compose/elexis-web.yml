@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+
+  elexis-web-api:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    expose:
+      - 9000
+    volumes:
+      - elexis-web-api_php:/www
+    networks:
+      - backend
+    environment:
+      - APP_NAME="Lumen"
+      - APP_ENV="local"
+      - DB_CONNECTION="mysql"
+      - DB_HOST=$RDBMS_HOST
+      - DB_PORT=$RDBMS_PORT
+      - DB_DATABASE=$RDBMS_ELEXISWEB_DATABASE
+      - DB_USERNAME=$RDBMS_ELEXISWEB_USERNAME
+      - DB_PASSWORD=$RDBMS_ELEXISWEB_PASSWORD
+
+  elexis-web-app:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/app:develop
+    expose: 
+      - 3004
+    networks:
+      - backend
+    depends_on:
+      - keycloak
+      - elexis-server
+    environment:
+      - REACT_APP_API_FHIR_URL=http://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/index.php/fhir/
+      - REACT_APP_API_URL=https://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/index.php/
+      - REACT_APP_TITLE="Medelexis AG"
+      - REACT_APP_CALENDAR_KEY="0126618009-fcs-1635315444"
+
+volumes:
+    # for FPM share usage - see web_nextcloud.yml
+    elexis-web-api_php:

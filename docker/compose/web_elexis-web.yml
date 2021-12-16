@@ -1,0 +1,7 @@
+# Elexis-Web extension for web.yml
+version: '3'
+
+services:
+    web:
+        volumes: 
+            - elexis-web-api_php:/var/www/fpm/elexisweb:ro

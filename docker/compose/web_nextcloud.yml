@@ -4,4 +4,4 @@ version: '3'
 services:
     web:
         volumes:
-            - nextcloud_html:/var/www/html/cloud:ro
+            - nextcloud_html:/var/www/fpm/nextcloud/cloud:ro
