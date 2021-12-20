@@ -12,6 +12,6 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 [[ $ENABLE_ELEXIS_RAP == true ]] && params+=(-f ${DOCKER_DIR}/elexis-rap.yml)
 [[ $ENABLE_SOLR == true ]] && params+=(-f ${DOCKER_DIR}/solr.yml)
 [[ $ENABLE_OCRMYPDF == true ]] && params+=(-f ${DOCKER_DIR}/ocrmypdf.yml)
-[[ $ENABLE_ELEXIS_WEB == true ]] && params+=(-f ${DOCKER_DIR}/elexis-web.yml -f ${DOCKER_DIR}/web_elexis-web.yml)
+[[ $ENABLE_ELEXIS_WEB == true ]] && params+=(-f ${DOCKER_DIR}/elexis-web.yml)
 
 docker-compose -p elexis-environment ${params[@]} "$@"

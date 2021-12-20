@@ -2,6 +2,7 @@ version: '3'
 
 services:
 
+  #php-fpm
   elexis-web-api:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
     expose:
@@ -13,12 +14,38 @@ services:
     environment:
       - APP_NAME="Lumen"
       - APP_ENV="local"
+      - APP_URL="https://$EE_HOSTNAME/api/elexisweb/"
       - DB_CONNECTION="mysql"
       - DB_HOST=$RDBMS_HOST
       - DB_PORT=$RDBMS_PORT
       - DB_DATABASE=$RDBMS_ELEXISWEB_DATABASE
       - DB_USERNAME=$RDBMS_ELEXISWEB_USERNAME
       - DB_PASSWORD=$RDBMS_ELEXISWEB_PASSWORD
+      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
+      - SAML2_AUTOLOAD_FROM_METADATA=false
+      - SAML2_IDP_ENTITYID=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml/descriptor
+      - SAML2_IDP_SSO_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml
+      - SAML2_IDP_SLO_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/sa
+      - SAML2_IDP_X509=MIICmzCCAYMCBgF9gJRVcjANBgkqhkiG9w0BAQsFADARMQ8wDQYDVQQDDAZtYXN0ZXIwHhcNMjExMjAzMTM1NDA0WhcNMzExMjAzMTM1NTQ0WjARMQ8wDQYDVQQDDAZtYXN0ZXIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDDmJUuJLADLBUW7rpLCMc46vlAfz8Yc8vX/wg3bdiDWWSEehFnrDEO1TspQvPGxtoQ976T+mcqVrkGvrCfkUvJg68FRL4MvSYr4TB8o83Q0BY8Ou9NewTUC8ik5Kad+RPMD8LhAnYYUwaCOuttDl557kcoSeeZHIZN8DfsikG+iC5YVt1J1Xzig4G4su+pelj5V2RQOIskodNBGCESVlnvPUzGkOb9fHgTGadPrWSs2smcTElL9lcuQLLK0YGWXxwrhUtixqsOolStuCBZ3LPhNy/S/hGhFQFHrhdun6V5dHDRY03o12i0/ZLl23uua132zzsmtLrd5Xto8t8kvgz1AgMBAAEwDQYJKoZIhvcNAQELBQADggEBAAXS84dQuzwgA3k7PRb/SW1djh0hrjfRSbPSzvgKgje21Id5QfDgbuTMaTUhhapQL1P/uO/UKxCkqyzcvUh9mF6oLbYK2Q+wTwhAD5vH1SCfpbMPyOuLfcftV8lHQarNONM0w8s/mEF1QTiygr11dMLHdHcdkv3itpT5IDddfhoGQadh6ILaysSbsJy4Wm1B4KIC1MZ9CpF/nZfrWaZPJfgIW218Txi//HMl75EihnrGyAN6jNcf/vhM7r0X1by4jwxah38TngwhhKf+FWa1cfxcNEpdu+NI/EVgG8mA+iFMeVHMlqobYMpNwGMkCn+oiY6wqGCxFC6v7BjmCTurkGM=
+      - SAML2_SP_ENTITYID=https://$EE_HOSTNAME/api/webelexis/saml/metadata
+      - SAML2_SP_ACS_URL=https://$EE_HOSTNAME/api/webelexis/saml/acs
+      - SAML2_SP_SLS_URL=https://$EE_HOSTNAME/api/webelexis/saml/sls
+      - SAML2_LOGOUT_ROUTE=/
+      - SAML2_LOGIN_ROUTE=/
+
+
+  elexis-web-api-nginx:
+    image: nginx:1.20-alpine
+    depends_on:
+      - elexis-web-api
+    working_dir: /www
+    expose:
+      - 3005
+    volumes:
+      - elexis-web-api_php:/www
+      - ./assets/elexisweb/etc/nginx:/etc/nginx/conf.d:ro
+    networks:
+      - backend
 
   elexis-web-app:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/app:develop
@@ -30,10 +57,12 @@ services:
       - keycloak
       - elexis-server
     environment:
-      - REACT_APP_API_FHIR_URL=http://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/index.php/fhir/
-      - REACT_APP_API_URL=https://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/index.php/
+      - REACT_APP_API_FHIR_URL=http://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/
+      - REACT_APP_API_URL=https://marcos-mbp-2019.intra.herzpraxis.at/api/elexisweb/
       - REACT_APP_TITLE="Medelexis AG"
       - REACT_APP_CALENDAR_KEY="0126618009-fcs-1635315444"
+      - PUBLIC_URL=/elexisweb/
+      - REACT_APP_AXIOS_LOG=true
 
 volumes:
     # for FPM share usage - see web_nextcloud.yml
