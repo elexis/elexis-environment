@@ -3,7 +3,7 @@ version: '3'
 services:
 
   bookstack:
-    image: marcode79/bookstack:21.10.3-ee
+    image: marcode79/bookstack:21.11.3-ee
     volumes:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:
@@ -33,6 +33,7 @@ services:
       - SAML2_USER_TO_GROUPS=true
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true
+      - SAML2_AUTOLOGIN=true
       - APP_DEBUG=true
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
