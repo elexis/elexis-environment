@@ -199,3 +199,19 @@ if [[ $ENABLE_ELEXIS_RAP == true ]]; then
     ER_OPENID_CLIENT=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rap-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_RAP_CLIENT_SECRET -s 'redirectUris=["http://'$EE_HOSTNAME'/rap/*"]' -f keycloak/elexis-rap-openid.json -i)
     echo "ok $ER_OPENID_CLIENT"
 fi
+
+#
+# ELEXIS-WEB-SAML
+#
+T="$S (elexisweb-api-saml)"
+ESW_SAML_CLIENTID=$(getClientId elexisweb\/saml\/metadata)
+if [ -z $ESW_SAML_CLIENTID ]; then
+    echo -n "$T create client ... "
+    ESW_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/api/elexisweb/saml/metadata -i)
+    echo "ok $ESW_SAML_CLIENTID"
+fi
+
+echo "$T update client settings ... "
+$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -f keycloak/elexisweb-api-saml.json
+echo "$T update client enabled=$ENABLE_ELEXIS_WEB"
+$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_WEB
