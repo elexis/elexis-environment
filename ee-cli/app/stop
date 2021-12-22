@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 ${INSTALL_DIR}ee system cmd stop
-${INSTALL_DIR}ee system cmd rm -f elexis-web-api elexis-web-api-nginx elexis-web-api_php
+${INSTALL_DIR}ee system cmd rm -f elexis-web-api elexis-web-api-nginx elexis-web-app
 docker volume rm -f elexis-environment_elexis-web-api_php
