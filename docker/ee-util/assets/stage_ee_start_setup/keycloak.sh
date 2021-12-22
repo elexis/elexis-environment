@@ -212,6 +212,6 @@ if [ -z $ESW_SAML_CLIENTID ]; then
 fi
 
 echo "$T update client settings ... "
-$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -f keycloak/elexisweb-api-saml.json
+$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/api/elexisweb/saml/metadata -f keycloak/elexisweb-api-saml.json
 echo "$T update client enabled=$ENABLE_ELEXIS_WEB"
 $KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_WEB
