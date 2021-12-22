@@ -1,5 +1,4 @@
 {
-    "clientId": "nextcloud-saml",
     "name": "nextcloud-saml",
     "surrogateAuthRequired": false,
     "enabled": true,

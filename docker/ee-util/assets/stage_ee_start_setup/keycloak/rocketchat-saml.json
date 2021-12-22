@@ -1,5 +1,4 @@
 {
-    "clientId": "rocketchat-saml",
     "name": "rocketchat-saml",
     "surrogateAuthRequired": false,
     "enabled": true,

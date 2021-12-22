@@ -1,5 +1,4 @@
 {
-    "clientId": "bookstack-saml",
     "name": "bookstack-saml",
     "surrogateAuthRequired": false,
     "enabled": true,
