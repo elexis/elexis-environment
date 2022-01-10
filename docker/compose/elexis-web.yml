@@ -33,7 +33,7 @@ services:
       - SAML2_SP_ACS_URL=https://$EE_HOSTNAME/api/elexisweb/saml/acs
       - SAML2_SP_SLS_URL=https://$EE_HOSTNAME/api/elexisweb/saml/sls
       - SAML2_LOGOUT_ROUTE=/
-      - SAML2_LOGIN_ROUTE=/
+      - SAML2_LOGIN_ROUTE=/elexisweb/
       - FHIR_DISABLE_SSL_VERIFY=true # remove in production
 
   elexis-web-api-nginx:
@@ -58,7 +58,7 @@ services:
     environment:
       - REACT_APP_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
       - REACT_APP_API_URL=https://$EE_HOSTNAME/api/elexisweb/
-      - REACT_APP_TITLE="Medelexis AG"
+      - REACT_APP_TITLE=Elexis-Web
       - REACT_APP_CALENDAR_KEY="0126618009-fcs-1635315444"
       - PUBLIC_URL=/elexisweb/
       - REACT_APP_AXIOS_LOG=true
