@@ -97,7 +97,7 @@ fi
 echo "$T update client settings ... "
 openssl req -nodes -new -x509 -keyout /rocketchat-saml-private.key -out /rocketchat-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Rocketchat"
 RC_SAML_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert | sed '1,1d' | sed '$ d')
-$KCADM update clients/$RC_SAML_CLIENTID -r ElexisEnvironment -s 'attributes."saml.signing.certificate"='"$RC_SAML_PUBLIC_CERT" -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -f keycloak/rocketchat-saml.json
+$KCADM update clients/$RC_SAML_CLIENTID -r ElexisEnvironment -s clientId=rocketchat-saml -s 'attributes."saml.signing.certificate"='"$RC_SAML_PUBLIC_CERT" -s adminUrl=https://$EE_HOSTNAME/chat/_saml_metadata/rocketchat-saml -f keycloak/rocketchat-saml.json
 # see https://rocket.chat/docs/administrator-guides/permissions/ for full list, only using relevant roles
 createOrUpdateClientRole $RC_SAML_CLIENTID user 'description=Normal user rights. Most users receive this role when registering.'
 createOrUpdateClientRole $RC_SAML_CLIENTID admin 'description=Have access to all settings and administrator tools.'
@@ -118,7 +118,7 @@ if [ -z $BS_SAML_CLIENTID ]; then
 fi
 
 echo "$T update client settings ... "
-$KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -f keycloak/bookstack-saml.json
+$KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -f keycloak/bookstack-saml.json
 createSamlClientMapper $BS_SAML_CLIENTID username saml-user-property-mapper
 createSamlClientMapper $BS_SAML_CLIENTID email saml-user-property-mapper
 createSamlClientMapper $BS_SAML_CLIENTID cn saml-javascript-mapper keycloak/bookstack-saml-mapper-cn.json
@@ -144,7 +144,7 @@ fi
 echo "$T update client settings ... "
 openssl req -nodes -new -x509 -keyout /nextcloud-saml-private.key -out /nextcloud-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Nextcloud"
 NC_SAML_PUBLIC_CERT=$(cat /nextcloud-saml-public.cert | sed '1,1d' | sed '$ d')
-$KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -f keycloak/nextcloud-saml.json
+$KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/cloud/apps/user_saml/saml/metadata -s 'attributes."saml.signing.certificate"='"$NC_SAML_PUBLIC_CERT" -f keycloak/nextcloud-saml.json
 echo "$T update client enabled=$ENABLE_NEXTCLOUD"
 $KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_NEXTCLOUD
 createSamlClientMapper $NC_SAML_CLIENTID username saml-user-property-mapper
