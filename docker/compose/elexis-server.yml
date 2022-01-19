@@ -18,7 +18,7 @@ services:
       - REDMINE_APIKEY
       - MIS_APIKEY
       - MIS_PROJECTID
-      - DISABLE_WEB_SECURITY=true # https://redmine.medelexis.ch/issues/18009
+      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
     expose:
       - 8380
     networks:

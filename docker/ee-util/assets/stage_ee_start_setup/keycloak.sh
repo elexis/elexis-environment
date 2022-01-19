@@ -185,7 +185,7 @@ $KCADM update clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENA
 #
 # TODO: Fix HTTP/HTTPS redirectUri Problem
 # TODO: Apply registration update logic
-#
+# TODO: REMOVE??
 #
 T="$S (elexis-rap-openid)"
 ER_OPENID_CLIENTID=$(getClientId elexis-rap-openid | cut -d "," -f1)
@@ -199,6 +199,20 @@ if [[ $ENABLE_ELEXIS_RAP == true ]]; then
     ER_OPENID_CLIENT=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rap-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_RAP_CLIENT_SECRET -s 'redirectUris=["http://'$EE_HOSTNAME'/rap/*"]' -f keycloak/elexis-rap-openid.json -i)
     echo "ok $ER_OPENID_CLIENT"
 fi
+
+#
+# ELEXIS-SERVER.FHIR-API (Bearer Only)
+#
+T="$S (elexis-server.fhir-api)"
+ES_FHIR_OPENID_CLIENTID=$(getClientId elexis-server.fhir-api | cut -d "," -f1)
+if [ -z $ES_FHIR_OPENID_CLIENTID ]; then
+    echo -n "$T create client ... "
+    ES_FHIR_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-server.fhir-api -i)
+    echo "ok $ES_FHIR_OPENID_CLIENTID"
+fi
+
+echo "$T update client settings ... "
+$KCADM update clients/$ES_FHIR_OPENID_CLIENTID -r ElexisEnvironment -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_SERVER_CLIENT_SECRET -s bearerOnly=true
 
 #
 # ELEXIS-WEB-SAML
