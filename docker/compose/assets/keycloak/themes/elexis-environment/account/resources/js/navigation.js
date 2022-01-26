@@ -67,7 +67,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 noActiveRow.appendChild(noActiveRowTitle)
                 noActiveRow.appendChild(noActiveRowInner)
             }
-            row.appendChild(noActiveRow)
+            row.appendChild(noActiveRow);
+
+            if (!Object.keys(this.navigationList).some(r => noActiveLinks.indexOf(r) >= 0)) {
+                noActiveRow.style.display='none';
+            }
 
             for (const [key, item] of Object.entries(this.navigationList)) {
                 const link = document.createElement('a');
