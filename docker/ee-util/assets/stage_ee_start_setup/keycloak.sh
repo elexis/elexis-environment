@@ -178,29 +178,6 @@ echo "$T update client enabled=$ENABLE_ELEXIS_RCP"
 $KCADM update clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_RCP
 
 #
-# ELEXIS-RAP-OPENID
-# Re-create on every startup
-#
-#
-#
-# TODO: Fix HTTP/HTTPS redirectUri Problem
-# TODO: Apply registration update logic
-# TODO: REMOVE??
-#
-T="$S (elexis-rap-openid)"
-ER_OPENID_CLIENTID=$(getClientId elexis-rap-openid | cut -d "," -f1)
-if [ ! -z $ER_OPENID_CLIENTID ]; then
-    echo "$T remove existing elexis-rap-openid client... "
-    $KCADM delete clients/$ER_OPENID_CLIENTID -r ElexisEnvironment
-fi
-
-if [[ $ENABLE_ELEXIS_RAP == true ]]; then
-    echo -n "$T assert elexis-rap-openid client ... "
-    ER_OPENID_CLIENT=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rap-openid -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_RAP_CLIENT_SECRET -s 'redirectUris=["http://'$EE_HOSTNAME'/rap/*"]' -f keycloak/elexis-rap-openid.json -i)
-    echo "ok $ER_OPENID_CLIENT"
-fi
-
-#
 # ELEXIS-SERVER.FHIR-API (Bearer Only)
 #
 T="$S (elexis-server.fhir-api)"

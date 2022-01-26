@@ -33,7 +33,6 @@ services:
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_ELEXIS_RAP == "true" ]; then echo 'include conf/elexis-rap.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_OCRMYPDF == "true" ]; then echo 'include conf/ocrmypdf.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexisweb.conf;' >> /etc/nginx/modules.conf; fi
@@ -42,7 +41,6 @@ services:
       && if [ $ENABLE_EXT_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $ENABLE_EXT_ELEXIS_RAP == "true" ]; then echo 'include conf/elexis-rap.conf;' >> /etc/nginx/ext_modules.conf; fi
       && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     environment:
@@ -53,14 +51,12 @@ services:
       - ENABLE_ROCKETCHAT
       - ENABLE_ELEXIS_SERVER
       - ENABLE_NEXTCLOUD
-      - ENABLE_ELEXIS_RAP
       - ENABLE_SOLR
       - ENABLE_ELEXIS_WEB
       - ENABLE_EXT_ELEXIS_SERVER
       - ENABLE_EXT_BOOKSTACK
       - ENABLE_EXT_ROCKETCHAT
       - ENABLE_EXT_NEXTCLOUD
-      - ENABLE_EXT_ELEXIS_RAP
       - ENABLE_OCRMYPDF
 
 networks:
