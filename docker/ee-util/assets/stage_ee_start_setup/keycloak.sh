@@ -192,17 +192,17 @@ echo "$T update client settings ... "
 $KCADM update clients/$ES_FHIR_OPENID_CLIENTID -r ElexisEnvironment -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_SERVER_CLIENT_SECRET -s bearerOnly=true
 
 #
-# ELEXIS-WEB-SAML
+# ELEXIS-WEB-API-OPENID
 #
-T="$S (elexisweb-api-saml)"
-ESW_SAML_CLIENTID=$(getClientId elexisweb\/saml\/metadata)
-if [ -z $ESW_SAML_CLIENTID ]; then
+T="$S (elexis-web-api)"
+ESWA_OPENID_CLIENTID=$(getClientId elexis-web-api)
+if [ -z $ESWA_OPENID_CLIENTID ]; then
     echo -n "$T create client ... "
-    ESW_SAML_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/api/elexisweb/saml/metadata -i)
-    echo "ok $ESW_SAML_CLIENTID"
+    ESWA_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-web-api -i)
+    echo "ok $ESWA_OPENID_CLIENTID"
 fi
 
 echo "$T update client settings ... "
-$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/api/elexisweb/saml/metadata -f keycloak/elexisweb-api-saml.json
+$KCADM update clients/$ESWA_OPENID_CLIENTID -r ElexisEnvironment -s clientId=elexis-web-api -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET -s directAccessGrantsEnabled=false -s 'redirectUris=["/api/elexisweb/oidc/callback"]'
 echo "$T update client enabled=$ENABLE_ELEXIS_WEB"
-$KCADM update clients/$ESW_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_WEB
+$KCADM update clients/$ESWA_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_WEB

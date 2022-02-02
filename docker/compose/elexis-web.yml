@@ -24,17 +24,19 @@ services:
       - DB_DATABASE=$RDBMS_ELEXISWEB_DATABASE
       - DB_USERNAME=$RDBMS_ELEXISWEB_USERNAME
       - DB_PASSWORD=$RDBMS_ELEXISWEB_PASSWORD
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
-      - SAML2_AUTOLOAD_FROM_METADATA=false
-      - SAML2_IDP_ENTITYID=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml/descriptor
-      - SAML2_IDP_SSO_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml
-      - SAML2_IDP_SLO_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/sa
-      - SAML2_SP_ENTITYID=https://$EE_HOSTNAME/api/elexisweb/saml/metadata
-      - SAML2_SP_ACS_URL=https://$EE_HOSTNAME/api/elexisweb/saml/acs
-      - SAML2_SP_SLS_URL=https://$EE_HOSTNAME/api/elexisweb/saml/sls
-      - SAML2_LOGOUT_ROUTE=/
-      - SAML2_LOGIN_ROUTE=/elexisweb/
-      - FHIR_DISABLE_SSL_VERIFY=true # remove in production
+      - OIDC_DUMP_USER_DETAILS=false
+      - OIDC_CLIENT_ID=elexis-web-api
+      - OIDC_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OIDC_AUTH_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OIDC_TOKEN_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
+      - OIDC_LOGOUT_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/logout
+      - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/
+      - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
+      - OIDC_AUTO_REFRESH_TOKEN=false
+      - AUTH_METHOD=oidc
+      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
+      - OIDC_PUBLIC_KEY=jwt-key.key
+      - FHIR_API_URL=https://$EE_HOSTNAME/api/elexisweb/
 
   elexis-web-api-nginx:
     image: nginx:1.20-alpine
