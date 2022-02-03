@@ -36,7 +36,7 @@ services:
       - AUTH_METHOD=oidc
       - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
-      - FHIR_API_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
 
   elexis-web-api-nginx:
     image: nginx:1.20-alpine
