@@ -41,6 +41,7 @@ services:
       && if [ $ENABLE_EXT_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; fi
+      && if [ $ENABLE_EXT_ELEXIS_WEB == "true" ]; then echo 'include conf/elexisweb.conf;' >> /etc/nginx/ext_modules.conf; fi
       && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     environment:
@@ -53,11 +54,12 @@ services:
       - ENABLE_NEXTCLOUD
       - ENABLE_SOLR
       - ENABLE_ELEXIS_WEB
+      - ENABLE_OCRMYPDF
       - ENABLE_EXT_ELEXIS_SERVER
       - ENABLE_EXT_BOOKSTACK
       - ENABLE_EXT_ROCKETCHAT
       - ENABLE_EXT_NEXTCLOUD
-      - ENABLE_OCRMYPDF
+      - ENABLE_EXT_ELEXIS_WEB
 
 networks:
   backend:
