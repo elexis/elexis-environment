@@ -19,7 +19,8 @@ echo "Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
 echo "===================================================================="
 docker pull certbot/certbot
 docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name certbot -v "${SITE_DIR}letsencrypt:/etc/letsencrypt" -v "${INSTALL_DIR}/docker/certbot/:/mnt/certbot/" --env EE_TOOLS_CERTBOT_SHARED_SECRET certbot/certbot certonly \
-   --agree-tos --non-interactive --email sysadmin-ee@medelexis.ch --manual --preferred-challenges=dns --manual-auth-hook /mnt/certbot/manual-auth-hook.sh \
+   --logs-dir /etc/letsencrypt/logs --work-dir /etc/letsencrypt/work --agree-tos --non-interactive \
+   --email sysadmin-ee@medelexis.ch --manual --preferred-challenges=dns --manual-auth-hook /mnt/certbot/manual-auth-hook.sh \
    --manual-cleanup-hook /mnt/certbot/manual-cleanup-hook.sh -d ${EE_HOSTNAME}
 
 if [ ! -f ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/cert.pem ]; then
