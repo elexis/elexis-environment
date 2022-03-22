@@ -1,0 +1,3 @@
+@reboot ~/ee status --no-output --generate-report --send-report
+@hourly sleep $(( RANDOM % 180 )); ~/ee status --no-output --generate-report --send-report
+@weekly sleep $(( RANDOM % 7200 )); ~/ee setup create_refresh_cert
