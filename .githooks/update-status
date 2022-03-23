@@ -1,0 +1,4 @@
+#/usr/bin/env bash
+sleep ${RANDOM:0:2}s
+cd ~
+~/ee status --no-output --generate-report --send-report
