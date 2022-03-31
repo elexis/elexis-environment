@@ -32,7 +32,7 @@ fi
 # if files exist, and are not symlinks to our cert, back them up
 FILE=${SITE_DIR}certificate.crt
 [ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
-ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/cert.pem $FILE
+ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/fullchain.pem $FILE
 
 FILE=${SITE_DIR}certificate.key
 [ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
