@@ -32,7 +32,7 @@ services:
       - OIDC_LOGOUT_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/logout
       - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/
       - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
-      - OIDC_AUTO_REFRESH_TOKEN=false
+      - OIDC_AUTO_REFRESH_TOKEN=true
       - AUTH_METHOD=oidc
       - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
@@ -61,7 +61,6 @@ services:
       - REACT_APP_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
       - REACT_APP_API_URL=https://$EE_HOSTNAME/api/elexisweb/
       - REACT_APP_TITLE=Elexis-Web
-      - REACT_APP_CALENDAR_KEY="0126618009-fcs-1635315444"
       - PUBLIC_URL=/elexisweb/
       - REACT_APP_AXIOS_LOG=true
 
