@@ -25,6 +25,10 @@ fi
 # init script for handling an empty /var/solr
 /opt/docker-solr/scripts/init-var-solr
 
+ORGANISATION_NAME=${ORGANISATION_NAME//__/\ }
+X_EE_SOLR_ADMIN_PASSWORD_HASH=${X_EE_SOLR_ADMIN_PASSWORD_HASH//__/\ }
+/usr/local/bin/envsubst < /template/security.json.template > /var/solr/data/security.json
+
 . /opt/docker-solr/scripts/run-initdb
 
 /opt/docker-solr/scripts/precreate-core el-encounters /opt/solr/server/solr/configsets/el-encounters

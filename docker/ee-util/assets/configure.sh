@@ -32,6 +32,15 @@ awk 'BEGIN { p="/proc/sys/kernel/random/uuid" } /missing-uuid/ { getline uuid < 
 mv /installdir/.env.output /installdir/.env
 rm /installdir/.env.input
 
+# 
+# OTHER variable replacements
+#
+# X_EE_SOLR_ADMIN_PASSWORD_HASH - Custom password hash generated for SOLR
+# contains space, which cannot be written into .env file
+ADMIN_PASSWORD_HASH_WITH_SPACE=$(java -jar /SolrPasswordHash.jar ${ADMIN_PASSWORD})
+ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH_WITH_SPACE//\ /\_\_}
+sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env
+
 #
 # TEST PRECONDITIONS
 #
