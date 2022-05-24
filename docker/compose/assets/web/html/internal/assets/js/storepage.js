@@ -18,10 +18,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 url: '/cloud',
                 title: 'Dateien',
             },
-            ENABLE_ELEXIS_RAP: {
-                url: '/rap',
-                title: 'RAP',
-            },
             ENABLE_SOLR: {
                 url: '/solr',
                 title: 'SOLR',

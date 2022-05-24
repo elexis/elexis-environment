@@ -3,7 +3,7 @@ version: '3'
 services:
 
   elexis-server:
-    image: medevit/elexis-server:1.8
+    image: medevit/elexis-server:master
     volumes:
       - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:
@@ -18,6 +18,8 @@ services:
       - REDMINE_APIKEY
       - MIS_APIKEY
       - MIS_PROJECTID
+      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
+      - OAUTH_SECRET_ELEXIS_SERVER.JAXRS-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
     expose:
       - 8380
     networks:

@@ -1,0 +1,38 @@
+{
+    "authentication": {
+        "class": "solr.MultiAuthPlugin",
+        "schemes": [
+            {
+                "scheme": "bearer",
+                "blockUnknown": true,
+                "class": "solr.JWTAuthPlugin",
+                "wellKnownUrl": "https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration",
+                "clientId": "solr",
+                "redirectUris": "https://${EE_HOSTNAME}/solr/",
+                "rolesClaim": "groups"
+            },
+            {
+                "scheme": "basic",
+                "blockUnknown": true,
+                "class": "solr.BasicAuthPlugin",
+                "credentials": {
+                    "${ADMIN_USERNAME}": "${X_EE_SOLR_ADMIN_PASSWORD_HASH}"
+                },
+                "realm": "${ORGANISATION_NAME}",
+                "forwardCredentials": false
+            }
+        ]
+    },
+    "authorization": {
+        "class": "solr.RuleBasedAuthorizationPlugin",
+        "permissions": [
+            {
+                "name": "security-edit",
+                "role": "admin"
+            }
+        ],
+        "user-role": {
+            "${ADMIN_USERNAME}": "admin"
+        }
+    }
+}
