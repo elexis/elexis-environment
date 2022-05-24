@@ -1,0 +1,3 @@
+@reboot ~/.githooks/update-status
+@hourly ~/.githooks/update-status
+@weekly ~/.githooks/create-refresh-cert

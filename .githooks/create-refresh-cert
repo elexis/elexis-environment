@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+sleep ${RANDOM:0:2}m
+cd ~
+~/ee setup create_refresh_cert
