@@ -7,6 +7,8 @@ services:
             - 8983
         networks:
             - backend
+        depends_on:
+            - keycloak
         volumes:
             - ./assets/solr/bin/solr-ee-startup:/opt/docker-solr/scripts/solr-ee-startup:ro
             - ./assets/solr/bin/envsubst:/usr/local/bin/envsubst:ro
