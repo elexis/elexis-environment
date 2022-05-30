@@ -63,6 +63,33 @@ services:
       - REACT_APP_TITLE=Elexis-Web
       - PUBLIC_URL=/elexisweb/
       - REACT_APP_AXIOS_LOG=true
+      #######
+      - JEST_HEADLESS=true
+      - REACT_APP_SITE_URL=https://$EE_HOSTNAME
+      - JEST_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
+      - JEST_AUTH_USERNAME=marco
+      - JEST_AUTH_PASSWORD=marco
+
+  elexis-web-calendar-app:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/app:develop
+    expose: 
+      - 3004
+    networks:
+      - backend
+    environment:
+      - REACT_APP_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
+      - REACT_APP_API_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - REACT_APP_TITLE=Kalender
+      - PUBLIC_URL=/calendar/
+      - REACT_APP_AXIOS_LOG=true
+      - FULL_WEB=false
+      - REACT_APP_ONLY_AGENDA=true
+      #######
+      - JEST_HEADLESS=true
+      - REACT_APP_SITE_URL=https://$EE_HOSTNAME
+      - JEST_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
+      - JEST_AUTH_USERNAME=marco
+      - JEST_AUTH_PASSWORD=marco
 
 volumes:
     # for FPM share usage - see web_nextcloud.yml
