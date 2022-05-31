@@ -39,4 +39,4 @@ FILE=${SITE_DIR}certificate.key
 ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/privkey.pem $FILE
 
 echo "NGINX send reload signal ... "
-~/ee system cmd exec web nginx -s reload
+${INSTALL_DIR}ee system cmd exec web nginx -s reload
