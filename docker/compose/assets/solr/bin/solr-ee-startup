@@ -37,7 +37,7 @@ X_EE_SOLR_ADMIN_PASSWORD_HASH=${X_EE_SOLR_ADMIN_PASSWORD_HASH//__/\ }
 
 STATUS=0
 while [ $STATUS -ne 200 ]; do
-    echo -n "Waiting for keycloak ..."
+    echo -n "solr-ee-startup: Waiting for keycloak ..."
     sleep 5
     STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration)
     echo " http status is [$STATUS]"

@@ -22,7 +22,6 @@ services:
         environment:
             - EE_HOSTNAME
             - ORGANISATION_NAME
-            - ADMIN_USERNAME
             - X_EE_SOLR_ADMIN_PASSWORD_HASH
 
 volumes:

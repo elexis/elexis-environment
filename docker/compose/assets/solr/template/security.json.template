@@ -4,8 +4,8 @@
         "schemes": [
             {
                 "scheme": "basic",
-                "blockUnknown": true,
                 "class": "solr.BasicAuthPlugin",
+                "blockUnknown": true,
                 "credentials": {
                     "SolrAdmin": "${X_EE_SOLR_ADMIN_PASSWORD_HASH}"
                 },
@@ -14,25 +14,72 @@
             },
             {
                 "scheme": "bearer",
-                "blockUnknown": true,
                 "class": "solr.JWTAuthPlugin",
+                "blockUnknown": true,
+                "realm": "Elexis Environment ${ORGANISATION_NAME}",
                 "wellKnownUrl": "https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration",
                 "clientId": "solr",
                 "redirectUris": "https://${EE_HOSTNAME}/solr/",
-                "rolesClaim": "groups"
+                "rolesClaim": "roles"
             }
         ]
     },
     "authorization": {
-        "class": "solr.RuleBasedAuthorizationPlugin",
+        "class": "solr.MultiAuthRuleBasedAuthorizationPlugin",
+        "schemes": [
+            {
+                "scheme": "basic",
+                "class": "solr.RuleBasedAuthorizationPlugin",
+                "user-role": {
+                    "SolrAdmin": "admin"
+                }
+            },
+            {
+                "scheme": "bearer",
+                "class": "solr.ExternalRoleRuleBasedAuthorizationPlugin"
+            }
+        ],
         "permissions": [
+            {
+                "name": "read",
+                "role": "user"
+            },
+            {
+                "name": "schema-read",
+                "role": "user"
+            },
+            {
+                "name": "schema-edit",
+                "role": "user"
+            },
+            {
+                "name": "config-read",
+                "role": "user"
+            },
+            {
+                "name": "config-edit",
+                "role": "user"
+            },
+            {
+                "name": "collection-admin-read",
+                "role": "user"
+            },
+            {
+                "name": "metrics-read",
+                "role": "user"
+            },
+            {
+                "name": "update",
+                "role": "indexer"
+            },
+            {
+                "name": "security-read",
+                "role": "admin"
+            },
             {
                 "name": "security-edit",
                 "role": "admin"
             }
-        ],
-        "user-role": {
-            "SolrAdmin": "admin"
-        }
+        ]
     }
 }
