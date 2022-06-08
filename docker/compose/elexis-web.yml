@@ -2,8 +2,8 @@ version: '3'
 
 services:
 
-  #php-fpm
-  elexis-web-api:
+  # api-php
+  elexis-web-api-php:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
     volumes:
       - elexis-web-api_php:/www
@@ -30,23 +30,40 @@ services:
       - OIDC_AUTH_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
       - OIDC_TOKEN_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
       - OIDC_LOGOUT_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/logout
-      - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/
+      - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/ # fallback to referrer url
       - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
       - OIDC_AUTO_REFRESH_TOKEN=true
       - AUTH_METHOD=oidc
+      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
+      - OIDC_PUBLIC_KEY=jwt-key.key
+      - FHIR_API_URL=http://$EE_HOSTNAME:8380/fhir
+      - FHIR_DISABLE_SSL_VERIFY=true # remove in production
+
+  # websockets
+  elexis-web-websockets:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    volumes:
+      - elexis-web-api_php:/www
+    entrypoint: php artisan websockets:serve
+    restart: always
+    expose:
+      - 6001
+    networks:
+      - backend
+    environment:
       - BROADCAST_DRIVER=pusher
       - PUSHER_APP_ID=local
       - PUSHER_APP_KEY=local
       - PUSHER_APP_SECRET=local
-      - PUSHER_APP_CLUSTER=eu
-      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
-      - OIDC_PUBLIC_KEY=jwt-key.key
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
+      - PUSHER_APP_HOST_NAME=elexis-web-websockets
+    depends_on:
+      - elexis-web-api-php
 
+  # api-nginx
   elexis-web-api-nginx:
     image: nginx:1.20-alpine
     depends_on:
-      - elexis-web-api
+      - elexis-web-api-php
     working_dir: /www
     expose:
       - 3005
@@ -56,6 +73,7 @@ services:
     networks:
       - backend
 
+  # app
   elexis-web-app:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/app:develop
     expose: 
@@ -69,6 +87,9 @@ services:
       - PUBLIC_URL=/elexisweb/
       - REACT_APP_AXIOS_LOG=true
       - REACT_APP_PUSHER_APP_KEY=local
+      - REACT_APP_PUSHER_APP_WSPATH=api/elexisweb-socket
+      - REACT_APP_PUSHER_APP_WSPORT=80
+      - REACT_APP_PUSHER_APP_WSPORT=443
       #######
       - JEST_HEADLESS=true
       - REACT_APP_SITE_URL=https://$EE_HOSTNAME
@@ -91,6 +112,9 @@ services:
       - FULL_WEB=false
       - REACT_APP_ONLY_AGENDA=true
       - REACT_APP_PUSHER_APP_KEY=local
+      - REACT_APP_PUSHER_APP_WSPATH=api/elexisweb-socket
+      - REACT_APP_PUSHER_APP_WSPORT=80
+      - REACT_APP_PUSHER_APP_WSPORT=443
       #######
       - JEST_HEADLESS=true
       - REACT_APP_SITE_URL=https://$EE_HOSTNAME
