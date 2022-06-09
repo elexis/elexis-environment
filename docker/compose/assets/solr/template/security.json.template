@@ -15,12 +15,13 @@
             {
                 "scheme": "bearer",
                 "class": "solr.JWTAuthPlugin",
+                "principalClaim": "preferred_username",
                 "blockUnknown": true,
-                "realm": "Elexis Environment ${ORGANISATION_NAME}",
+                "realm": "ElexisEnvironment",
                 "wellKnownUrl": "https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration",
                 "clientId": "solr",
                 "redirectUris": "https://${EE_HOSTNAME}/solr/",
-                "rolesClaim": "roles"
+                "rolesClaim": "solr-roles"
             }
         ]
     },
