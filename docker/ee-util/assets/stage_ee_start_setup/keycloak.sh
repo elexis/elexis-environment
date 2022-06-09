@@ -153,31 +153,6 @@ createSamlClientMapper $NC_SAML_CLIENTID nextcloudquota saml-user-property-mappe
 createSamlClientMapper $NC_SAML_CLIENTID cn saml-javascript-mapper keycloak/nextcloud-saml-mapper-cn.json
 
 #
-# ELEXIS-RCP-OPENID
-# Re-create on every startup
-#
-T="$S (elexis-rcp-openid)"
-ERCP_OPENID_CLIENTID=$(getClientId elexis-rcp-openid)
-if [ -z $ERCP_OPENID_CLIENTID ]; then
-    echo -n "$T create client ... "
-    ERCP_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-rcp-openid -i)
-    echo "ok $ERCP_OPENID_CLIENTID"
-fi
-
-echo "$T update client settings ... "
-RCP_SECRET_UUID=$(uuidgen)
-echo "$T secret: $RCP_SECRET_UUID"
-$KCADM update clients/$ERCP_OPENID_CLIENTID -s clientAuthenticatorType=client-secret -s secret=$RCP_SECRET_UUID -f keycloak/elexis-rcp-openid.json
-LASTUPDATE=$(date +%s)000
-MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${RCP_SECRET_UUID}') ON DUPLICATE KEY UPDATE wert = '${RCP_SECRET_UUID}', lastupdate='${LASTUPDATE}'"
-/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Application user, required to log-in'
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=doctor
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=executive_doctor
-echo "$T update client enabled=$ENABLE_ELEXIS_RCP"
-$KCADM update clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_RCP
-
-#
 # ELEXIS-SERVER.FHIR-API (Bearer Only)
 #
 T="$S (elexis-server.fhir-api)"
@@ -205,18 +180,10 @@ fi
 echo "$T update client settings ... "
 $KCADM update clients/$ES_JAXRS_OPENID_CLIENTID -r ElexisEnvironment -s enabled=true -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_SERVER_CLIENT_SECRET -s bearerOnly=true
 
-#
-# ELEXIS-WEB-API-OPENID
-#
-T="$S (elexis-web-api)"
-ESWA_OPENID_CLIENTID=$(getClientId elexis-web-api)
-if [ -z $ESWA_OPENID_CLIENTID ]; then
-    echo -n "$T create client ... "
-    ESWA_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-web-api -i)
-    echo "ok $ESWA_OPENID_CLIENTID"
-fi
+source keycloak_elexis-web.sh
 
-echo "$T update client settings ... "
-$KCADM update clients/$ESWA_OPENID_CLIENTID -r ElexisEnvironment -s clientId=elexis-web-api -s clientAuthenticatorType=client-secret -s secret=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET -s directAccessGrantsEnabled=false -s 'redirectUris=["/api/elexisweb/oidc/callback"]'
-echo "$T update client enabled=$ENABLE_ELEXIS_WEB"
-$KCADM update clients/$ESWA_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_ELEXIS_WEB
+source keycloak_solr.sh
+
+# ELEXIS-RCP-OPENID
+# references solr client in mapper
+source keycloak_elexis-rcp-openid.sh
