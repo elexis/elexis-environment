@@ -18,6 +18,7 @@ services:
       - APP_DEBUG=true
       - APP_URL=https://$EE_HOSTNAME/api/elexisweb/
       - FORCE_HTTPS=true
+      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
       - DB_CONNECTION="mysql"
       - DB_HOST=$RDBMS_HOST
       - DB_PORT=$RDBMS_PORT
@@ -36,8 +37,7 @@ services:
       - AUTH_METHOD=oidc
       - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
-      - FHIR_API_URL=http://$EE_HOSTNAME:8380/fhir
-      - FHIR_DISABLE_SSL_VERIFY=true # remove in production
+
 
   # websockets
   elexis-web-websockets:
