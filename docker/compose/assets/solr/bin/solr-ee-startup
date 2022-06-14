@@ -14,7 +14,6 @@
 # To create a core in a mounted directory:
 #      mkdir myvarsolr; chown 8983:8983 myvarsolr
 #      docker run -it --rm -P -v $PWD/myvarsolr://var/solr solr solr-precreate mycore
-set -e
 
 echo "Executing $0" "$@"
 
