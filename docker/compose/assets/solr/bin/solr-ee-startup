@@ -38,7 +38,7 @@ STATUS=0
 while [ $STATUS -ne 200 ]; do
     echo -n "solr-ee-startup: Waiting for keycloak ..."
     sleep 5
-    STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration)
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration || true)
     echo " http status is [$STATUS]"
 done
 
