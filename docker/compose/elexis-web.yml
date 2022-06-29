@@ -18,7 +18,6 @@ services:
       - APP_DEBUG=true
       - APP_URL=https://$EE_HOSTNAME/api/elexisweb/
       - FORCE_HTTPS=true
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
       - DB_CONNECTION="mysql"
       - DB_HOST=$RDBMS_HOST
       - DB_PORT=$RDBMS_PORT
@@ -37,6 +36,12 @@ services:
       - AUTH_METHOD=oidc
       - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
+      - BROADCAST_DRIVER=pusher
+      - PUSHER_APP_ID=local
+      - PUSHER_APP_KEY=local
+      - PUSHER_APP_SECRET=local
+      - PUSHER_APP_HOST_NAME=elexis-web-websockets
+      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
 
 
   # websockets
@@ -51,7 +56,12 @@ services:
     networks:
       - backend
     environment:
+      - APP_DEBUG=true
+      - APP_NAME="Lumen"
+      - APP_ENV="local"
+      - APP_URL=https://$EE_HOSTNAME/api/elexisweb
       - BROADCAST_DRIVER=pusher
+      - PUSHER_APP_CLUSTER=mt1
       - PUSHER_APP_ID=local
       - PUSHER_APP_KEY=local
       - PUSHER_APP_SECRET=local
