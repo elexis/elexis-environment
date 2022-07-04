@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 from OpenSSL import crypto as c
 from requests import get, put
 from requests.api import put
+from statusnotifications import *
 
 parser = argparse.ArgumentParser(description='EE status report')
 parser.add_argument('--output', default=True, action=argparse.BooleanOptionalAction, dest='output',
@@ -75,7 +76,9 @@ repo = git.Repo(os.environ.get('INSTALL_DIR'))
 git = {}
 ee['git'] = git
 git['branch'] = repo.active_branch.name
-git['head-commit'] = str(repo.head.commit)
+git['branch-head-commit'] = str(repo.head.commit)
+# git fetch regularily done via cron
+git['origin-branch-head-commit'] = str(repo.rev_parse('origin/'+repo.active_branch.name))
 
 # ee.config
 config = {}
@@ -84,10 +87,13 @@ ee['config'] = config
 config['hostname'] = os.environ.get('EE_HOSTNAME')
 config['organisation-name'] = os.environ.get('ORGANISATION_NAME')
 config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
+config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
 config['enable-elexis-rcp'] = os.environ.get('ENABLE_ELEXIS_RCP')
 config['enable-elexis-server'] = os.environ.get('ENABLE_ELEXIS_SERVER')
-config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
+config['enable-nextcloud'] = os.environ.get('ENABLE_NEXTCLOUD')
+config['enable-ocrmypdf'] = os.environ.get('ENABLE_OCRMYPDF')
 config['enable-rocketchat'] = os.environ.get('ENABLE_ROCKETCHAT')
+config['enable-solr'] = os.environ.get('ENABLE_SOLR')
 
 # ee.site
 site = {}
@@ -103,6 +109,11 @@ try:
     certfile.close
 except:
     site['cert-not-after'] = "error reading file"
+
+
+checkNotifications(site_status)
+
+# perform output
 
 if args.output:
     json_dump = json.dumps(site_status, indent=2)
