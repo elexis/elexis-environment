@@ -43,7 +43,6 @@ services:
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
       - FHIR_API_URL=https://$EE_HOSTNAME/fhir
 
-
   # websockets
   elexis-web-websockets:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
@@ -91,8 +90,9 @@ services:
     networks:
       - backend
     environment:
-      - REACT_APP_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
-      - REACT_APP_API_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - REACT_APP_API_DOMAIN=https://$EE_HOSTNAME
+      - REACT_APP_API_PATH=/api/elexisweb
+      - REACT_APP_API_FHIR_PATH=/api/elexisweb/fhir
       - REACT_APP_TITLE=Elexis-Web
       - PUBLIC_URL=/elexisweb/
       - REACT_APP_AXIOS_LOG=true
@@ -114,8 +114,9 @@ services:
     networks:
       - backend
     environment:
-      - REACT_APP_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
-      - REACT_APP_API_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - REACT_APP_API_DOMAIN=https://$EE_HOSTNAME
+      - REACT_APP_API_PATH=/api/elexisweb
+      - REACT_APP_API_FHIR_PATH=/api/elexisweb/fhir
       - REACT_APP_TITLE=Kalender
       - PUBLIC_URL=/calendar/
       - REACT_APP_AXIOS_LOG=true
