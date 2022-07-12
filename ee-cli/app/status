@@ -86,6 +86,7 @@ ee['config'] = config
 
 config['hostname'] = os.environ.get('EE_HOSTNAME')
 config['organisation-name'] = os.environ.get('ORGANISATION_NAME')
+config['mis-project-id'] = os.environ.get('MIS_PROJECTID')
 config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
 config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
 config['enable-elexis-rcp'] = os.environ.get('ENABLE_ELEXIS_RCP')
