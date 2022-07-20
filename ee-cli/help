@@ -39,7 +39,7 @@ if [[ -d "$HELP_FILE" ]]; then
         cmd=`basename "$file"`
 
         # Don't show hidden files as available commands
-        if [[ "$cmd" != .* && "$cmd" != *.usage && "$cmd" != *.help ]]; then
+        if [[ "$cmd" != .* && "$cmd" != *.usage && "$cmd" != *.help && "$cmd" != *.py && "$cmd" != __* ]]; then
             echo -en "${COLOR_GREEN}$CLI_ENTRYPOINT ${COLOR_CYAN}${@:2:$(($HELP_ARG_START-1))} $cmd ${COLOR_NORMAL}"
 
             if [[ -f "$file.usage" ]]; then
