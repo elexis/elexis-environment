@@ -1,3 +1,4 @@
 !.env.template
 .env*
 .DS_Store
+__pycache__
