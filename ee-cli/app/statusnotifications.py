@@ -10,6 +10,7 @@ import datetime
 
 def checkNotifications(site_status):
     status = []
+    now = datetime.datetime.now()
 
     # are there any updates for EE.git
     if(site_status['ee']['git']['branch-head-commit'] != site_status['ee']['git']['origin-branch-head-commit']):
@@ -28,11 +29,23 @@ def checkNotifications(site_status):
     # was there a system (re)boot in the last 24 hours
     boot_time = datetime.datetime.strptime(
         site_status['system']['boot-time'], '%Y-%m-%dT%H:%M:%S.%f')
-    now = datetime.datetime.now()
     if now - datetime.timedelta(hours=24) <= boot_time:
         bootInfo = {"level": "INFO", "element": "system.boot-time",
                     "reason": "system_boot_within_last_24_hours"}
         status.append(bootInfo)
+
+    # is the certificate about to expire within 14 days or is it invalid
+    try:
+        cert_not_after = datetime.datetime.strptime(site_status['ee']['site']['cert-not-after'], '%Y-%m-%dT%H:%M:%S.%f')
+        if now + datetime.timedelta(days=14) >= cert_not_after:
+            certInfo= {"level": "WARN", "element": "ee.site.cert_not_after",
+                    "reason": "cert_about_to_expire"}
+            status.append(certInfo)
+    except Exception as e:
+        print(e)
+        certInfo= {"level": "WARN", "element": "ee.site.cert_not_after",
+                    "reason": "invalid_cert"}
+        status.append(certInfo)
 
     if(status):
         site_status['status'] = status
