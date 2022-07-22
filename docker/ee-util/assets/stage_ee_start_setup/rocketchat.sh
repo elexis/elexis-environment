@@ -148,7 +148,7 @@ java -jar /RocketchatSetting.jar -l RocketChatAdmin -p $ADMIN_PASSWORD -u $RC_BA
 echo -e "\n$T Assert Elexis-Server - channel #elexis-server ..."
 curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/channels.create -d '{ "name": "elexis-server", "description": "Elexis-Server status messages" }'
 
-echo -e "\n Assert Elexis-Server - channel retention policy 14 days ..."
+echo -e "\n$T Assert Elexis-Server - channel retention policy 14 days ..."
 ALL_ROOMS=$(curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/rooms.get)
 ELEXIS_SERVER_ROOM_ID=$(echo $ALL_ROOMS | jq '.update[] | select(.name == "elexis-server") | ._id')
 curl -s -k -H "X-Auth-Token: $AUTH_TOKEN" -H "X-User-Id: $USER_ID" -H "Content-type: application/json" $RC_BASEURL/api/v1/rooms.saveRoomSettings -d '{"rid": '$ELEXIS_SERVER_ROOM_ID',  "retentionOverrideGlobal": true, "retentionEnabled":true}'
