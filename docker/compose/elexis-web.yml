@@ -9,6 +9,7 @@ services:
 
   # initialize the volume with elexisweb static files
   # maybe create an image that does just that?
+  # TODO remove the key
   elexis-web-app-static-init-volume:
     image: alpine:3
     command: >
@@ -62,6 +63,7 @@ services:
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
       - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
       - ENABLE_API_COMPONENT_AGENDA=true
+      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
 
   # websockets
   elexis-web-websockets:
