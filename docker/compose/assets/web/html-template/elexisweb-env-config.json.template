@@ -1,0 +1,19 @@
+{
+  "SUBFOLDER_NAME": "/elexisweb",
+  "API_DOMAIN": "https://${EE_HOSTNAME}",
+  "API_PATH": "/api/elexisweb",
+  "API_FHIR_PATH": "/api/elexisweb/fhir",
+  "APP_TITLE": "Elexis-Web",
+  "SITE_URL": "https://${EE_HOSTNAME}",
+  "AXIOS_LOG": false,
+  "ENABLE_APP_COMPONENT_AGENDA": true,
+  "ENABLE_APP_COMPONENT_CONSULTATIONS": false,
+  "ENABLE_APP_COMPONENT_DASHBOARD": false,
+  "ENABLE_APP_COMPONENT_DOCUMENTS": false,
+  "ENABLE_APP_COMPONENT_CONTACTS": false,
+  "ENABLE_APP_COMPONENT_INBOX": false,
+  "ENABLE_APP_COMPONENT_SETTINGS": false,
+  "PUSHER_APP_WSPATH": "api/elexisweb-socket",
+  "PUSHER_APP_KEY": "local",
+  "JEST_API_FHIR_URL": "https://fhir-test.cl9.dev/fhir"
+}

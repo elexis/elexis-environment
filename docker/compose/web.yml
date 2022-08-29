@@ -27,7 +27,8 @@ services:
     depends_on:
       - keycloak
     command: >
-      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json 
+      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
+      && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
       && echo "" > /etc/nginx/modules.conf 
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
@@ -44,9 +45,15 @@ services:
       && if [ $ENABLE_EXT_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/ext_modules.conf; fi
       && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
+    logging:
+      driver: "local"
+      options:
+        max-size: "20m"
+        max-file: "10"
+        compress: "false"
     environment:
+      - EE_HOSTNAME
       - ORGANISATION_NAME
-      - ORGANISATION_BASE_DN
       - ORGANSATION_DOMAIN
       - ENABLE_BOOKSTACK
       - ENABLE_ROCKETCHAT

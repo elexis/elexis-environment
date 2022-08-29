@@ -2,7 +2,30 @@ version: '3'
 
 services:
 
+  # extend existing web service with volume
+  web:
+    volumes:
+      - elexis-web-app-static:/usr/share/nginx/html/elexisweb/:ro
+
+  # initialize the volume with elexisweb static files
+  # maybe create an image that does just that?
+  elexis-web-app-static-init-volume:
+    image: alpine:3
+    command: >
+      /bin/sh -c 'cd /volume 
+      && rm -Rf *
+      && wget -q --header "PRIVATE-TOKEN: glpat-herfJ_akeoQNhgPYqLUg" "https://gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar"
+      && tar xvf deploy.tar
+      && rm deploy.tar
+      && mv build/* .
+      && rmdir build'
+    depends_on:
+      - web
+    volumes:
+      - elexis-web-app-static:/volume/
+
   # api-php
+  # https://git.qix.sx/elexis/web/-/blob/develop/env-readme.md
   elexis-web-api-php:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
     volumes:
@@ -13,11 +36,14 @@ services:
     networks:
       - backend
     environment:
-      - APP_NAME="Lumen"
-      - APP_ENV="local"
       - APP_DEBUG=true
+      - APP_ENV="local"
+      - APP_KEY=$X_EE_ELEXIS_WEB_API_APP_KEY
+      - APP_NAME="Elexis Web"
       - APP_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - AUTH_METHOD=oidc
       - FORCE_HTTPS=true
+      - FULL_WEB=false
       - OIDC_DUMP_USER_DETAILS=false
       - OIDC_CLIENT_ID=elexis-web-api
       - OIDC_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
@@ -27,7 +53,6 @@ services:
       - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/ # fallback to referrer url
       - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
       - OIDC_AUTO_REFRESH_TOKEN=true
-      - AUTH_METHOD=oidc
       - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
       - BROADCAST_DRIVER=pusher
@@ -35,7 +60,8 @@ services:
       - PUSHER_APP_KEY=local
       - PUSHER_APP_SECRET=local
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
+      - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
+      - ENABLE_API_COMPONENT_AGENDA=true
 
   # websockets
   elexis-web-websockets:
@@ -76,33 +102,7 @@ services:
     networks:
       - backend
 
-  # app
-  elexis-web-app:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/app:develop
-    expose: 
-      - 3004
-    networks:
-      - backend
-    environment:
-      - FULL_WEB=false
-      - REACT_APP_ONLY_AGENDA=true
-      - REACT_APP_API_DOMAIN=https://$EE_HOSTNAME
-      - REACT_APP_API_PATH=/api/elexisweb
-      - REACT_APP_API_FHIR_PATH=/api/elexisweb/fhir
-      - REACT_APP_TITLE=Elexis-Web
-      - PUBLIC_URL=/elexisweb/
-      - REACT_APP_AXIOS_LOG=true
-      - REACT_APP_PUSHER_APP_KEY=local
-      - REACT_APP_PUSHER_APP_WSPATH=api/elexisweb-socket
-      - REACT_APP_PUSHER_APP_WSPORT=80
-      - REACT_APP_PUSHER_APP_WSPORT=443
-      #######
-      - JEST_HEADLESS=true
-      - REACT_APP_SITE_URL=https://$EE_HOSTNAME
-      - JEST_API_FHIR_URL=https://$EE_HOSTNAME/api/elexisweb/fhir/
-      - JEST_AUTH_USERNAME=marco
-      - JEST_AUTH_PASSWORD=marco
-
 volumes:
-    # for FPM share usage - see web_nextcloud.yml
     elexis-web-api_php:
+    # for FPM share usage
+    elexis-web-app-static:

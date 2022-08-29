@@ -32,6 +32,9 @@ awk 'BEGIN { p="/proc/sys/kernel/random/uuid" } /missing-uuid/ { getline uuid < 
 mv /installdir/.env.output /installdir/.env
 rm /installdir/.env.input
 
+# re-export the env variables
+export $(grep -v '^#' /installdir/.env | xargs)
+
 # 
 # OTHER variable replacements
 #
@@ -40,6 +43,10 @@ rm /installdir/.env.input
 ADMIN_PASSWORD_HASH_WITH_SPACE=$(java -jar /SolrPasswordHash.jar ${ADMIN_PASSWORD})
 ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH_WITH_SPACE//\ /\_\_}
 sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env
+
+# remove all dashes from X_EE_ELEXIS_WEB_API_APP_KEY
+sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env
+
 
 #
 # TEST PRECONDITIONS
