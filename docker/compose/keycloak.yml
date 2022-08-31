@@ -3,25 +3,29 @@ version: '3'
 services:
 
   # KeyCloak
-  # TODO expose only to internal subnet
+  # https://www.keycloak.org/server/all-config
+  # https://www.keycloak.org/server/reverseproxy
   keycloak: 
-    build: ../keycloak
+    image: quay.io/keycloak/keycloak:19.0.1
     networks:
       - backend
     expose:
-      - 8080 
+      - 8080
+    command:
+      - start
     volumes:
-      - ./assets/keycloak/themes/elexis-environment/:/opt/jboss/keycloak/themes/elexis-environment/:ro
+      - ./assets/keycloak/themes/elexis-environment/:/opt/keycloak/themes/elexis-environment/:ro
     environment:
-      - DB_VENDOR=$RDBMS_TYPE
-      - DB_ADDR=$RDBMS_HOST
-      - DB_PORT=$RDBMS_PORT
-      - DB_DATABASE=$RDBMS_KEYCLOAK_DATABASE
-      - DB_USER=$RDBMS_KEYCLOAK_USERNAME
-      - DB_PASSWORD=$RDBMS_KEYCLOAK_PASSWORD
-      - JDBC_PARAMS=$RDBMS_KEYCLOAK_JDBC_PARAMETER_STRING
-      - KEYCLOAK_HOSTNAME=$EE_HOSTNAME
-      - KEYCLOAK_USER=KeycloakAdmin # Fallback local admin
-      - KEYCLOAK_PASSWORD=$ADMIN_PASSWORD
-      - PROXY_ADDRESS_FORWARDING=true
-      - KEYCLOAK_DEFAULT_THEME=elexis-environment
+      - KC_DB=$RDBMS_TYPE
+      - KC_DB_URL_HOST=$RDBMS_HOST
+      - KC_DB_URL_PORT=$RDBMS_PORT
+      - KC_DB_URL_DATABASE=$RDBMS_KEYCLOAK_DATABASE
+      - KC_DB_URL_PROPERTIES=?$RDBMS_KEYCLOAK_JDBC_PARAMETER_STRING
+      - KC_DB_USERNAME=$RDBMS_KEYCLOAK_USERNAME
+      - KC_DB_PASSWORD=$RDBMS_KEYCLOAK_PASSWORD
+      - KC_HOSTNAME=$EE_HOSTNAME
+      - KEYCLOAK_ADMIN=KeycloakAdmin # Fallback local admin
+      - KEYCLOAK_ADMIN_PASSWORD=$ADMIN_PASSWORD
+      - KC_PROXY=edge
+      - KC_HTTP_RELATIVE_PATH=/keycloak/auth
+      - KC_HEALTH_ENABLED=true
