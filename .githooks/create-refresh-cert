@@ -2,3 +2,7 @@
 sleep ${RANDOM:0:2}m
 cd ~
 ~/ee setup create_refresh_cert
+# Docker does not pick up changes to certificate files via symbolic link
+# as it points to the file inodes on startup, hence we need to restart the
+# container
+~/ee system cmd restart web
