@@ -4,5 +4,9 @@ cd ~
 ~/ee setup create_refresh_cert
 # Docker does not pick up changes to certificate files via symbolic link
 # as it points to the file inodes on startup, hence we need to restart the
-# container
-~/ee system cmd restart web
+# container, but only if its running
+WEB_CONTAINER_ID=$(~/ee system cmd ps -q web)
+if [ -z "$WEB_CONTAINER_ID" ]; 
+then
+    ~/ee system cmd restart web
+fi
