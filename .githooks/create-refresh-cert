@@ -10,3 +10,5 @@ if [ -n $WEB_CONTAINER_ID ];
 then
     ~/ee system cmd restart web
 fi
+
+sudo systemctl restart webmin.service
