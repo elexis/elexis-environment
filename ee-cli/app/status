@@ -112,6 +112,9 @@ except:
     site['cert-not-after'] = "error reading file"
 
 
+hostname_dns_resolve = subprocess.run(["getent", "-s dns", "hosts", os.environ.get('EE_HOSTNAME')], stdout=subprocess.PIPE, text=True)
+site['dns-resolv'] = "("+str(hostname_dns_resolve.returncode)+") "+hostname_dns_resolve.stdout
+
 checkNotifications(site_status)
 
 # perform output
