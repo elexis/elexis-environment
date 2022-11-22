@@ -99,7 +99,7 @@ else
   echo "  skipping certificate.cnf generation"
 fi
 
-if [ ! -f "/site/certificate.key" ]; 
+if [ ! -e "/site/certificate.key" ]; 
 then
     echo "* generating certificate.key/csr"
     openssl req -new -config /site/certificate.cnf -keyout /site/certificate.key -out /site/certificate.csr

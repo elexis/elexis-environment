@@ -14,6 +14,10 @@ from requests import get, put
 from requests.api import put
 from statusnotifications import *
 
+def readFileContent(file):
+    with open('file') as f:
+        return f.read()
+
 parser = argparse.ArgumentParser(description='EE status report')
 parser.add_argument('--output', default=True, action=argparse.BooleanOptionalAction, dest='output',
                     help='print report')
@@ -67,6 +71,14 @@ for partition in psutil.disk_partitions():
     diskUsage['used'] = _diskUsage.used
     diskUsage['free'] = _diskUsage.free
     diskUsage['percent'] = _diskUsage.percent
+
+# system.pressure
+if os.path.exists("/proc/pressure"):
+    system['pressure']['cpu'] = readFileContent('/proc/pressure/cpu')
+    system['pressure']['io'] = readFileContent('/proc/pressure/io')
+    system['pressure']['memory'] = readFileContent('/proc/pressure/memory')
+
+# system.upgrades? python-apt
 
 # ee
 ee = {}
