@@ -23,7 +23,7 @@ cat << EOF > ${BACKUPDIR}ee-backup.info
 ELEXIS-ENVIRONMENT-BACKUP
 date:          $(date)
 hostname:      $(hostname -f)
-ee git branch: master
+ee git branch: $(git branch --show-current)
 ee git rev:    $(cd ${INSTALL_DIR}; git log -1 --oneline)
 installdir:    ${INSTALL_DIR}
 
