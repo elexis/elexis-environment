@@ -3,7 +3,7 @@ version: '3'
 services:
 
   elexis-server:
-    image: medevit/elexis-server:master
+    image: medevit/elexis-server:3.10
     volumes:
       - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:
