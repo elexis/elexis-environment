@@ -15,7 +15,7 @@ services:
     command: >
       /bin/sh -c 'cd /volume 
       && rm -Rf *
-      && wget -q --header "PRIVATE-TOKEN: glpat-herfJ_akeoQNhgPYqLUg" "https://gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/release-1/deploy.tar"
+      && wget -q --header "PRIVATE-TOKEN: glpat-herfJ_akeoQNhgPYqLUg" "https://gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar"
       && tar xvf deploy.tar
       && rm deploy.tar
       && mv build/* .
@@ -28,7 +28,7 @@ services:
   # api-php
   # https://git.qix.sx/elexis/web/-/blob/develop/env-readme.md
   elexis-web-api-php:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-1
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
     volumes:
       - elexis-web-api_php:/www
     depends_on:
@@ -63,11 +63,12 @@ services:
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
       - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
       - ENABLE_API_COMPONENT_AGENDA=true
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
-      
+      #- FHIR_API_URL=https://$EE_HOSTNAME/fhir
+      - FHIR_API_URL=http://marcos-mbp-2019.myelexis.ch:8380/fhir
+
   # websockets
   elexis-web-websockets:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-1
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
     volumes:
       - elexis-web-api_php:/www
     entrypoint: php artisan websockets:serve
