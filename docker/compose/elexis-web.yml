@@ -63,8 +63,8 @@ services:
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
       - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
       - ENABLE_API_COMPONENT_AGENDA=true
-      - FHIR_API_URL=https://$EE_HOSTNAME/fhir
-      
+      - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir}
+
   # websockets
   elexis-web-websockets:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-1
