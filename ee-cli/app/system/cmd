@@ -17,7 +17,8 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 # allow overrides of default values for specific installations (e.g. development)
 if [ -e ${INSTALL_DIR}/.env.override ]
 then
-    docker-compose -p elexis-environment --env-file ${INSTALL_DIR}/.env.override ${params[@]} "$@"
+    echo "Using ${INSTALL_DIR}/.env.override"
+    docker compose -p elexis-environment --env-file ${INSTALL_DIR}/.env.override ${params[@]} "$@"
 else
-    docker-compose -p elexis-environment ${params[@]} "$@"
+    docker compose -p elexis-environment ${params[@]} "$@"
 fi
