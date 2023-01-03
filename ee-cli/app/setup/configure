@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 touch ${INSTALL_DIR}.env
+
+if [ "${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN:-optional_not_set}" != "optional_not_set" ]; then
+    echo "Logging in to gitlab.medelexis.ch"
+    echo ${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN#*:} | docker login -u ${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN%:*} --password-stdin gitlab.medelexis.ch:4567
+fi
+
 docker pull -q medevit/eenv-config
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)

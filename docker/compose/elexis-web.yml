@@ -15,7 +15,7 @@ services:
     command: >
       /bin/sh -c 'cd /volume 
       && rm -Rf *
-      && wget -q --header "PRIVATE-TOKEN: glpat-herfJ_akeoQNhgPYqLUg" "https://gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar"
+      && wget -q --http-user=${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN%:*} --http-passwd=${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN#*:} "https://gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar"
       && tar xvf deploy.tar
       && rm deploy.tar
       && mv build/* .
