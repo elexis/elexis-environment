@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sleep ${RANDOM:0:2}m
+exec &> ~/site/cron-create-refresh-cert.log.txt
 cd ~
 ~/ee setup create_refresh_cert
 # Docker does not pick up changes to certificate files via symbolic link
