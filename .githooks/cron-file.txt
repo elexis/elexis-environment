@@ -2,4 +2,4 @@ PATH=/usr/local/bin:/usr/bin:/bin
 @reboot ~/.githooks/update-status
 @hourly ~/.githooks/update-status
 @daily ~/.githooks/auto-git-pull-repo
-@weekly ~/.githooks/create-refresh-cert 
+@weekly ~/.githooks/create-refresh-cert
