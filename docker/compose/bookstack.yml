@@ -29,7 +29,7 @@ services:
       - SAML2_IDP_ENTITYID=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml/descriptor
       - SAML2_AUTOLOAD_METADATA=true
       - SAML2_EXTERNAL_ID_ATTRIBUTE=username
-      - SAML2_DISPLAY_NAME_ATTRIBUTES=cn
+      - SAML2_DISPLAY_NAME_ATTRIBUTES=firstName|lastName
       - SAML2_USER_TO_GROUPS=true
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true

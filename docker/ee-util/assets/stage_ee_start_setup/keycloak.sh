@@ -120,9 +120,10 @@ fi
 
 echo "$T update client settings ... "
 $KCADM update clients/$BS_SAML_CLIENTID -r ElexisEnvironment -s clientId=https://$EE_HOSTNAME/bookstack/saml2/metadata -f keycloak/bookstack-saml.json
+createSamlClientMapper $BS_SAML_CLIENTID firstName saml-user-property-mapper
+createSamlClientMapper $BS_SAML_CLIENTID lastName saml-user-property-mapper
 createSamlClientMapper $BS_SAML_CLIENTID username saml-user-property-mapper
 createSamlClientMapper $BS_SAML_CLIENTID email saml-user-property-mapper
-createSamlClientMapper $BS_SAML_CLIENTID cn saml-javascript-mapper keycloak/bookstack-saml-mapper-cn.json
 createSamlClientMapper $BS_SAML_CLIENTID role saml-role-list-mapper keycloak/bookstack-saml-mapper-role.json
 createOrUpdateClientRole $BS_SAML_CLIENTID admin 'description=Administrator of the whole application'
 createOrUpdateClientRole $BS_SAML_CLIENTID editor 'description=User can edit Books, Chapters & Pages'
@@ -151,7 +152,8 @@ $KCADM update clients/$NC_SAML_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_
 createSamlClientMapper $NC_SAML_CLIENTID username saml-user-property-mapper
 createSamlClientMapper $NC_SAML_CLIENTID email saml-user-property-mapper
 createSamlClientMapper $NC_SAML_CLIENTID nextcloudquota saml-user-property-mapper
-createSamlClientMapper $NC_SAML_CLIENTID cn saml-javascript-mapper keycloak/nextcloud-saml-mapper-cn.json
+# No further support as of Keycloak 18, find replacement in due time
+# createSamlClientMapper $NC_SAML_CLIENTID cn saml-javascript-mapper keycloak/nextcloud-saml-mapper-cn.json
 
 #
 # ELEXIS-SERVER.FHIR-API (Bearer Only)
