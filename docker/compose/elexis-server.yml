@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
 
@@ -36,5 +36,7 @@ services:
         max-size: 20m
         max-file: "5"
         compress: "false"
+    mem_limit: 2G
+    memswap_limit: 2G
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
