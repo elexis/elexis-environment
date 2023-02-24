@@ -14,9 +14,14 @@ from requests import get, put
 from requests.api import put
 from statusnotifications import *
 
-def readFileContent(file):
-    with open(file) as f:
-        return f.read()
+def readFileContent(file: str) -> str:
+    # read a files content, if exists, return trimmed, else return string file not found
+    try:
+        with open(file) as f:
+            file_content = f.read()
+            return file_content.strip()
+    except IOError as e:
+        return file+" not found"
 
 parser = argparse.ArgumentParser(description='EE status report')
 parser.add_argument('--output', default=True, action=argparse.BooleanOptionalAction, dest='output',
@@ -28,6 +33,8 @@ parser.add_argument('--send-report', default=False, action=argparse.BooleanOptio
 args = parser.parse_args()
 
 eeConfig = load_dotenv("${INSTALL_DIR}/.env")
+INSTALL_DIR = os.environ.get('INSTALL_DIR')
+SITE_DIR = os.environ.get('SITE_DIR')
 site_status = {}
 
 SITE_UUID = os.environ.get('X_EE_SITE_UUID') or "missing-uuid"
@@ -49,8 +56,10 @@ system['uname'] = " ".join(os.uname())
 # determine installation time via /lost+found
 if os.path.isdir('/lost+found'):
     lost_and_found = os.stat('/lost+found')
-    lost_and_found_ctime_dt = datetime.datetime.fromtimestamp(lost_and_found.st_ctime)
-    system['installation-time'] = lost_and_found_ctime_dt.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+    lost_and_found_ctime_dt = datetime.datetime.fromtimestamp(
+        lost_and_found.st_ctime)
+    system['installation-time'] = lost_and_found_ctime_dt.strftime(
+        '%Y-%m-%dT%H:%M:%S.%f%z')
 
 # system.network
 network = {}
@@ -76,7 +85,7 @@ for partition in psutil.disk_partitions():
 if os.path.exists("/proc/pressure"):
     pressure = {}
     system['pressure'] = pressure
-    
+
     pressure['cpu'] = readFileContent('/proc/pressure/cpu')
     pressure['io'] = readFileContent('/proc/pressure/io')
     pressure['memory'] = readFileContent('/proc/pressure/memory')
@@ -87,13 +96,14 @@ if os.path.exists("/proc/pressure"):
 ee = {}
 site_status['ee'] = ee
 
-repo = git.Repo(os.environ.get('INSTALL_DIR'))
+repo = git.Repo(INSTALL_DIR)
 git = {}
 ee['git'] = git
 git['branch'] = repo.active_branch.name
 git['branch-head-commit'] = str(repo.head.commit)
 # git fetch regularily done via cron
-git['origin-branch-head-commit'] = str(repo.rev_parse('origin/'+repo.active_branch.name))
+git['origin-branch-head-commit'] = str(
+    repo.rev_parse('origin/'+repo.active_branch.name))
 
 # ee.config
 config = {}
@@ -117,7 +127,7 @@ ee['site'] = site
 
 # file does not exist on fresh installation
 try:
-    certfile = open(os.environ.get('SITE_DIR')+"/certificate.crt", "rb")
+    certfile = open(SITE_DIR+"/certificate.crt", "rb")
     cert = c.load_certificate(c.FILETYPE_PEM, certfile.read())
     cert_not_after = datetime.datetime.strptime(
         cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
@@ -129,6 +139,8 @@ except:
 
 hostname_dns_resolve = subprocess.run(["getent", "-s dns", "hosts", os.environ.get('EE_HOSTNAME')], stdout=subprocess.PIPE, text=True)
 site['dns-resolv'] = "("+str(hostname_dns_resolve.returncode)+") "+hostname_dns_resolve.stdout
+site['cron-auto-git-pull-repo'] = ( readFileContent(INSTALL_DIR+".enable-auto-git-pull") == git['branch'] )
+
 
 checkNotifications(site_status)
 
@@ -139,7 +151,7 @@ if args.output:
     print(json_dump)
 
 if args.generatereport:
-    with open(os.environ.get('SITE_DIR')+'/status.json', 'w') as f:
+    with open(SITE_DIR+'/status.json', 'w') as f:
         json.dump(site_status, f, indent=2)
 
 if args.sendreport:
