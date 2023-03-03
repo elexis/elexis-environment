@@ -1,0 +1,5 @@
+{
+    "name": "ee-elexis-server",
+    "baseurl": "http://elexis-server:8380/fhir/",
+    "syncmethods": "Patient|MANUAL::Encounter|AUTO_OUT::DocumentReference|AUTO_OUT"
+}

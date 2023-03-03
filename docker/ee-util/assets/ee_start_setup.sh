@@ -36,4 +36,10 @@ if [[ $ENABLE_SOLR == true ]]; then
     ((exit_status = exit_status || $?))
 fi
 
+if [[ $ENABLE_EMR_ADI_SERVER == true ]]; then
+    echo "$B"
+    ./emr-adi-server.sh
+    ((exit_status = exit_status || $?))
+fi
+
 exit $exit_status # 0 if they all succeeded, 1 if any failed

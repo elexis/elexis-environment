@@ -1,0 +1,22 @@
+version: '2'
+
+services:
+
+  emr-adi-server:
+    image: medbits/emr-adi-server:master
+    environment:
+     - TZ=Europe/Zurich
+     - LANGUAGE=de_CH:de  
+     - LANG=de_CH.UTF-8  
+     - LC_ALL=de_CH.UTF-8
+     - HTTPS_ENABLED=false  # disables HTTPS on port 20141
+     - EMR_ADMIN_PASSWORD=$ADMIN_PASSWORD # used on security realm creation
+     - HTTP_RELATIVE_PATH=/api/emradiserver
+    expose:
+      - 20141
+    networks:
+      - backend
+    ports:
+      - "2036:2036" # CDO
+    mem_limit: 2G
+    memswap_limit: 2G

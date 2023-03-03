@@ -37,6 +37,7 @@ services:
       && if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_OCRMYPDF == "true" ]; then echo 'include conf/ocrmypdf.conf;' >> /etc/nginx/modules.conf; fi
       && if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/modules.conf; fi
+      && if [ $ENABLE_EMR_ADI_SERVER == "true" ]; then echo 'include conf/emr-adi-server.conf;' >> /etc/nginx/modules.conf; fi
       && echo "" > /etc/nginx/ext_modules.conf
       && if [ $ENABLE_EXT_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/ext_modules.conf; fi
       && if [ $ENABLE_EXT_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
@@ -61,6 +62,7 @@ services:
       - ENABLE_NEXTCLOUD
       - ENABLE_SOLR
       - ENABLE_ELEXIS_WEB
+      - ENABLE_EMR_ADI_SERVER
       - ENABLE_OCRMYPDF
       - ENABLE_EXT_ELEXIS_SERVER
       - ENABLE_EXT_BOOKSTACK
