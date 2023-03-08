@@ -12,7 +12,7 @@ BASEURL="http://emr-adi-server:20141/services"
 #
 #
 LOOP_COUNT=0
-while [[ "$(curl -s -o /dev/null -k -w ''%{http_code}''  -u "admin.user:${ADMIN_PASSWORD}" $BASEURL/swagger.json)" != "200" ]]; do
+while [[ "$(curl -s -o /dev/null -k -w ''%{http_code}'' --user admin.user:${ADMIN_PASSWORD} $BASEURL/swagger.json)" != "200" ]]; do
     echo "$T Waiting for emr-adi-server  ..."
     sleep 5
     ((LOOP_COUNT += 1))
@@ -27,9 +27,9 @@ done
 if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
     echo "$T Setting fhirsync to elexis-server  ..."
     # delete existing sync if exists
-    curl -u "admin.user:${ADMIN_PASSWORD}" -X DELETE $BASEURL/fhirsync/endpoint/ee-elexis-server
+    curl -s --user admin.user:${ADMIN_PASSWORD} -X DELETE $BASEURL/fhirsync/endpoint/ee-elexis-server
     # assert fhir sync exists
-    curl -u "admin.user:${ADMIN_PASSWORD}" -X POST $BASEURL/fhirsync/endpoint -H "Content-Type: application/json" -d @emr-adi-server_synctemplate.json
+    curl -s --user admin.user:${ADMIN_PASSWORD} -X POST $BASEURL/fhirsync/endpoint -H "Content-Type: application/json" -d @emr-adi-server_synctemplate.json
 else 
     echo "$T elexis-server not enabled"
 fi
