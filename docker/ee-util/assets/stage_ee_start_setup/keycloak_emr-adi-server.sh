@@ -16,7 +16,7 @@ $KCADM update clients/$EMR_ADI_SERVER_OPENID_CLIENT -r ElexisEnvironment -s clie
 EMR_ADI_SERVER_USER_NAME=emr-adi-server
 EMR_ADI_SERVER_USER_PASSWORD=$(uuidgen)
 $KCADM create users -r ElexisEnvironment -s username=$EMR_ADI_SERVER_USER_NAME -i
-$KCADM set-password -r ElexisEnvironment --username $EMR_ADI_SERVER_USER_NAME --password $EMR_ADI_SERVER_USER_PASSWORD
+$KCADM set-password -r ElexisEnvironment --username $EMR_ADI_SERVER_USER_NAME --new-password $EMR_ADI_SERVER_USER_PASSWORD
 
 # to be consumed in emr-adi-server.sh
 export EMR_ADI_SERVER_SECRET_UUID
