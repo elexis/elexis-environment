@@ -19,8 +19,6 @@ while [[ "$(curl -s -o /dev/null -k -w ''%{http_code}'' --user admin.user:${ADMI
     if [ $LOOP_COUNT -eq 20 ]; then exit -1; fi
 done
 
-envsubst <emr-adi-server_synctemplate.json >emr-adi-server.json
-
 #
 #
 # Basic configuration values to sync to elexis-server
@@ -36,7 +34,3 @@ if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
 else
     echo "$T elexis-server not enabled"
 fi
-
-export -n EMR_ADI_SERVER_SECRET_UUID
-export -n EMR_ADI_SERVER_USER_NAME
-export -n EMR_ADI_SERVER_USER_PASSWORD
