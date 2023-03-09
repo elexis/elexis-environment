@@ -190,3 +190,7 @@ source keycloak_solr.sh
 # ELEXIS-RCP-OPENID
 # references solr client in mapper
 source keycloak_elexis-rcp-openid.sh
+
+# EMR-ADI-SERVER
+# requires user to access ES FHIR interface
+source keycloak_emr-adi-server.sh

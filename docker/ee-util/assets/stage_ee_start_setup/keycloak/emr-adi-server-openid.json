@@ -1,0 +1,16 @@
+{
+    "name": "emr-adi-server",
+    "redirectUris": [],
+    "bearerOnly": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": true,
+    "serviceAccountsEnabled": false,
+    "publicClient": false,
+    "frontchannelLogout": false,
+    "attributes": {
+        "access.token.lifespan": "86400",
+        "use.refresh.tokens": "false"
+    }
+}

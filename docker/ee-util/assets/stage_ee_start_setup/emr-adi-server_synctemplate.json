@@ -1,5 +1,11 @@
 {
     "name": "ee-elexis-server",
     "baseurl": "http://elexis-server:8380/fhir/",
-    "syncmethods": "Patient|MANUAL::Encounter|AUTO_OUT::DocumentReference|AUTO_OUT"
+    "syncmethods": "Patient|MANUAL::Encounter|AUTO_OUT::DocumentReference|AUTO_OUT",
+    "keycloakrealm": "ElexisEnvironment",
+    "keycloakurl": "https://${EE_HOSTNAME}/keycloak",
+    "keycloakresource": "emr-adi-server",
+    "keycloakclientsecret": "${EMR_ADI_SERVER_SECRET_UUID}",
+    "username": "${EMR_ADI_SERVER_USER_NAME}",
+    "password": "${EMR_ADI_SERVER_USER_PASSWORD}"
 }

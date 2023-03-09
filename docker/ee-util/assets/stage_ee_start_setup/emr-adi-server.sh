@@ -19,17 +19,24 @@ while [[ "$(curl -s -o /dev/null -k -w ''%{http_code}'' --user admin.user:${ADMI
     if [ $LOOP_COUNT -eq 20 ]; then exit -1; fi
 done
 
+envsubst <emr-adi-server_synctemplate.json >emr-adi-server.json
+
 #
 #
-# Basic configuration values
+# Basic configuration values to sync to elexis-server
+# only if elexis-server is enabled
 #
-#
+# delete existing sync if exists
+curl -s --user admin.user:${ADMIN_PASSWORD} -X DELETE $BASEURL/fhirsync/endpoint/ee-elexis-server
+
 if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
     echo "$T Setting fhirsync to elexis-server  ..."
-    # delete existing sync if exists
-    curl -s --user admin.user:${ADMIN_PASSWORD} -X DELETE $BASEURL/fhirsync/endpoint/ee-elexis-server
     # assert fhir sync exists
-    curl -s --user admin.user:${ADMIN_PASSWORD} -X POST $BASEURL/fhirsync/endpoint -H "Content-Type: application/json" -d @emr-adi-server_synctemplate.json
-else 
+    curl -s --user admin.user:${ADMIN_PASSWORD} -X POST $BASEURL/fhirsync/endpoint -H "Content-Type: application/json" -d @emr-adi-server.json
+else
     echo "$T elexis-server not enabled"
 fi
+
+export -n EMR_ADI_SERVER_SECRET_UUID
+export -n EMR_ADI_SERVER_USER_NAME
+export -n EMR_ADI_SERVER_USER_PASSWORD
