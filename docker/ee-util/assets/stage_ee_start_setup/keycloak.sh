@@ -156,6 +156,17 @@ createSamlClientMapper $NC_SAML_CLIENTID nextcloudquota saml-user-property-mappe
 # createSamlClientMapper $NC_SAML_CLIENTID cn saml-javascript-mapper keycloak/nextcloud-saml-mapper-cn.json
 
 #
+# ELEXIS GENERAL
+# Rules as defined per default in Elexis Role Table
+# roles elexis_user, elexis_doctor, elexis_executive_doctor, elexis_assistant
+# see ch.elexis.core.model.RoleConstants
+#
+$KCADM create roles -r ElexisEnvironment -s name=elexis_user -s 'description=Elexis Applications: Technical User role, required for overall system access'
+$KCADM create roles -r ElexisEnvironment -s name=elexis_doctor -s 'description=Elexis Applications: Business role, user is a doctor'
+$KCADM create roles -r ElexisEnvironment -s name=elexis_executive_doctor -s 'description=Elexis Applications: Business role, user is an executive doctor, i.e. Mandator'
+$KCADM create roles -r ElexisEnvironment -s name=elexis_assistant -s 'description=Elexis Applications: Business role, user is an assistant, i.e. MPA'
+
+#
 # ELEXIS-SERVER.FHIR-API (Bearer Only)
 #
 T="$S (elexis-server.fhir-api)"

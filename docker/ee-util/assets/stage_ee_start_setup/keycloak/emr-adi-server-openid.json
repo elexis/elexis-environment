@@ -12,5 +12,21 @@
     "attributes": {
         "access.token.lifespan": "86400",
         "use.refresh.tokens": "false"
-    }
+    },
+    "protocolMappers": [
+        {
+          "name": "elexisContactId",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "elexisContactId",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "elexisContactId",
+            "jsonType.label": "String"
+          }
+        }
+      ]
 }
