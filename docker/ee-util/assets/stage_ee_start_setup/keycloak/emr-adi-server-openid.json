@@ -6,6 +6,7 @@
     "standardFlowEnabled": false,
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": true,
+    "description": "Used by service emr-adi-server to authenticate against service elexis-server",
     "serviceAccountsEnabled": false,
     "publicClient": false,
     "frontchannelLogout": false,
