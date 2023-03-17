@@ -15,7 +15,7 @@ $KCADM update clients/$EMR_ADI_SERVER_OPENID_CLIENT -r ElexisEnvironment -s clie
 
 # elexisContactId attribute for EMR_ADI_SERVER_USER_NAME
 MYSQL_STRING="SELECT KONTAKT_ID FROM USER_ WHERE ID ='Administrator'"
-ADMIN_KONTAKT_ID=$(/usql mysql://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "$MYSQL_STRING" | sed -n 2p)
+ADMIN_KONTAKT_ID=$(/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" | sed -n 2p)
 
 echo "$T asserting user for sync access ..."
 export EMR_ADI_SERVER_USER_NAME=emr-adi-server
