@@ -27,7 +27,7 @@ services:
     depends_on:
       - keycloak
     command: >
-      /bin/sh -c "envsubst '$${EE_HOSTNAME}' < /etc/nginx.conf.template > /etc/nginx.conf
+      /bin/sh -c "envsubst '$${EE_HOSTNAME}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
       && envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
       && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
       && echo "" > /etc/nginx/modules.conf 
