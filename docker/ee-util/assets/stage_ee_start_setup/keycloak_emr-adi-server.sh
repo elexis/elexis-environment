@@ -14,13 +14,14 @@ export EMR_ADI_SERVER_SECRET_UUID=$(uuidgen)
 $KCADM update clients/$EMR_ADI_SERVER_OPENID_CLIENT -r ElexisEnvironment -s clientAuthenticatorType=client-secret -s secret=$EMR_ADI_SERVER_SECRET_UUID -s enabled=$ENABLE_EMR_ADI_SERVER  -f keycloak/emr-adi-server-openid.json
 
 # elexisContactId attribute for EMR_ADI_SERVER_USER_NAME
+export EMR_ADI_SERVER_USER_NAME=emr-adi-server
 MYSQL_STRING="SELECT KONTAKT_ID FROM USER_ WHERE ID ='Administrator'"
 ADMIN_KONTAKT_ID=$(/usql --set SHOW_HOST_INFORMATION=false -C mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING" | sed -n 2p)
 echo "$T Administrator assigned contact is ${ADMIN_KONTAKT_ID}"
 echo "$T asserting user $EMR_ADI_SERVER_USER_NAME for sync access ..."
-export EMR_ADI_SERVER_USER_NAME=emr-adi-server
 export EMR_ADI_SERVER_USER_PASSWORD=$(uuidgen)
-$KCADM create users -r ElexisEnvironment -s username=$EMR_ADI_SERVER_USER_NAME -s "attributes.elexisContactId=${ADMIN_KONTAKT_ID}" -s enabled=true -i 
+$KCADM create users -r ElexisEnvironment -s username=$EMR_ADI_SERVER_USER_NAME -s "attributes.elexisContactId=${ADMIN_KONTAKT_ID}" -s enabled=true -i
+# TODO dynamically update
 $KCADM add-roles --uusername $EMR_ADI_SERVER_USER_NAME --rolename elexis_user -r ElexisEnvironment
 echo "$T update $EMR_ADI_SERVER_USER_NAME password ..."
 $KCADM set-password -r ElexisEnvironment --username $EMR_ADI_SERVER_USER_NAME --new-password $EMR_ADI_SERVER_USER_PASSWORD

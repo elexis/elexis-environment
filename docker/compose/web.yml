@@ -5,7 +5,7 @@ services:
   web:
     image: nginx:1.20-alpine
     volumes:
-      - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./assets/web/etc/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
       - ./assets/web/html-template:/template:ro
       - ./assets/web/html/internal/:/usr/share/nginx/html/internal/:ro
@@ -27,8 +27,8 @@ services:
     depends_on:
       - keycloak
     command: >
-      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
-      && envsubst < /etc/nginx.conf.template > /etc/nginx.conf
+      /bin/sh -c "envsubst '$${EE_HOSTNAME}' < /etc/nginx.conf.template > /etc/nginx.conf
+      && envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
       && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
       && echo "" > /etc/nginx/modules.conf 
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
