@@ -61,7 +61,7 @@ http {
     server {
         listen 8443 ssl proxy_protocol; # via wireguard
         listen 8444 ssl; # to test external view from internal lan
-        server_name _;
+        server_name ${EE_HOSTNAME};
 
         ssl_certificate         /etc/nginx/certificate.crt;
         ssl_certificate_key     /etc/nginx/certificate.key;
@@ -111,7 +111,7 @@ http {
     # INTERNAL SERVICES: HTTP via internal network, redirect all to HTTPS
     server {
 	    listen 80 default_server;
-        server_name _;
+        server_name ${EE_HOSTNAME};
 
 	    return 301 https://$host$request_uri;
     }
@@ -119,7 +119,7 @@ http {
     # INTERNAL SERVICES: HTTPS via internal network
     server {
         listen 443 default_server ssl http2;
-        server_name _;
+        server_name ${EE_HOSTNAME};
 
         ssl_certificate         /etc/nginx/certificate.crt;
         ssl_certificate_key     /etc/nginx/certificate.key;

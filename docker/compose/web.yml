@@ -28,6 +28,7 @@ services:
       - keycloak
     command: >
       /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
+      && envsubst < /etc/nginx.conf.template > /etc/nginx.conf
       && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
       && echo "" > /etc/nginx/modules.conf 
       && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
