@@ -11,7 +11,7 @@ services:
      - LC_ALL=de_CH.UTF-8
      - HTTPS_ENABLED=false  # disables HTTPS on port 20141
      - EMR_ADMIN_PASSWORD=$ADMIN_PASSWORD # used on security realm creation
-     - HTTP_RELATIVE_PATH=/api/emradiserver
+     - HTTP_RELATIVE_PATH=/api/emrserver
     expose:
       - 20141
     networks:
