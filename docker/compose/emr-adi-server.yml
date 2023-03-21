@@ -20,3 +20,7 @@ services:
       - "2036:2036" # CDO
     mem_limit: 2G
     memswap_limit: 2G
+
+  web:
+    volumes: 
+     - ./assets/emradi/html/:/usr/share/nginx/html/internal/adi/:ro

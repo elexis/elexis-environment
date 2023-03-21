@@ -8,7 +8,7 @@ services:
       - ./assets/web/etc/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
       - ./assets/web/html-template:/template:ro
-      - ./assets/web/html/internal/:/usr/share/nginx/html/internal/:ro
+      - ./assets/web/html/internal/:/usr/share/nginx/html/internal/
       - ./assets/web/html/external/:/usr/share/nginx/html/external/:ro
       - ./assets/web/html/both/:/usr/share/nginx/html/both/:ro
       - ../../site/dhparam.pem:/etc/nginx/dhparam.pem:ro
