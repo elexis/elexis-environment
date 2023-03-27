@@ -1,4 +1,5 @@
 #!/bin/bash
+source keycloak_functions.sh
 # SOLR Keycloak Initialization Script
 T="$S (solr)"
 

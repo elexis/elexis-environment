@@ -1,4 +1,5 @@
 #!/bin/bash
+source keycloak_functions.sh
 # Elexis-Web Keycloak Initialization Script
 T="$S (elexis-web-api)"
 

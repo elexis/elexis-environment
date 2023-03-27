@@ -1,4 +1,5 @@
 #!/bin/bash
+source keycloak_functions.sh
 # Elexis-RCP Keycloak configuration script
 T="$S (elexis-rcp-openid)"
 
