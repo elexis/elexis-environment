@@ -40,14 +40,6 @@
     timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE} -c "SELECT 1=1"
 }
 
-# Is the Nextcloud DB accessible
-@test "Check RDBMS_NEXTCLOUD_DATABASE accessible" {
-    if [ $ENABLE_NEXTCLOUD == false ]; then
-        skip "Nextcloud module not enabled"
-    fi
-    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE} -c "SELECT 1=1"
-}
-
 # Is ADMIN_PASSWORD changed ( is it strong? )
 @test "Admin password was changed" {
     [ "$ADMIN_PASSWORD" != "admin" ]

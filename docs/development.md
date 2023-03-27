@@ -10,7 +10,6 @@ The following docker containers are created:
 - ```ldap``` LDAP server
 - ```rocketchat``` A [chat server](https://rocket.chat/)
 - ```bookstack``` A platform for organising and storing information (see https://www.bookstackapp.com/)
-- ```nextcloud``` A self-hosted file and productivity platform (see https://nextcloud.com)
 
 ## Theming
 
@@ -20,7 +19,6 @@ Theming can be applied to the different services within the following locations:
 * Keycloak - via volume mount in  `docker/compose/assets/keycloak/themes/elexis-environment`
 * Bookstack - via volume mount in `docker/compose/assets/bookstack`
 * Rocketchat - via applied setting `Custom_Script_Logged_In`, see `rocketchat.sh`
-* Nextcloud - 
 
 
 ## Elexis-Rap docker image

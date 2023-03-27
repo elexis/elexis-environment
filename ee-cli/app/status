@@ -116,7 +116,6 @@ config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
 config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
 config['enable-elexis-rcp'] = os.environ.get('ENABLE_ELEXIS_RCP')
 config['enable-elexis-server'] = os.environ.get('ENABLE_ELEXIS_SERVER')
-config['enable-nextcloud'] = os.environ.get('ENABLE_NEXTCLOUD')
 config['enable-ocrmypdf'] = os.environ.get('ENABLE_OCRMYPDF')
 config['enable-rocketchat'] = os.environ.get('ENABLE_ROCKETCHAT')
 config['enable-solr'] = os.environ.get('ENABLE_SOLR')
@@ -141,6 +140,27 @@ hostname_dns_resolve = subprocess.run(["getent", "-s dns", "hosts", os.environ.g
 site['dns-resolv'] = "("+str(hostname_dns_resolve.returncode)+") "+hostname_dns_resolve.stdout
 site['cron-auto-git-pull-repo'] = ( readFileContent(INSTALL_DIR+".enable-auto-git-pull") == git['branch'] )
 
+# ee.service
+service = {}
+ee['service'] = service
+
+# docker_client = docker.from_env()
+# for container in docker_client.containers.list(all=True, filters={"label": "com.docker.compose.project=elexis-environment"}):
+#    _service = {}
+#    _service_name = container.labels["com.docker.compose.service"]
+#    service[_service_name]  = _service
+#    _service["containerid"] = container.short_id
+#    _service["status"] = container.status
+#    _service["ExitCode"] = container.attrs["State"]["ExitCode"]
+#    _service["StartedAt"] = container.attrs["State"]["StartedAt"]
+# _service["Mounts"] = container.attrs["Mounts"]
+
+# for volume in docker_client.volumes.list():
+#    _v = {}
+#    service[volume.id] = _v
+#    _v["attrs"] = volume.attrs
+
+#docker_client.close()
 
 checkNotifications(site_status)
 

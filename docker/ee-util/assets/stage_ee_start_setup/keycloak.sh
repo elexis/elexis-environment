@@ -68,19 +68,16 @@ P2=$!
 ./keycloak_bookstack.sh &
 P3=$!
 
-./keycloak_nextcloud.sh &
+./keycloak_elexis-server.sh &
 P4=$!
 
-./keycloak_elexis-server.sh &
+./keycloak_elexis-web.sh &
 P5=$!
 
-./keycloak_elexis-web.sh &
+./keycloak_solr.sh &
 P6=$!
 
-./keycloak_solr.sh &
-P7=$!
-
-wait $P1 $P2 $P3 $P4 $P5 $P6 $P7
+wait $P1 $P2 $P3 $P4 $P5 $P6
 
 # ELEXIS-RCP-OPENID
 # references solr client in mapper
