@@ -7,8 +7,8 @@ services:
     volumes:
       - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:
-      - DB_TYPE=$RDBMS_TYPE
-      - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
+      - DB_TYPE=${RDBMS_ELEXIS_TYPE-$RDBMS_TYPE}
+      - DB_HOST=${RDBMS_ELEXIS_HOST-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT-$RDBMS_PORT}
       - DB_DATABASE=$RDBMS_ELEXIS_DATABASE
       - DB_USERNAME=$RDBMS_ELEXIS_USERNAME
       - DB_PASSWORD=$RDBMS_ELEXIS_PASSWORD
