@@ -67,7 +67,7 @@ services:
 
   # websockets
   elexis-web-websockets:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-1
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-1.0
     volumes:
       - elexis-web-api_php:/www
     entrypoint: php artisan websockets:serve
