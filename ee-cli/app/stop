@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 ${INSTALL_DIR}ee system cmd stop
 ${INSTALL_DIR}ee system cmd rm -f elexis-web-api-php elexis-web-websockets elexis-web-api-nginx
-docker volume rm -f elexis-environment_elexis-web-api_php
+
+if [ $ENABLE_ELEXIS_WEB == true ]; then
+    docker volume rm -f elexis-environment_elexis-web-api_php
+fi
+
+if [ $ENABLE_NEXTCLOUD == true ]; then
+    docker volume rm -f elexis-environment_nextcloud_php_socket
+fi

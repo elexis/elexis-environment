@@ -7,6 +7,7 @@ services:
         volumes:
             - nextcloud_html:/var/www/html
             - nextcloud_data:/var/www/html/data
+            - nextcloud_php_socket:/var/run/php-fpm-sock
         networks:
             - backend
         environment:
@@ -32,8 +33,10 @@ services:
     web:
         volumes:
             - nextcloud_html:/var/www/html/cloud:ro
+            - nextcloud_php_socket:/var/run/php-fpm-sock
 
 # TODO http://netshare.containx.io/docs/cifs
 volumes:
     nextcloud_html:
     nextcloud_data:
+    nextcloud_php_socket:
