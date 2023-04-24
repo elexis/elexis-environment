@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+NEXTCLOUD_RUNNING=$(docker ps --filter label=com.docker.compose.project=elexis-environment --filter label=com.docker.compose.service=nextcloud --format "{{.ID}}")
+if [ -n "${NEXTCLOUD_RUNNING}" ]; then
+    ~/ee system cmd exec -u 82 nextcloud php /var/www/html/cron.php
+fi
