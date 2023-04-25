@@ -11,6 +11,6 @@ if [ -z $SOLR_OPENID_CLIENTID ]; then
 fi
 
 echo "$T update client settings ... "
-$KCADM update clients/$SOLR_OPENID_CLIENTID -r ElexisEnvironment -s enabled=true -s baseUrl=https://$EE_HOSTNAME/solr/ -s bearerOnly=true
+$KCADM update clients/$SOLR_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_SOLR -s baseUrl=https://$EE_HOSTNAME/solr/ -s bearerOnly=true
 createOrUpdateClientRole $SOLR_OPENID_CLIENTID user 'description=Read and query'
 createOrUpdateClientRole $SOLR_OPENID_CLIENTID indexer 'description=Allowed to update collections'
