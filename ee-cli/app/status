@@ -113,20 +113,11 @@ config['hostname'] = os.environ.get('EE_HOSTNAME')
 config['organisation-name'] = os.environ.get('ORGANISATION_NAME')
 config['mis-project-id'] = os.environ.get('MIS_PROJECTID')
 config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
-<<<<<<< HEAD
 # ee.config enabled services
 for key, value in os.environ.items():
     if key.startswith('ENABLE'):
         config[key.replace('_', '-').lower()] = value
-=======
-config['enable-bookstack'] = os.environ.get('ENABLE_BOOKSTACK')
-config['enable-elexis-rcp'] = os.environ.get('ENABLE_ELEXIS_RCP')
-config['enable-elexis-server'] = os.environ.get('ENABLE_ELEXIS_SERVER')
-config['enable-nextcloud'] = os.environ.get('ENABLE_NEXTCLOUD')
-config['enable-ocrmypdf'] = os.environ.get('ENABLE_OCRMYPDF')
-config['enable-rocketchat'] = os.environ.get('ENABLE_ROCKETCHAT')
-config['enable-solr'] = os.environ.get('ENABLE_SOLR')
->>>>>>> parent of d89c4f9 ([24734] Remove nextcloud support)
+
 
 # ee.site
 site = {}
