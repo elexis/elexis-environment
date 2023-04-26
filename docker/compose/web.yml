@@ -3,7 +3,7 @@ version: '3'
 services:
 
   web:
-    image: nginx:1.20-alpine
+    image: nginx:1.22-alpine
     volumes:
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
