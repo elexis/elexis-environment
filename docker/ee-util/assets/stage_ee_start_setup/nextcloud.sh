@@ -29,22 +29,9 @@ done
 #    -s theming/name="${ORGANISATION_NAME//__/\ }" -s theming/url="$EE_HOSTNAME/cloud"
 
 #
-# OpenId configuration - https://github.com/pulsejet/nextcloud-oidc-login
+# OpenId configuration
 # 
-# TODO maybe move to ee-init.sh?
 echo "$T Update oidc client secret ..."
 NC_OPENID_CLIENT_SECRET=$(cat "/tmp/NC_OPENID_CLIENT_SECRET")
-#MYSQL_STRING="INSERT INTO oc_user_oidc_providers(id, identifier, client_id, client_secret, discovery_endpoint, scope) \
-#    VALUES ('1','Keycloak','nextcloud', '${NC_OPENID_CLIENT_SECRET}', 'https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration', 'openid email profile') \
-#    ON DUPLICATE KEY UPDATE client_secret = '${NC_OPENID_CLIENT_SECRET}'"
-
 MYSQL_STRING="UPDATE oc_user_oidc_providers SET client_secret='${NC_OPENID_CLIENT_SECRET}' WHERE (identifier = 'Keycloak')"
 /usql mysql://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE} -c "$MYSQL_STRING"
-
-#echo "$T Assert settings for oidc_provider nextcloud .."
-#java -jar /NextcloudSetter.jar -t -l NextcloudAdmin -p $ADMIN_PASSWORD -u $NC_BASEURL -v \
-#    -s user_oidc/id4me_enabled="0" \
-#    -s user_oidc/provider-1-checkBearer="1" -s user_oidc/provider-1-mappingUid="preferred_username" \
-#    -s user_oidc/provider-1-uniqueUid="0" -s user_oidc/provider-1-mappingEmail="email" \
-#    -s user_oidc/provider-1-bearerProvisioning="1" -s user_oidc/provider-1-providerBasedId="0" \
-#    -s user_oidc/provider-1-sendIdTokenHint="0"

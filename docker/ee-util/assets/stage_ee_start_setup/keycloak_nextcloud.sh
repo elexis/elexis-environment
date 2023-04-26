@@ -4,7 +4,7 @@ source keycloak_functions.sh
 T="$S (nextcloud)"
 
 #
-# NEXTCLOUD-OIDC https://github.com/pulsejet/nextcloud-oidc-login
+# NEXTCLOUD-OIDC
 #
 NC_OPENID_CLIENTID=$(getClientId nextcloud)
 if [ -z $NC_OPENID_CLIENTID ]; then
