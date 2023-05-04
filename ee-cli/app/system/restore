@@ -90,5 +90,5 @@ rm -Rf $SOURCE_DIR
 sepline
 echo "### FINISHED"
 echo "### !!!!! SQL Databases were NOT part of this restore !!!!! "
-echo "### !!!!!         you have to take care of this     !!!!! "
+echo "### !!!!!         you have to take care of this       !!!!! "
 sepline

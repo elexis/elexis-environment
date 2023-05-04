@@ -1,6 +1,27 @@
 /* 04.07 styles */
-@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap');
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Bold.eot');
+    src: url('../fonts/Roboto-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Roboto-Bold.woff2') format('woff2'),
+    url('../fonts/Roboto-Bold.woff') format('woff'),
+    url('../fonts/Roboto-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.eot');
+    src: url('../fonts/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Roboto-Regular.woff2') format('woff2'),
+    url('../fonts/Roboto-Regular.woff') format('woff'),
+    url('../fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 .login-pf-page {
     padding-bottom: 150px;
@@ -11,7 +32,7 @@
     background:#fff;
     background-size: cover;
     min-height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto';
 }
 
 div.login-pf-page .login-pf-page-header{
@@ -56,14 +77,14 @@ div.login-pf-page .login-pf-page-header{
     color: #A6A6A6;
     font-size: 38px;
     line-height: 1.25;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto';
 }
 
 label {
     display: block;
     text-align: left;
     margin-bottom: 5px;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 14px;
     line-height: 1.7;
     letter-spacing: 0.02em;
@@ -77,7 +98,7 @@ label {
     border-radius: 29px;
     padding: 10px 20px;
     height: 36px;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Roboto';
     font-weight: 700;
     color: #929292;
     font-size: 14px;
@@ -93,7 +114,7 @@ label {
     color: transparent;
     margin: 0 auto;
     border-color: transparent;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 16px;
     letter-spacing: 0.04em;
     color: #FFFFFF;
@@ -120,7 +141,7 @@ label {
 .alert {
     color: #929292;
     font-weight: 700;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto';
 }
 
 .form-horizontal .control-label {

@@ -1,0 +1,86 @@
+{
+    "authentication": {
+        "class": "solr.MultiAuthPlugin",
+        "schemes": [
+            {
+                "scheme": "basic",
+                "class": "solr.BasicAuthPlugin",
+                "blockUnknown": true,
+                "credentials": {
+                    "SolrAdmin": "${X_EE_SOLR_ADMIN_PASSWORD_HASH}"
+                },
+                "realm": "${ORGANISATION_NAME}",
+                "forwardCredentials": false
+            },
+            {
+                "scheme": "bearer",
+                "class": "solr.JWTAuthPlugin",
+                "principalClaim": "preferred_username",
+                "blockUnknown": true,
+                "realm": "ElexisEnvironment",
+                "wellKnownUrl": "https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration",
+                "clientId": "solr",
+                "redirectUris": "https://${EE_HOSTNAME}/solr/",
+                "rolesClaim": "solr-roles"
+            }
+        ]
+    },
+    "authorization": {
+        "class": "solr.MultiAuthRuleBasedAuthorizationPlugin",
+        "schemes": [
+            {
+                "scheme": "basic",
+                "class": "solr.RuleBasedAuthorizationPlugin",
+                "user-role": {
+                    "SolrAdmin": "admin"
+                }
+            },
+            {
+                "scheme": "bearer",
+                "class": "solr.ExternalRoleRuleBasedAuthorizationPlugin"
+            }
+        ],
+        "permissions": [
+            {
+                "name": "read",
+                "role": "user"
+            },
+            {
+                "name": "schema-read",
+                "role": "user"
+            },
+            {
+                "name": "schema-edit",
+                "role": "user"
+            },
+            {
+                "name": "config-read",
+                "role": "user"
+            },
+            {
+                "name": "config-edit",
+                "role": "user"
+            },
+            {
+                "name": "collection-admin-read",
+                "role": "user"
+            },
+            {
+                "name": "metrics-read",
+                "role": "user"
+            },
+            {
+                "name": "update",
+                "role": "indexer"
+            },
+            {
+                "name": "security-read",
+                "role": "admin"
+            },
+            {
+                "name": "security-edit",
+                "role": "admin"
+            }
+        ]
+    }
+}

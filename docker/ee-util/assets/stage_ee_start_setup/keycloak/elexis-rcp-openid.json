@@ -1,22 +1,33 @@
 {
     "name": "elexis-rcp-openid",
-    "redirectUris": [
-        "http://localhost/elexis-rcp-callback"
-    ],
+    "redirectUris": [],
+    "bearerOnly": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": true,
+    "serviceAccountsEnabled": false,
+    "publicClient": false,
+    "frontchannelLogout": false,
+    "attributes": {
+        "access.token.lifespan": "86400",
+        "use.refresh.tokens": "false"
+    },
     "protocolMappers": [
         {
-            "name": "elexisContactId",
-            "protocol": "openid-connect",
-            "protocolMapper": "oidc-usermodel-attribute-mapper",
-            "consentRequired": false,
-            "config": {
-                "userinfo.token.claim": "true",
-                "user.attribute": "elexisContactId",
-                "id.token.claim": "true",
-                "access.token.claim": "true",
-                "claim.name": "ecid",
-                "jsonType.label": "String"
-            }
+          "name": "solr-client-role-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "userinfo.token.claim": "false",
+            "id.token.claim": "false",
+            "access.token.claim": "true",
+            "claim.name": "solr-roles",
+            "jsonType.label": "String",
+            "usermodel.clientRoleMapping.clientId": "solr"
+          }
         }
-    ]
+      ]
 }

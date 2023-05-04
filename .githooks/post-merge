@@ -1,0 +1,5 @@
+#/usr/bin/env bash
+# post-merge githook script
+# installs the crontab on each pull (which involves a merge)
+echo "[githook] Executing post-merge"
+crontab ~/.githooks/cron-file.txt

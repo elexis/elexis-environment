@@ -18,10 +18,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 url: '/cloud',
                 title: 'Dateien',
             },
-            ENABLE_ELEXIS_RAP: {
-                url: '/rap',
-                title: 'RAP',
-            },
             ENABLE_SOLR: {
                 url: '/solr',
                 title: 'SOLR',
@@ -35,7 +31,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return document.querySelectorAll(this.popupSelectors.commonWrap);
         },
         run() {
-            console.log(1)
             if (this.initialized) {
                 return false;
             }
@@ -53,4 +48,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
         },
     };
     elxsPopupAdmin.run();
+
 });

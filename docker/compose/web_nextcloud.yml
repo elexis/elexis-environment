@@ -1,7 +1,0 @@
-# Nextcloud extension for web.yml
-version: '3'
-
-services:
-    web:
-        volumes:
-            - nextcloud_html:/var/www/html/cloud:ro

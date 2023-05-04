@@ -1,5 +1,9 @@
 # Maintenance
 
+### Syncing Elexis Users
+
+To sync users of an existing Elexis database with keycloak, execute `./ee setup sync_users_es_keycloak`. In EE every user must have
+a unique e-mail address. If a user does not have an associated e-mail address, syncing will generate one in the format `userid@ORGANSATION_DOMAIN`.
 ## Backup
 
 The following service data is stored (as docker volumes) within the elexis-environment:
@@ -15,11 +19,11 @@ The following service data is stored (as docker volumes) within the elexis-envir
 * Elexis-Server
   * Home
 
-Execute `ee system backup` to back-up data into `site/backup`.
-
+Execute `ee system backup` to back-up data into `site/backup`. The SQL databases are not part
+of the backup, you have to take care of them by yourself.
 ## Restore
 
-TODO
+Execute `ee system restore` on the tarfile generated during the previous process.
 
 ## Updating an existing EE installation
 

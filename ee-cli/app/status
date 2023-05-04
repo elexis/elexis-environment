@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+import argparse
+import datetime
+import json
+import os
+import socket
+import subprocess
+
+import git
+import psutil
+from dotenv import load_dotenv
+from OpenSSL import crypto as c
+from requests import get, put
+from requests.api import put
+from statusnotifications import *
+
+def readFileContent(file: str) -> str:
+    # read a files content, if exists, return trimmed, else return string file not found
+    try:
+        with open(file) as f:
+            file_content = f.read()
+            return file_content.strip()
+    except IOError as e:
+        return file+" not found"
+
+parser = argparse.ArgumentParser(description='EE status report')
+parser.add_argument('--output', default=True, action=argparse.BooleanOptionalAction, dest='output',
+                    help='print report')
+parser.add_argument('--generate-report', default=False, action=argparse.BooleanOptionalAction, dest='generatereport',
+                    help='generate report for http access')
+parser.add_argument('--send-report', default=False, action=argparse.BooleanOptionalAction, dest='sendreport',
+                    help='send report to medelexis')
+args = parser.parse_args()
+
+eeConfig = load_dotenv("${INSTALL_DIR}/.env")
+INSTALL_DIR = os.environ.get('INSTALL_DIR')
+SITE_DIR = os.environ.get('SITE_DIR')
+site_status = {}
+
+SITE_UUID = os.environ.get('X_EE_SITE_UUID') or "missing-uuid"
+
+# site
+site_status["site-uuid"] = SITE_UUID
+site_status["report-time"] = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+
+# system
+system = {}
+site_status["system"] = system
+
+system['fqdn'] = socket.getfqdn()
+
+boot_time = datetime.datetime.fromtimestamp(psutil.boot_time())
+system['boot-time'] = boot_time.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+system['uname'] = " ".join(os.uname())
+
+# determine installation time via /lost+found
+if os.path.isdir('/lost+found'):
+    lost_and_found = os.stat('/lost+found')
+    lost_and_found_ctime_dt = datetime.datetime.fromtimestamp(
+        lost_and_found.st_ctime)
+    system['installation-time'] = lost_and_found_ctime_dt.strftime(
+        '%Y-%m-%dT%H:%M:%S.%f%z')
+
+# system.network
+network = {}
+system['network'] = network
+
+external_ip = get('https://tools.medelexis.ch/myip').text
+network['external-ip'] = external_ip
+
+# system.disk
+disk = {}
+system['disk'] = disk
+
+for partition in psutil.disk_partitions():
+    diskUsage = {}
+    disk[partition.mountpoint] = diskUsage
+    _diskUsage = psutil.disk_usage(partition.mountpoint)
+    diskUsage['total'] = _diskUsage.total
+    diskUsage['used'] = _diskUsage.used
+    diskUsage['free'] = _diskUsage.free
+    diskUsage['percent'] = _diskUsage.percent
+
+# system.pressure
+if os.path.exists("/proc/pressure"):
+    pressure = {}
+    system['pressure'] = pressure
+
+    pressure['cpu'] = readFileContent('/proc/pressure/cpu')
+    pressure['io'] = readFileContent('/proc/pressure/io')
+    pressure['memory'] = readFileContent('/proc/pressure/memory')
+
+# system.upgrades? python-apt
+
+# ee
+ee = {}
+site_status['ee'] = ee
+
+repo = git.Repo(INSTALL_DIR)
+git = {}
+ee['git'] = git
+git['branch'] = repo.active_branch.name
+git['branch-head-commit'] = str(repo.head.commit)
+# git fetch regularily done via cron
+git['origin-branch-head-commit'] = str(
+    repo.rev_parse('origin/'+repo.active_branch.name))
+
+# ee.config
+config = {}
+ee['config'] = config
+
+config['hostname'] = os.environ.get('EE_HOSTNAME')
+config['organisation-name'] = os.environ.get('ORGANISATION_NAME')
+config['mis-project-id'] = os.environ.get('MIS_PROJECTID')
+config['host-internal-ip'] = os.environ.get('EE_HOST_INTERNAL_IP')
+# ee.config enabled services
+for key, value in os.environ.items():
+    if key.startswith('ENABLE'):
+        config[key.replace('_', '-').lower()] = value
+
+
+# ee.site
+site = {}
+ee['site'] = site
+
+# file does not exist on fresh installation
+try:
+    certfile = open(SITE_DIR+"/certificate.crt", "rb")
+    cert = c.load_certificate(c.FILETYPE_PEM, certfile.read())
+    cert_not_after = datetime.datetime.strptime(
+        cert.get_notAfter().decode('ascii'), '%Y%m%d%H%M%SZ')
+    site['cert-not-after'] = cert_not_after.strftime('%Y-%m-%dT%H:%M:%S.%f%z')
+    certfile.close
+except:
+    site['cert-not-after'] = "error reading file"
+
+
+hostname_dns_resolve = subprocess.run(["getent", "-s dns", "hosts", os.environ.get('EE_HOSTNAME')], stdout=subprocess.PIPE, text=True)
+site['dns-resolv'] = "("+str(hostname_dns_resolve.returncode)+") "+hostname_dns_resolve.stdout
+site['cron-auto-git-pull-repo'] = ( readFileContent(INSTALL_DIR+".enable-auto-git-pull") == git['branch'] )
+
+
+checkNotifications(site_status)
+
+# perform output
+
+if args.output:
+    json_dump = json.dumps(site_status, indent=2)
+    print(json_dump)
+
+if args.generatereport:
+    with open(SITE_DIR+'/status.json', 'w') as f:
+        json.dump(site_status, f, indent=2)
+
+if args.sendreport:
+    put_url = "https://ee.medelexis.ch/reports/" + SITE_UUID+".json"
+    put(put_url, json=site_status)

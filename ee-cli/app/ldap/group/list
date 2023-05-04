@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-export LDAPTLS_REQCERT=never
-ldapsearch -H ldaps://$EE_HOSTNAME -D cn=$LDAP_READONLY_USER_USERNAME,$ORGANISATION_BASE_DN -w $LDAP_READONLY_USER_PASSWORD -x -b ou=groups,$ORGANISATION_BASE_DN "(objectClass=groupOfUniqueNames)"

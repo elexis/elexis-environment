@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# Is EE_TOOLS_CERTBOT_SHARED_SECRET set?
+if [[ "$EE_TOOLS_CERTBOT_SHARED_SECRET" =~ ^optional_not_set$ ]]; then
+    echo -e -e "\033[36mABORT\033[39m: EE_TOOLS_CERTBOT_SHARED_SECRET variable is not set."
+    exit -1
+fi
+
+# Is Hostname *.myelexis.ch
+if [[ ! "$EE_HOSTNAME" =~ ^.*\.myelexis.ch$ ]]; then
+    echo -e -e "\033[36mABORT\033[39m: Hostname is $EE_HOSTNAME, this script works for hostnames *.myelexis.ch only."
+    exit -1
+fi
+
+# TODO test X_EE_CERTBOT_SHARED_SECRET
+mkdir -p ${SITE_DIR}letsencrypt
+echo "===================================================================="
+echo "Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
+echo "===================================================================="
+docker pull certbot/certbot
+docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name certbot -v "${SITE_DIR}letsencrypt:/etc/letsencrypt" -v "${INSTALL_DIR}/docker/certbot/:/mnt/certbot/" --env EE_TOOLS_CERTBOT_SHARED_SECRET certbot/certbot certonly \
+   --logs-dir /etc/letsencrypt/logs --work-dir /etc/letsencrypt/work --agree-tos --non-interactive \
+   --email sysadmin-ee@medelexis.ch --manual --preferred-challenges=dns --manual-auth-hook /mnt/certbot/manual-auth-hook.sh \
+   --manual-cleanup-hook /mnt/certbot/manual-cleanup-hook.sh -d ${EE_HOSTNAME}
+
+if [ ! -f ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/cert.pem ]; then
+    echo -e -e "\033[36mABORT\033[39m: No generated certificate found, not installing symlinks"
+    exit -1
+fi
+
+# cert is now available in ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/*pem
+# if files exist, and are not symlinks to our cert, back them up
+FILE=${SITE_DIR}certificate.crt
+[ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
+ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/fullchain.pem $FILE
+
+FILE=${SITE_DIR}certificate.key
+[ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
+ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/privkey.pem $FILE
+
+echo "=> Remember to restart web container to pick-up cert changes"

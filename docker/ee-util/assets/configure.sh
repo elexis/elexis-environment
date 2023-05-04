@@ -27,8 +27,26 @@ java -jar /EnvSubst.jar -s /installdir/.env.bkup -t /installdir/.env.template -f
 # REPLACING UUID TEMPLATE VARIABLES
 # we need a new line for every replaced value in order to re-init a unique id
 #
-sed -i -e "0,/=missing-uuid/{s//=$(uuidgen)/}" /installdir/.env
-sed -i -e "0,/=missing-uuid/{s//=$(uuidgen)/}" /installdir/.env
+mv /installdir/.env /installdir/.env.input
+awk 'BEGIN { p="/proc/sys/kernel/random/uuid" } /missing-uuid/ { getline uuid < p; close(p) sub("missing-uuid", uuid) } 1' /installdir/.env.input > /installdir/.env.output
+mv /installdir/.env.output /installdir/.env
+rm /installdir/.env.input
+
+# re-export the env variables
+export $(grep -v '^#' /installdir/.env | xargs)
+
+# 
+# OTHER variable replacements
+#
+# X_EE_SOLR_ADMIN_PASSWORD_HASH - Custom password hash generated for SOLR
+# contains space, which cannot be written into .env file
+ADMIN_PASSWORD_HASH_WITH_SPACE=$(java -jar /SolrPasswordHash.jar ${ADMIN_PASSWORD})
+ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH_WITH_SPACE//\ /\_\_}
+sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env
+
+# remove all dashes from X_EE_ELEXIS_WEB_API_APP_KEY
+sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env
+
 
 #
 # TEST PRECONDITIONS
@@ -81,22 +99,10 @@ else
   echo "  skipping certificate.cnf generation"
 fi
 
-if [ ! -f "/site/certificate.key" ]; 
+if [ ! -e "/site/certificate.key" ]; 
 then
     echo "* generating certificate.key/csr"
     openssl req -new -config /site/certificate.cnf -keyout /site/certificate.key -out /site/certificate.csr
 else
     echo "  skipping certificate.key/csr generation"
-fi
-
-if [ ! -f "/site/bootstrap.ldif" ]; 
-then
-    echo "* generating bootstrap.ldif"
-    SALT="$(openssl rand 3)"
-    SHA1="$(printf "%s%s" "$ADMIN_PASSWORD" "$SALT" | openssl dgst -binary -sha1)"
-    SHA1_ADMIN_PASS="$(printf "%s%s" "$SHA1" "$SALT" | base64)"
-    export SHA1_ADMIN_PASS
-    cat /assets/ldap/bootstrap.ldif.template | envsubst > /site/bootstrap.ldif
-else
-    echo "  skipping ldap/bootstrap.ldif generation"
 fi

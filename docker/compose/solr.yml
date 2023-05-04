@@ -2,19 +2,27 @@ version: '3'
 
 services:
     solr:
-        image: solr:8.6
+        image: solr:8.11
         expose:
             - 8983
         networks:
             - backend
+        depends_on:
+            - keycloak
         volumes:
             - ./assets/solr/bin/solr-ee-startup:/opt/docker-solr/scripts/solr-ee-startup:ro
+            - ./assets/solr/bin/envsubst:/usr/local/bin/envsubst:ro
+            - ./assets/solr/template/security.json.template:/template/security.json.template:ro
             - ./assets/solr/configsets/el-encounters:/opt/solr/server/solr/configsets/el-encounters:ro
             - ./assets/solr/configsets/el-letters:/opt/solr/server/solr/configsets/el-letters:ro
             - ./assets/solr/configsets/el-documents:/opt/solr/server/solr/configsets/el-documents:ro
             - solr_data:/var/solr
         command:
             - solr-ee-startup
+        environment:
+            - EE_HOSTNAME
+            - ORGANISATION_NAME
+            - X_EE_SOLR_ADMIN_PASSWORD_HASH
 
 volumes:
     solr_data:

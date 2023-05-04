@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>EE_Landingpage</title>
+    <title></title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Encode+Sans">
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.ico" />
 </head>
 
 <body>
@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-4 offset-xl-0" style="width: 33.3%;"><a href="/user"> <img class="img-fluid"
                             src="assets/img/Benutzer.png"
-                            style="width: 50px;float: right;margin-right:2%;" /></a></div>
+                            style="width: 50px;float: right;" /></a></div>
             </div>
         </div>
     </div>
@@ -33,11 +33,7 @@
             <div class="row">
                 <div class="col-md-12" style="width: 100%;height: 100%;">
                     <div style="height: 161px;"></div>
-										<style>
-											@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@300&family=Roboto:wght@300&display=swap');
-                                            @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;500;700;900&display=swap');
-                                        </style>
-										<h1 class="page-title" style="font-family: 'Roboto', sans-serif; color: #1B1B1B;  font-weight: 700;">ORGANISATION NAME</h1>
+										<h1 class="page-title" id="organisationName" style="font-family: 'Roboto', sans-serif; color: #1B1B1B;  font-weight: 700;"></h1>
                                         <p class="page-pretitle" style="font-family: 'Roboto', sans-serif;font-weight: 300; color: #323031; margin-bottom: 0.25rem;">Herzlich Willkommen bei Elexis-Environment, schön dass Sie da sind.</p>
                 </div>
             </div>
@@ -45,59 +41,57 @@
     </div>
     <div>
         <div class="container">
-            <div class="row">
-								<style>
-									@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
-								</style>
+            <div class="row" style="margin: 0">
+                <div class="main-box-wrap" style="display: none;" data-navigation="ENABLE_BOOKSTACK">
+                    <div class="main-box-inner">
+                        <a href="/bookstack">
+                            <div id="Praxishandbuch_Box" class="main-box">
+                                <img id="Praxishandbuch" src="assets/img/Buch.png"  />
+                                <p id="Praxishandbuch_Titel" class="main-title">Praxishandbuch</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="main-box-wrap" style="display: none" data-navigation="ENABLE_ROCKETCHAT">
+                    <div class="main-box-inner">
+                        <a href="/chat">
+                            <div id="Chat_Box" class="main-box">
+                                <img id="Chat" src="assets/img/Chat.png" />
+                                <p id="Chat_Titel" class="main-title">Chat</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="main-box-wrap" style="display: none" data-navigation="ENABLE_NEXTCLOUD">
+                    <div class="main-box-inner">
+                        <a href="/cloud">
+                            <div id="Dateien_Box" class="main-box">
+                                <img id="Dateien" src="assets/img/Dateien.png"  />
+                                <p id="Dateien_Titel" class="main-title">Dateien</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="main-box-wrap" style="display: none" data-navigation="ENABLE_SOLR">
+                    <div class="main-box-inner">
+                        <a href="/solr">
+                            <div id="SOLR_Box" class="main-box">
+                                <img id="SOLR" src="assets/img/Icon_SOLR.png"  />
+                                <p id="SOLR_Titel" class="main-title">SOLR</p>
+                            </div>
 
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none;" data-navigation="ENABLE_BOOKSTACK">
-                    <a href="/bookstack">
-                        <div id="Praxishandbuch_Box" class="main-box">
-                            <img id="Praxishandbuch" src="assets/img/Buch.png"  />
-                            <p id="Praxishandbuch_Titel" class="main-title">Praxishandbuch</p>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 </div>
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none" data-navigation="ENABLE_ROCKETCHAT">
-                    <a href="/chat">
-                        <div id="Chat_Box" class="main-box">
-                            <img id="Chat" src="assets/img/Chat.png" />
-                            <p id="Chat_Titel" class="main-title">Chat</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none" data-navigation="ENABLE_NEXTCLOUD">
-                    <a href="/cloud">
-                        <div id="Dateien_Box" class="main-box">
-                            <img id="Dateien" src="assets/img/Dateien.png"  />
-                            <p id="Dateien_Titel" class="main-title">Dateien</p>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none" data-navigation="ENABLE_ELEXIS_RAP">
-                    <a href="/rap">
-                        <div id="RAP_Box" class="main-box">
-                            <img id="RAP" src="assets/img/Icon_RAP.png"  />
-                            <p id="RAP_Titel" class="main-title">RAP</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none" data-navigation="ENABLE_SOLR">
-                    <a href="/solr">
-                        <div id="SOLR_Box" class="main-box">
-                            <img id="SOLR" src="assets/img/Icon_SOLR.png"  />
-                            <p id="SOLR_Titel" class="main-title">SOLR</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-10 col-sm-8 col-md-4 main-box-wrap" style="display: none" data-navigation="ENABLE_OCRMYPDF">
-                    <a href="/ocrmypdf">
-                        <div id="OCRmyPDF_Box" class="main-box">
-                            <img id="OCRmyPDF" src="assets/img/Icon_OCRmyPDF.png"  />
-                            <p id="OCRmyPDF_Titel" class="main-title">OCRmyPDF</p>
-                        </div>
-                    </a>
+                <div class="main-box-wrap" style="display: none" data-navigation="ENABLE_OCRMYPDF">
+                    <div class="main-box-inner">
+                        <a href="/ocrmypdf">
+                            <div id="OCRmyPDF_Box" class="main-box">
+                                <img id="OCRmyPDF" src="assets/img/Icon_OCRmyPDF.png"  />
+                                <p id="OCRmyPDF_Titel" class="main-title">OCRmyPDF</p>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -124,7 +118,9 @@
                             Integrierte Chatfunktion
                         </div>
                         <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            Communication is key wie es so schön heisst. Schreiben Sie in einem geschützten & sicheren Raum mit Ihrer Praxis oder vernetzen
+                            Sie mehrere Standorte
+                            untereinander.
                         </div>
                     </div>
                     <div class="popup-link-wrapper">
@@ -155,10 +151,14 @@
                             Praxishandbuch
                         </div>
                         <div class="popup-page-subtitle">
-                            Integrierte Chatfunktion
+                            Abläufe dokumentieren
                         </div>
                         <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            Ihre Praxis. Ihre Dokumentation.
+                            Dokumentieren Sie Abläufe, uns Zuständigkeiten
+                            in einem einfachen Webbrowser und greifen
+                            sie wenn gewünscht von überall
+                            darauf zu.
                         </div>
                     </div>
                     <div class="popup-link-wrapper">
@@ -189,78 +189,11 @@
                             Dateien
                         </div>
                         <div class="popup-page-subtitle">
-                            Integrierte Chatfunktion
+                            Zentrale Dateiverwaltung
                         </div>
                         <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                        </div>
-                    </div>
-                    <div class="popup-link-wrapper">
-                        <a href="https://medelexis.ch/" class="popup-link">
-                            Mehr dazu
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="popup-wrapper popup-rap" data-popup="ENABLE_ELEXIS_RAP">
-        <div class="container popup-wrapper-container">
-            <div class="popup-content">
-                <a href="/" class="popup-back-button">
-                    <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.292893 7.29289C-0.0976311 7.68342 -0.0976311 8.31658 0.292893 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292893 7.29289ZM21 7L1 7V9L21 9V7Z" fill="#484C93"/>
-                    </svg>
-                    Zurück
-                </a>
-                <div class="popup-content-inner">
-                    <div class="popup-page-img-wrapper">
-                        <img src="assets/img/Icon_RAP.png"  />
-                    </div>
-                    <div class="popup-page-info">
-                        <div class="popup-page-name">
-                            Rap
-                        </div>
-                        <div class="popup-page-subtitle">
-                            Integrierte Chatfunktion
-                        </div>
-                        <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-                        </div>
-                    </div>
-                    <div class="popup-link-wrapper">
-                        <a href="https://medelexis.ch/" class="popup-link">
-                            Mehr dazu
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="popup-wrapper popup-solr" data-popup="ENABLE_SOLR">
-        <div class="container popup-wrapper-container">
-            <div class="popup-content">
-                <a href="/" class="popup-back-button">
-                    <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.292893 7.29289C-0.0976311 7.68342 -0.0976311 8.31658 0.292893 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292893 7.29289ZM21 7L1 7V9L21 9V7Z" fill="#484C93"/>
-                    </svg>
-                    Zurück
-                </a>
-                <div class="popup-content-inner">
-                    <div class="popup-page-img-wrapper">
-                        <img src="assets/img/Icon_SOLR.png"  />
-                    </div>
-                    <div class="popup-page-info">
-                        <div class="popup-page-name">
-                            SOLR
-                        </div>
-                        <div class="popup-page-subtitle">
-                            Integrierte Chatfunktion
-                        </div>
-                        <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            Ihre Daten in der Cloud... Aber
+                            in Ihrer eigenen! Arbeiten Sie gemeinsam an Ihren Dokumenten. Schnell, simpel und sicher.
                         </div>
                     </div>
                     <div class="popup-link-wrapper">
@@ -288,13 +221,13 @@
                     </div>
                     <div class="popup-page-info">
                         <div class="popup-page-name">
-                            OCRmyPDF
+                            Dokumentenablage
                         </div>
                         <div class="popup-page-subtitle">
-                            Integrierte Chatfunktion
+                            Effiziente Texterkennung
                         </div>
                         <div class="popup-page-description">
-                            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+                            Egal ob Mail, Fax oder Scan. Dokumente können abgelegt und automatisch dem Patienten zugeordnet werden. Dank der einfachen Benutzeroberfläche sparen Sie sich Zeit und Aufwand. Die Verwendung unserer Dokumentenablage ist simpel und entlastet Ihre MPAs.
                         </div>
                     </div>
                     <div class="popup-link-wrapper">

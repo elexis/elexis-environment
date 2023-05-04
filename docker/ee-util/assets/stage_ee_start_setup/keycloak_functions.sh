@@ -1,5 +1,5 @@
 #!/bin/bash
-V=10.0.2
+V=19.0.3
 KCADM=/$V/kcadm.sh
 S="[KEYCLOAK]"
 T=$S
@@ -31,10 +31,7 @@ function createSamlClientMapper() {
     CLIENT_MAPPER_ID=$($KCADM get clients/$1/protocol-mappers/models -r ElexisEnvironment --format csv --fields id,name --noquotes | grep ,$2$ | cut -d "," -f1)
     if [ -z $CLIENT_MAPPER_ID ]; then
         echo -n "$T create mapper [$2]"
-        if [ "saml-javascript-mapper" = "$3" ]
-        then
-            $KCADM create clients/$1/protocol-mappers/models -r ElexisEnvironment -s name=$2 -s protocol=saml -s protocolMapper=$3 -f $4
-        elif [ "saml-role-list-mapper" = "$3" ]
+        if [ "saml-role-list-mapper" = "$3" ]
         then
             $KCADM create clients/$1/protocol-mappers/models -r ElexisEnvironment -s name=$2 -s protocol=saml -s protocolMapper=$3 -f $4
         else

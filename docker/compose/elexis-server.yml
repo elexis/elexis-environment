@@ -1,14 +1,14 @@
-version: '3'
+version: '2'
 
 services:
 
   elexis-server:
-    image: medevit/elexis-server:latest
+    image: medevit/elexis-server:master
     volumes:
-      - elexis-server_home:/elexis
+      - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:
-      - DB_TYPE=$RDBMS_TYPE
-      - DB_HOST=$RDBMS_HOST:$RDBMS_PORT
+      - DB_TYPE=${RDBMS_ELEXIS_TYPE-$RDBMS_TYPE}
+      - DB_HOST=${RDBMS_ELEXIS_HOST-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT-$RDBMS_PORT}
       - DB_DATABASE=$RDBMS_ELEXIS_DATABASE
       - DB_USERNAME=$RDBMS_ELEXIS_USERNAME
       - DB_PASSWORD=$RDBMS_ELEXIS_PASSWORD
@@ -18,14 +18,25 @@ services:
       - REDMINE_APIKEY
       - MIS_APIKEY
       - MIS_PROJECTID
+      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
+      - OAUTH_SECRET_ELEXIS_SERVER.JAXRS-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
+      - CUPS_SERVER
+      - IPP_PORT
+      - X_EE_SOLR_ELEXIS_SERVER_PASSWORD
+      - ENABLE_ROCKETCHAT
     expose:
       - 8380
     networks:
       - backend
     ports:
-      - "7234:7234"
+      - "127.0.0.1:7234:7234"
+    logging:                # limit logging, as its already done by ES within home volume
+      driver: "local"
+      options:
+        max-size: 20m
+        max-file: "5"
+        compress: "false"
+    mem_limit: 2G
+    memswap_limit: 2G
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
-
-volumes:
-  elexis-server_home:

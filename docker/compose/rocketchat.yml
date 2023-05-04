@@ -3,7 +3,7 @@ version: '3'
 services:
 
   rocketchat:
-    image: rocket.chat:3.14
+    image: rocket.chat:3.18
     command: bash -c 'for i in `seq 1 30`; do node main.js && s=$$? && break || s=$$?; echo "Tried $$i times. Waiting 5 secs..."; sleep 5; done; (exit $$s)'
     restart: unless-stopped
     volumes:
@@ -22,19 +22,6 @@ services:
       - Server_Type=privateTeam
       - Industry=healthcarePharmaceutical
       - Show_Setup_Wizard=completed
-      - LDAP_Enable=true
-      - LDAP_Authentication=true
-      - LDAP_Host=ldap
-      - LDAP_BaseDN=$ORGANISATION_BASE_DN
-      - LDAP_User_Search_Field=uid
-      - LDAP_Authentication_UserDN=cn=${LDAP_READONLY_USER_USERNAME},${ORGANISATION_BASE_DN}
-      - LDAP_Authentication_Password=${LDAP_READONLY_USER_PASSWORD}
-      - LDAP_Group_Filter_Group_Name=ROCKET_CHAT
-      - LDAP_Group_Filter_Group_Member_Format=uniqueMember
-      - LDAP_Sync_User_Data=true
-      - LDAP_Username_Field=uid
-      - LDAP_Merge_Existing_Users=true
-      - LDAP_User_Search_Field=uid,mail
       - FileUpload_Storage_Type=FileSystem
       - FileUpload_FileSystemPath=/app/uploads
       #- NODE_TLS_REJECT_UNAUTHORIZED=0 # development only

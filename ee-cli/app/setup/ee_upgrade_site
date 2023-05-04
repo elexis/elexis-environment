@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#Upgrade R1 to R2 branch
+set -e # exit on failure
+ORIGIN_BRANCH=$(git -C $INSTALL_DIR branch --show-current)
+TARGET_BRANCH=R2
+
+source $INSTALL_DIR/ee-cli/app/system/common.sh
+assert_docker_stopped
+
+if [ $ORIGIN_BRANCH != 'R1' ]; then
+    sepline
+    echo "Unsupported origin branch -> $ORIGIN_BRANCH";
+    sepline
+    exit;
+fi
+
+sepline
+echo "[$(date +"%D-%T")] Upgrading $ORIGIN_BRANCH to $TARGET_BRANCH"
+sepline
+cd ${INSTALL_DIR}
+echo "--> ee system clean"
+./ee system clean
+echo "--> git pull"
+git pull
+echo "--> git gc"
+git gc
+echo "--> git checkout -b $TARGET_BRANCH origin/$TARGET_BRANCH"
+git checkout -b $TARGET_BRANCH origin/$TARGET_BRANCH
+git pull
+echo "--> ee system cmd pull"
+./ee system cmd pull
+echo "--> ee setup configure"
+./ee setup configure
+
+sepline
+echo "1) Verify and supplement the EE variables"
+echo "2) Re-Run setup configure"
+echo "3) Start EE"

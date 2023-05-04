@@ -14,7 +14,6 @@
 # To create a core in a mounted directory:
 #      mkdir myvarsolr; chown 8983:8983 myvarsolr
 #      docker run -it --rm -P -v $PWD/myvarsolr://var/solr solr solr-precreate mycore
-set -e
 
 echo "Executing $0" "$@"
 
@@ -25,10 +24,22 @@ fi
 # init script for handling an empty /var/solr
 /opt/docker-solr/scripts/init-var-solr
 
+ORGANISATION_NAME=${ORGANISATION_NAME//__/\ }
+X_EE_SOLR_ADMIN_PASSWORD_HASH=${X_EE_SOLR_ADMIN_PASSWORD_HASH//__/\ }
+/usr/local/bin/envsubst < /template/security.json.template > /var/solr/data/security.json
+
 . /opt/docker-solr/scripts/run-initdb
 
 /opt/docker-solr/scripts/precreate-core el-encounters /opt/solr/server/solr/configsets/el-encounters
 /opt/docker-solr/scripts/precreate-core el-letters /opt/solr/server/solr/configsets/el-letters
 /opt/docker-solr/scripts/precreate-core el-documents /opt/solr/server/solr/configsets/el-documents
+
+STATUS=0
+while [ $STATUS -ne 200 ]; do
+    echo -n "solr-ee-startup: Waiting for keycloak ..."
+    sleep 5
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration || true)
+    echo " http status is [$STATUS]"
+done
 
 exec solr-fg

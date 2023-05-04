@@ -1,0 +1,110 @@
+version: '3'
+
+services:
+
+  # extend existing web service with volume
+  web:
+    volumes:
+      - elexis-web-app-static:/usr/share/nginx/html/elexisweb/:ro
+
+  # initialize the volume with elexisweb static files
+  # maybe create an image that does just that?
+  # TODO remove the key
+  elexis-web-app-static-init-volume:
+    image: alpine:3
+    command: >
+      /bin/sh -c 'cd /volume 
+      && rm -Rf *
+      && wget -q https://${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN}@gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar
+      && tar xvf deploy.tar
+      && rm deploy.tar
+      && mv build/* .
+      && rmdir build'
+    depends_on:
+      - web
+    volumes:
+      - elexis-web-app-static:/volume/
+
+  # api-php
+  # https://git.qix.sx/elexis/web/-/blob/develop/env-readme.md
+  elexis-web-api-php:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    volumes:
+      - elexis-web-api_php:/www
+    depends_on:
+      - keycloak
+      - elexis-server
+    networks:
+      - backend
+    environment:
+      - APP_DEBUG=true
+      - APP_ENV="local"
+      - APP_KEY=$X_EE_ELEXIS_WEB_API_APP_KEY
+      - APP_NAME="Elexis Web"
+      - APP_URL=https://$EE_HOSTNAME/api/elexisweb/
+      - AUTH_METHOD=oidc
+      - FORCE_HTTPS=true
+      - FULL_WEB=false
+      - OIDC_DUMP_USER_DETAILS=false
+      - OIDC_CLIENT_ID=elexis-web-api
+      - OIDC_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OIDC_AUTH_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OIDC_TOKEN_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
+      - OIDC_LOGOUT_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/logout
+      - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/ # fallback to referrer url
+      - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
+      - OIDC_AUTO_REFRESH_TOKEN=true
+      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
+      - OIDC_PUBLIC_KEY=jwt-key.key
+      - BROADCAST_DRIVER=pusher
+      - PUSHER_APP_ID=local
+      - PUSHER_APP_KEY=local
+      - PUSHER_APP_SECRET=local
+      - PUSHER_APP_HOST_NAME=elexis-web-websockets
+      - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
+      - ENABLE_API_COMPONENT_AGENDA=true
+      - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir}
+
+  # websockets
+  elexis-web-websockets:
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    volumes:
+      - elexis-web-api_php:/www
+    entrypoint: php artisan websockets:serve
+    restart: always
+    expose:
+      - 6001
+    networks:
+      - backend
+    environment:
+      - APP_DEBUG=true
+      - APP_NAME="Lumen"
+      - APP_ENV="local"
+      - APP_URL=https://$EE_HOSTNAME/api/elexisweb
+      - BROADCAST_DRIVER=pusher
+      - PUSHER_APP_CLUSTER=mt1
+      - PUSHER_APP_ID=local
+      - PUSHER_APP_KEY=local
+      - PUSHER_APP_SECRET=local
+      - PUSHER_APP_HOST_NAME=elexis-web-websockets
+    depends_on:
+      - elexis-web-api-php
+
+  # api-nginx
+  elexis-web-api-nginx:
+    image: nginx:1.20-alpine
+    depends_on:
+      - elexis-web-api-php
+    working_dir: /www
+    expose:
+      - 3005
+    volumes:
+      - elexis-web-api_php:/www
+      - ./assets/elexisweb/etc/nginx:/etc/nginx/conf.d:ro
+    networks:
+      - backend
+
+volumes:
+    elexis-web-api_php:
+    # for FPM share usage
+    elexis-web-app-static:
