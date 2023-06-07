@@ -3,7 +3,7 @@ version: '3'
 services:
     wireguard:
         build: ../wireguard
-        privileged: true
+        restart: unless-stopped
         volumes:
             - wireguard_conf:/etc/wireguard
             - ../../site/wireguard/:/site/
@@ -12,6 +12,8 @@ services:
             - SYS_MODULE
         networks:
             - myelexis_bridge
+        sysctls:
+            - net.ipv4.conf.all.src_valid_mark=1
         environment:
             - WG_SERVER_ENDPOINT
             - WG_SERVER_PUBKEY

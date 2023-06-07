@@ -22,6 +22,12 @@ echo $PUBLIC_KEY > /site/pubkey.txt
 chmod ugo+r /site/pubkey.txt
 echo "Public Key: ${PUBLIC_KEY}"
 
+# from https://github.com/linuxserver/docker-wireguard/blob/master/Dockerfile
+# do not require setting of sysctl, would lead to
+#  sysctl: error setting key 'net.ipv4.conf.all.src_valid_mark': Read-only file system
+# value is set via docker sysctl parameter wireguard.yml
+sed -i 's|\[\[ $proto == -4 \]\] && cmd sysctl -q net\.ipv4\.conf\.all\.src_valid_mark=1|[[ $proto == -4 ]] \&\& [[ $(sysctl -n net.ipv4.conf.all.src_valid_mark) != 1 ]] \&\& cmd sysctl -q net.ipv4.conf.all.src_valid_mark=1|' /usr/bin/wg-quick
+
 # generate /etc/wireguard/wg0.conf
 echo "$(date): Generating /etc/wireguard/wg0.conf" >&2
 echo "[Interface]" >/etc/wireguard/wg0.conf
