@@ -13,17 +13,27 @@ WEB_IP=$(getent hosts web | cut -d' ' -f1)
 iptables -F
 iptables -A POSTROUTING -t nat -j MASQUERADE
 
+# to forward ssh port to host system
+HOST_IP=$(ip route show 0.0.0.0/0 | cut -d\  -f3)
+
 PRIVATE_KEY=$(cat /etc/wireguard/private-key)
 PUBLIC_KEY=$(cat /etc/wireguard/private-key | wg pubkey)
 echo $PUBLIC_KEY > /site/pubkey.txt
+chmod ugo+r /site/pubkey.txt
 echo "Public Key: ${PUBLIC_KEY}"
+
+# from https://github.com/linuxserver/docker-wireguard/blob/master/Dockerfile
+# do not require setting of sysctl, would lead to
+#  sysctl: error setting key 'net.ipv4.conf.all.src_valid_mark': Read-only file system
+# value is set via docker sysctl parameter wireguard.yml
+sed -i 's|\[\[ $proto == -4 \]\] && cmd sysctl -q net\.ipv4\.conf\.all\.src_valid_mark=1|[[ $proto == -4 ]] \&\& [[ $(sysctl -n net.ipv4.conf.all.src_valid_mark) != 1 ]] \&\& cmd sysctl -q net.ipv4.conf.all.src_valid_mark=1|' /usr/bin/wg-quick
 
 # generate /etc/wireguard/wg0.conf
 echo "$(date): Generating /etc/wireguard/wg0.conf" >&2
 echo "[Interface]" >/etc/wireguard/wg0.conf
 echo "Address = ${WG_CLIENT_IP}" >>/etc/wireguard/wg0.conf
 echo "PrivateKey = ${PRIVATE_KEY}" >>/etc/wireguard/wg0.conf
-echo "PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -s ${WG_CLIENT_IP} -p tcp --dport 8443 -j DNAT --to-destination ${WEB_IP}:8443" >>/etc/wireguard/wg0.conf
+echo "PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -s ${WG_CLIENT_IP} -p tcp --dport 8443 -j DNAT --to-destination ${WEB_IP}:8443; iptables -t nat -A PREROUTING -i %i -s ${WG_CLIENT_IP} -p tcp --dport 22 -j DNAT --to-destination ${HOST_IP}:22" >>/etc/wireguard/wg0.conf
 echo "[Peer]" >>/etc/wireguard/wg0.conf
 echo "Endpoint = ${WG_SERVER_ENDPOINT}" >>/etc/wireguard/wg0.conf
 echo "PublicKey = ${WG_SERVER_PUBKEY}" >>/etc/wireguard/wg0.conf
