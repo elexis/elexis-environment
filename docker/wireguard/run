@@ -74,7 +74,7 @@ echo "AllowedIPs = 0.0.0.0/0" >>/etc/wireguard/wg0.conf
 echo "PersistentKeepalive = 25" >>/etc/wireguard/wg0.conf
 
 echo "$(date): Starting Wireguard wg0"
-wg-quick up wg0e.
+wg-quick up wg0
 
 sleep infinity &
 wait $!
