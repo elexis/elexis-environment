@@ -2,12 +2,46 @@
 # Inspired by https://github.com/sebastl/wireguard-docker/blob/stretch/run
 set -eu
 
+MIS_URL="https://mis.medelexis.ch"
+
+# calculate the ip address via the project number
+ipAddressByProjectNo() {
+    projectNo=$1
+    firstOctet=$(expr $projectNo / 256)
+    secondOctet=$(expr $projectNo % 256)
+    ipAddress="10.100.$firstOctet.$secondOctet"
+    echo "$ipAddress"
+}
+
 if [ ! -f /etc/wireguard/private-key ]; then
     echo "$(date): Generating keypair" >&2
     umask 077
     wg genkey >/etc/wireguard/private-key
 fi
 
+WG_CLIENT_IP=$(ipAddressByProjectNo ${MIS_PROJECTID})
+echo "$(date): Client IP: ${WG_CLIENT_IP}"
+PRIVATE_KEY=$(cat /etc/wireguard/private-key)
+PUBLIC_KEY=$(cat /etc/wireguard/private-key | wg pubkey)
+echo "$(date): Public Key: ${PUBLIC_KEY}"
+
+### Upate MIS information
+MIS_ISSUE_JSON=$(curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request GET "${MIS_URL}/projects/${MIS_PROJECTID}/issues.json?subject=myelexis-bridge&tracker_id=15&limit=1")
+MIS_ISSUE_ID=$(echo $MIS_ISSUE_JSON | jq .issues[0].id 2&>errors)
+if [ $MIS_ISSUE_ID = "null" ]; then
+    echo "$(date): MIS - Creating issue" # update existing issue
+    POST_BODY=$(jq -n --arg hostname ${EE_HOSTNAME} --arg wg_pubkey ${PUBLIC_KEY} --arg project_id ${MIS_PROJECTID} -f mis_post.json.template)
+    curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request POST "$MIS_URL/issues.json" -d "${POST_BODY}"
+else
+    echo "$(date): MIS - Updating issue $MIS_ISSUE_ID" # update existing issue
+    PUT_BODY=$(jq -n --arg hostname ${EE_HOSTNAME} --arg wg_pubkey ${PUBLIC_KEY} -f mis_put.json.template)
+    curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request PUT "$MIS_URL/issues/$MIS_ISSUE_ID.json" -d "${PUT_BODY}"
+fi
+
+WG_SERVER_PUBKEY=$(curl -s --location "https://tools.medelexis.ch//bridge-myelexis-ch/wireguard/pubkey")
+echo "$(date): WG_SERVER_PUBKEY: $WG_SERVER_PUBKEY"
+
+### Startup
 echo "$(date): Prepare iptables" >&2
 WEB_IP=$(getent hosts web | cut -d' ' -f1)
 iptables -F
@@ -16,17 +50,16 @@ iptables -A POSTROUTING -t nat -j MASQUERADE
 # to forward ssh port to host system
 HOST_IP=$(ip route show 0.0.0.0/0 | cut -d\  -f3)
 
-PRIVATE_KEY=$(cat /etc/wireguard/private-key)
-PUBLIC_KEY=$(cat /etc/wireguard/private-key | wg pubkey)
-echo $PUBLIC_KEY > /site/pubkey.txt
-chmod ugo+r /site/pubkey.txt
-echo "Public Key: ${PUBLIC_KEY}"
-
 # from https://github.com/linuxserver/docker-wireguard/blob/master/Dockerfile
 # do not require setting of sysctl, would lead to
 #  sysctl: error setting key 'net.ipv4.conf.all.src_valid_mark': Read-only file system
 # value is set via docker sysctl parameter wireguard.yml
 sed -i 's|\[\[ $proto == -4 \]\] && cmd sysctl -q net\.ipv4\.conf\.all\.src_valid_mark=1|[[ $proto == -4 ]] \&\& [[ $(sysctl -n net.ipv4.conf.all.src_valid_mark) != 1 ]] \&\& cmd sysctl -q net.ipv4.conf.all.src_valid_mark=1|' /usr/bin/wg-quick
+
+if [ $WG_DISABLE_SSH_MANHOLE = "true" ]; then
+    # TODO OPT-OUT SSH MANHOLE
+    echo "OPT OUT FOR MANHOLE _ TO IMPLEMENT"
+fi
 
 # generate /etc/wireguard/wg0.conf
 echo "$(date): Generating /etc/wireguard/wg0.conf" >&2
@@ -37,17 +70,11 @@ echo "PostUp = iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTIN
 echo "[Peer]" >>/etc/wireguard/wg0.conf
 echo "Endpoint = ${WG_SERVER_ENDPOINT}" >>/etc/wireguard/wg0.conf
 echo "PublicKey = ${WG_SERVER_PUBKEY}" >>/etc/wireguard/wg0.conf
-echo "PresharedKey = ${WG_SERVER_PRESHAREDKEY}" >>/etc/wireguard/wg0.conf
 echo "AllowedIPs = 0.0.0.0/0" >>/etc/wireguard/wg0.conf
 echo "PersistentKeepalive = 25" >>/etc/wireguard/wg0.conf
 
 echo "$(date): Starting Wireguard wg0"
-wg-quick up wg0
-
-# TODO document registration of client in wikijs.medelexis.ch
-# https://hub.docker.com/r/cmulk/wireguard-docker
-# https://prismplex.com/de/blog/wireguard-server-docker
-# https://www.linode.com/docs/networking/vpn/set-up-wireguard-vpn-on-ubuntu/
+wg-quick up wg0e.
 
 sleep infinity &
 wait $!

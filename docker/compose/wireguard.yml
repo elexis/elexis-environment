@@ -6,7 +6,6 @@ services:
         restart: unless-stopped
         volumes:
             - wireguard_conf:/etc/wireguard
-            - ../../site/wireguard/:/site/
         cap_add:
             - NET_ADMIN
             - SYS_MODULE
@@ -15,10 +14,11 @@ services:
         sysctls:
             - net.ipv4.conf.all.src_valid_mark=1
         environment:
-            - WG_SERVER_ENDPOINT
-            - WG_SERVER_PUBKEY
-            - WG_SERVER_PRESHAREDKEY
-            - WG_CLIENT_IP
+            - WG_SERVER_ENDPOINT=${WG_SERVER_ENDPOINT-bridge.myelexis.ch:51820}
+            - EE_HOSTNAME
+            - MIS_APIKEY
+            - MIS_PROJECTID
+            - WG_DISABLE_SSH_MANHOLE
 
 # healthcheck
 volumes:
