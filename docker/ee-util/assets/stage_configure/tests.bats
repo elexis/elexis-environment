@@ -48,6 +48,27 @@
     timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE} -c "SELECT 1=1"
 }
 
+# Is the Nextcloud S3 accessible
+@test "Check NEXTCLOUD_S3_STORAGE accessible" {
+    if [ $ENABLE_NEXTCLOUD == false ]; then
+        skip "Nextcloud module not enabled"
+    fi
+
+    resource="/${NEXTCLOUD_S3_STORAGE_BUCKETNAME}/"
+    content_type="application/octet-stream"
+    date=`date -R`
+    _signature="HEAD\n\n${content_type}\n${date}\n${resource}"
+    signature=`echo -en ${_signature} | openssl sha1 -hmac ${NEXTCLOUD_S3_STORAGE_SECRET} -binary | base64`
+    
+    curl -k -I -w ''%{http_code}'' \
+          -H "Host: ${NEXTCLOUD_S3_STORAGE_HOSTNAME}" \
+          -H "Date: ${date}" \
+          -H "Content-Type: ${content_type}" \
+          -H "Authorization: AWS ${NEXTCLOUD_S3_STORAGE_KEY}:${signature}" \
+          https://${NEXTCLOUD_S3_STORAGE_HOSTNAME}:9000${resource}
+    [ "$status" -eq 0 ]
+}
+
 # Is ADMIN_PASSWORD changed ( is it strong? )
 @test "Admin password was changed" {
     [ "$ADMIN_PASSWORD" != "admin" ]
