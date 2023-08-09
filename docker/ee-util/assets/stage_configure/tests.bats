@@ -66,7 +66,6 @@
           -H "Content-Type: ${content_type}" \
           -H "Authorization: AWS ${NEXTCLOUD_S3_STORAGE_KEY}:${signature}" \
           https://${NEXTCLOUD_S3_STORAGE_HOSTNAME}:9000${resource}
-    [ "$status" -eq 0 ]
 }
 
 # Is ADMIN_PASSWORD changed ( is it strong? )
