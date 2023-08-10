@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+if [ "$1" == "nextcloud" ]; then 
+    USQL_PARAM="mysql://${RDBMS_NEXTCLOUD_USERNAME}:${RDBMS_NEXTCLOUD_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_NEXTCLOUD_DATABASE}"
+elif [ "$1" == "elexis-server" ]; then
+    USQL_PARAM="mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE}"
+else 
+    exit -1;
+fi;
+
+${INSTALL_DIR}ee system cmd run ee-config ./usql $USQL_PARAM
