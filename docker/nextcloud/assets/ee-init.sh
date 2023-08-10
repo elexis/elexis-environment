@@ -8,10 +8,12 @@ echo "$(date): Configure user_oidc ..."
 # Accept keycloak to be on localhost address
 php /var/www/html/occ config:system:set allow_local_remote_servers --value true
 # https://github.com/nextcloud/user_oidc
-php /var/www/html/occ user_oidc:provider -c nextcloud -s willBeReplaced \
+php /var/www/html/occ user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
     -d https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration \
     --mapping-uid=preferred_username --check-bearer=1 --unique-uid=0 \
     --mapping-email=email Keycloak
+# https://github.com/nextcloud/user_oidc#id4me-option
+php /var/www/html/occ config:app:set --value=0 user_oidc id4me_enabled
 
 echo "$(date): Apply theming ..."
 php /var/www/html/occ config:app:set theming name --value "${ORGANISATION_NAME//__/\ }"
