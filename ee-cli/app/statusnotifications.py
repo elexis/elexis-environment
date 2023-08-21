@@ -12,6 +12,12 @@ def checkNotifications(site_status):
     status = []
     now = datetime.datetime.now()
 
+    # config error: is system.fqdn equal to ee.config.hostname
+    if(site_status['system']['fqdn'] != site_status['ee']['config']['hostname']):
+        hostnameConfigError = {"level": "ERROR", "element": "system.fqdn",
+                               "reason": "system_hostname_does_not_match_configuration"}
+        status.append(hostnameConfigError)
+
     # are there any updates for EE.git
     if(site_status['ee']['git']['branch-head-commit'] != site_status['ee']['git']['origin-branch-head-commit']):
         gitUpdAvail = {"level": "INFO", "element": "ee.git",
