@@ -1,0 +1,9 @@
+{
+    "issue": {
+        "project_id": ($project_id),
+        "tracker_id": "15",
+        "assigned_to_id": "me",
+        "subject": "myelexis-bridge",
+        "description": "<code class=\"json\">{\"hostname\":\"\($hostname)\",\"wg_pubkey\":\"\($wg_pubkey)\"}</code>"
+    }
+}
