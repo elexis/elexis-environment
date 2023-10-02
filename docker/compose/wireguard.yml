@@ -15,10 +15,11 @@ services:
             - net.ipv4.conf.all.src_valid_mark=1
         environment:
             - WG_SERVER_ENDPOINT=${WG_SERVER_ENDPOINT-bridge.myelexis.ch:51820}
+            - WG_DISABLE_SSH_MANHOLE=${WG_DISABLE_SSH_MANHOLE-false}
             - EE_HOSTNAME
             - MIS_APIKEY
             - MIS_PROJECTID
-            - WG_DISABLE_SSH_MANHOLE
+
 
 # healthcheck
 volumes:

@@ -4,6 +4,10 @@ KCADM=/$V/kcadm.sh
 S="[KEYCLOAK]"
 T=$S
 
+function randomClientSecret {
+    openssl rand -base64 33
+}
+
 function getClientId() {
     $KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep $1 | cut -d "," -f1
 }
