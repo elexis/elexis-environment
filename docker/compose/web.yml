@@ -5,6 +5,7 @@ services:
   web:
     image: nginx:1.22-alpine
     volumes:
+      - ./assets/web/web-services-configure.sh:/web-services-configure.sh:ro
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
       - ./assets/web/html-template:/template:ro
@@ -21,35 +22,13 @@ services:
     ports:
       - 80:80 #http - redirect to https
       - 443:443 # https
-      - 8444:8444 # https - external view
     expose:
-      - 8443 # ssl proxy-protocol to wireguard
+      - 8443 # to ext (proxy protocoll)
+      - 8444 # to wg_services (ssl http2)
     depends_on:
       - keycloak
     command: >
-      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
-      && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
-      && echo "" > /etc/nginx/modules.conf 
-      && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_OCRMYPDF == "true" ]; then echo 'include conf/ocrmypdf.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/modules.conf; fi
-      && echo "" > /etc/nginx/wg_modules.conf
-      && if [ $WG_ACCESS_ROCKETCHAT  == *"wg"* ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/wg_modules.conf; fi
-      && if [ $WG_ACCESS_BOOKSTACK == *"wg"* ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/wg_modules.conf; fi
-      && if [ $WG_ACCESS_ELEXIS_SERVER == *"wg"* ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/wg_modules.conf; fi
-      && if [ $WG_ACCESS_NEXTCLOUD == *"wg"* ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/wg_modules.conf; fi
-      && if [ $WG_ACCESS_ELEXIS_WEB == *"wg"* ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/wg_modules.conf; fi
-      && echo "" > /etc/nginx/ext_modules.conf
-      && if [ $WG_ACCESS_ROCKETCHAT  == *"pub"* ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $WG_ACCESS_BOOKSTACK == *"pub"* ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $WG_ACCESS_ELEXIS_SERVER == *"pub"* ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $WG_ACCESS_NEXTCLOUD == *"pub"* ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $WG_ACCESS_ELEXIS_WEB == *"pub"* ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && exec nginx -g 'daemon off;'"
+      /bin/sh -c "/web-services-configure.sh && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     logging:
       driver: "local"
