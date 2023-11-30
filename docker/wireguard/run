@@ -57,7 +57,8 @@ HOST_IP=$(ip route show 0.0.0.0/0 | cut -d\  -f3)
 sed -i 's|\[\[ $proto == -4 \]\] && cmd sysctl -q net\.ipv4\.conf\.all\.src_valid_mark=1|[[ $proto == -4 ]] \&\& [[ $(sysctl -n net.ipv4.conf.all.src_valid_mark) != 1 ]] \&\& cmd sysctl -q net.ipv4.conf.all.src_valid_mark=1|' /usr/bin/wg-quick
 
 POST_UP_IPTABLES="iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -p tcp --dport 8443 -j DNAT --to-destination ${WEB_IP}:8443"
-if [ ! $WG_DISABLE_SSH_MANHOLE = "true" ]; then
+POST_UP_IPTABLES="${POST_UP_IPTABLES}; iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -p tcp --dport 443 -j DNAT --to-destination ${WEB_IP}:8444"
+if [ ! $WG_DISABLE_SSH_MANHOLE = "true" ]; then 
     POST_UP_IPTABLES="${POST_UP_IPTABLES}; iptables -t nat -A PREROUTING -i %i -p tcp --dport 22 -j DNAT --to-destination ${HOST_IP}:22"
 fi
 
