@@ -1,6 +1,10 @@
 #!/bin/sh
 set -eu
-
+until nc -z -v -w30 $MYSQL_HOST 3306
+do
+  echo "Waiting for database connection..."
+  sleep 5
+done
 # version_greater A B returns whether A > B
 version_greater() {
     [ "$(printf '%s\n' "$@" | sort -t '.' -n -k1,1 -k2,2 -k3,3 -k4,4 | head -n 1)" != "$1" ]

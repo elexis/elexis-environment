@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="fde5029a-4dc6-4720-be8b-fe95e399c508" name="prod_ee">
+        <fileTransfer rootFolder="/srv/ee" accessType="SFTP" host="144.126.198.105" port="22" sshConfigId="06ca88b9-e3eb-4694-800f-51da76ec6391" sshConfig="root@144.126.198.105:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="4faf2310-9f6d-49e0-a9f9-4a44bf38276d" name="nextcloude">
+        <fileTransfer rootFolder="/srv/ncloud" accessType="SFTP" host="46.101.140.137" port="22" sshConfigId="21201d2a-d5fb-4318-b8a1-93dc19a4ea2e" sshConfig="root@46.101.140.137:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" isUseRsync="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
