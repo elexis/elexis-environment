@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 # https://hub.docker.com/_/nextcloud
 
 services:
@@ -30,6 +30,8 @@ services:
             - OBJECTSTORE_S3_OBJECT_PREFIX=nc_ # must not be urn:oid: which cannot be stored on NTFS
             - OBJECTSTORE_S3_USEPATH_STYLE=true
             - OBJECTSTORE_S3_LEGACYAUTH=true
+        mem_limit: 4G
+        memswap_limit: 4G
 
     web:
         volumes:

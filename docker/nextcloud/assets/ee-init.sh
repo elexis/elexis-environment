@@ -2,6 +2,19 @@
 echo "$(date): Elexis-Environment specific setup"
 ln -sf /var/www/html /var/www/html/cloud
 
+# EE UI Customization
+echo "$(date): Copy EE customization files"
+cp -R /var/www/acom_custom_js_css /var/www/html/apps
+cp /var/www/core/img/logo/logo.svg /var/www/html/core/img/logo/logo.svg
+cp /var/www/core/img/logo/logo.png /var/www/html/core/img/logo/logo.png
+cp /var/www/core/img/logo/logo.png /var/www/html/core/doc/user/_static/logo-white.png
+cp /var/www/core/img/logo/logo.png /var/www/html/core/doc/admin/_static/logo-white.png
+cp /var/www/core/doc/user/_static/custom.css /var/www/html/core/doc/user/_static/custom.css
+cp /var/www/core/doc/user/_static/custom.css /var/www/html/core/doc/admin/_static/custom.css
+echo "$(date): Assert acom_custom_js_css app is enabled ..."
+php /var/www/html/occ app:enable acom_custom_js_css
+## END
+
 echo "$(date): Assert user_oidc app is installed ..."
 php /var/www/html/occ app:install user_oidc
 echo "$(date): Configure user_oidc ..."
@@ -36,6 +49,8 @@ echo "$(date): Check indices ..."
 php /var/www/html/occ db:add-missing-indices
 echo "$(date): Add missing optional columns ..."
 php /var/www/html/occ db:add-missing-columns
+echo "$(date): Set enforce default theme ..."
+php /var/www/html/occ config:system:set enforce_theme --value=default
 
 # we have to return 0, as calling script is set -e
 # which will exit if user_saml is already installed (return code)
