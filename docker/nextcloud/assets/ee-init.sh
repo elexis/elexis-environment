@@ -2,6 +2,8 @@
 echo "$(date): Elexis-Environment specific setup"
 ln -sf /var/www/html /var/www/html/cloud
 
+OCC="php /var/www/html/occ"
+
 # EE UI Customization
 echo "$(date): Copy EE customization files"
 cp -R /var/www/acom_custom_js_css /var/www/html/apps
@@ -12,45 +14,61 @@ cp /var/www/core/img/logo/logo.png /var/www/html/core/doc/admin/_static/logo-whi
 cp /var/www/core/doc/user/_static/custom.css /var/www/html/core/doc/user/_static/custom.css
 cp /var/www/core/doc/user/_static/custom.css /var/www/html/core/doc/admin/_static/custom.css
 echo "$(date): Assert acom_custom_js_css app is enabled ..."
-php /var/www/html/occ app:enable acom_custom_js_css
+$OCC app:enable acom_custom_js_css
 ## END
 
 echo "$(date): Assert user_oidc app is installed ..."
-php /var/www/html/occ app:install user_oidc
+$OCC app:install user_oidc
 echo "$(date): Configure user_oidc ..."
 # Accept keycloak to be on localhost address
-php /var/www/html/occ config:system:set allow_local_remote_servers --value true
+$OCC config:system:set allow_local_remote_servers --value true
 # https://github.com/nextcloud/user_oidc
-php /var/www/html/occ user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
+$OCC user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
     -d https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration \
     --mapping-uid=preferred_username --check-bearer=1 --unique-uid=0 \
     --mapping-email=email Keycloak
 # https://github.com/nextcloud/user_oidc#id4me-option
-php /var/www/html/occ config:app:set --value=0 user_oidc id4me_enabled
+$OCC config:app:set --value=0 user_oidc id4me_enabled
 
 echo "$(date): Apply theming ..."
-php /var/www/html/occ config:app:set theming name --value "${ORGANISATION_NAME//__/\ }"
+$OCC config:app:set theming name --value "${ORGANISATION_NAME//__/\ }"
 
 echo "$(date): App management ..."
-php /var/www/html/occ app:install groupfolders
-php /var/www/html/occ app:disable dashboard
-php /var/www/html/occ app:disable weather_status
-php /var/www/html/occ app:disable circles
-php /var/www/html/occ app:disable firstrunwizard
-php /var/www/html/occ app:disable federation
-php /var/www/html/occ app:disable survey_client
+$OCC app:install groupfolders
+$OCC app:disable dashboard
+$OCC app:disable weather_status
+$OCC app:disable circles
+$OCC app:disable firstrunwizard
+$OCC app:disable federation
+$OCC app:disable survey_client
 
 echo "$(date): Set cron as background job manager ..."
-php /var/www/html/occ background:cron
+$OCC background:cron
 
 echo "$(date): Check big int conversion ..."
-php /var/www/html/occ db:convert-filecache-bigint
+$OCC db:convert-filecache-bigint
 echo "$(date): Check indices ..."
-php /var/www/html/occ db:add-missing-indices
+$OCC db:add-missing-indices
 echo "$(date): Add missing optional columns ..."
-php /var/www/html/occ db:add-missing-columns
+$OCC db:add-missing-columns
 echo "$(date): Set enforce default theme ..."
-php /var/www/html/occ config:system:set enforce_theme --value=default
+$OCC config:system:set enforce_theme --value=default
+
+# https://github.com/nextcloud/groupfolders
+echo "$(date): Assert groupfolders existence ..."
+EXISTING_GROUPFOLDERS=$($OCC groupfolders:list --output=json | jq .[] | jq -r ."mount_point")
+while IFS= read -r line; do
+    FOLDER_NAME=$(echo "$line" | cut -d';' -f1)
+    if echo "$EXISTING_GROUPFOLDERS" | grep -q "$FOLDER_NAME"; then
+        echo -e ""
+    else
+        echo "Create groupfolder $FOLDER_NAME ..."
+        FOLDER_ID=$($OCC groupfolders:create --no-ansi $FOLDER_NAME)
+        # TODO role right mapping
+        $OCC groupfolders:group $FOLDER_ID user write
+    fi
+done < "/groupfolders.csv"
+
 
 # we have to return 0, as calling script is set -e
 # which will exit if user_saml is already installed (return code)

@@ -1,6 +1,6 @@
 FROM nextcloud:26-fpm-alpine
 
-#RUN apk add --no-cache procps libsmbclient imagemagick
+RUN apk add --no-cache jq
 # https://www.reddit.com/r/NextCloud/comments/9e5ljv/nextcloud_and_phpfpm_adjustments/
 RUN sed -i -e 's/^pm\ =\ dynamic/pm\ =\ static/' /usr/local/etc/php-fpm.d/www.conf && \
     sed -i -e 's/^pm.max_children\ =\ 5/pm.max_children\ =\ 64/' /usr/local/etc/php-fpm.d/www.conf && \
@@ -9,6 +9,7 @@ RUN sed -i -e 's/^pm\ =\ dynamic/pm\ =\ static/' /usr/local/etc/php-fpm.d/www.co
 COPY assets/ee-pre-init.sh /
 COPY assets/ee-init.sh /
 COPY assets/entrypoint.sh /
+COPY assets/groupfolders.csv /
 
 COPY --chown=www-data:root assets/apps/acom_custom_js_css/ /var/www/acom_custom_js_css
 COPY --chown=www-data:root assets/core/img/logo/logo.svg /var/www/core/img/logo/logo.svg
