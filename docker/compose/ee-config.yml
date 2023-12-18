@@ -7,6 +7,9 @@ services:
     command: /ee_start_setup.sh
     networks:
       - backend
+      - myelexis_bridge
+    cap_add:
+      - NET_ADMIN
     depends_on:
         - keycloak
     environment:
@@ -35,6 +38,8 @@ services:
       - ENABLE_NEXTCLOUD
       - ENABLE_ELEXIS_WEB
       - ENABLE_SOLR
+      - ENABLE_3RDPARTY_HEUREKA
+      - X_EE_SITE_UUID
       - X_EE_ELEXIS_SERVER_CLIENT_SECRET
       - X_EE_ELEXIS_WEB_API_CLIENT_SECRET
       - X_EE_SOLR_ELEXIS_SERVER_PASSWORD

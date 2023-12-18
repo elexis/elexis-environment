@@ -13,9 +13,6 @@ echo "$T update client settings and secret ... "
 RCP_SECRET_UUID=$(uuidgen)
 echo "$T secret: $RCP_SECRET_UUID"
 $KCADM update clients/$ERCP_OPENID_CLIENTID -r ElexisEnvironment -s clientAuthenticatorType=client-secret -s secret=$RCP_SECRET_UUID -s enabled=$ENABLE_ELEXIS_RCP  -f keycloak/elexis-rcp-openid.json
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=user -s 'description=Application user, required to log-in'
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=doctor
-# $KCADM create clients/$ERCP_OPENID_CLIENTID/roles -r ElexisEnvironment -s name=executive_doctor
 
 echo "$T insert clientId/secret into elexis database .."
 LASTUPDATE=$(date +%s)000
