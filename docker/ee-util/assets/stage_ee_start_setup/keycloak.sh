@@ -40,6 +40,20 @@ $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s brute
     -s ssoSessionIdleTimeout=7200 -s ssoSessionMaxLifespan=86400
 
 #
+# Add realm roles according to Elexis defined roles
+#
+createOrUpdateRealmRole user 'description=Menschlicher Benutzer von Elexis, kann sich in Elexis RCP anmelden'
+createOrUpdateRealmRole bot 'description=Bot Benutzer, keine reale Person, kann sich nicht in Elexis RCP anmelden'
+createOrUpdateRealmRole medical-user 'description=Benutzer kann auf medizinische Daten zugreifen'
+createOrUpdateRealmRole medical-practitioner 'description=Benutzer ist Dr. med. und agiert als solcher'
+createOrUpdateRealmRole medical-assistant 'description=Benutzer ist medizinischer Assistent und agiert als solcher'
+createOrUpdateRealmRole mandator 'description=Benutzer in dessen Namen Leistungen verrechnet und Rechnungen gestellt werden können'
+createOrUpdateRealmRole mpa 'description=Benutzer ist praktischer Assistent, ohne Zugriff auf medizinische Daten'
+createOrUpdateRealmRole mpk 'description=Benutzer ist ??'
+createOrUpdateRealmRole ict-administrator 'description=Benutzer ist für Administration der Praxis zuständig. Kein Zugang auf medizinische Daten'
+createOrUpdateRealmRole poweruser 'description=Benutzer ist ??'
+
+#
 # Master Realm Theme setting
 #
 echo "$T Master realm theme settings ..."

@@ -12,6 +12,10 @@ function getClientId() {
     $KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep $1 | cut -d "," -f1
 }
 
+function getUserId() {
+    $KCADM get users -r ElexisEnvironment --format csv --fields id,username --noquotes | grep $1 | cut -d "," -f1
+}
+
 # create or update a role for a client
 # $1 client id
 # $2 role name
@@ -24,6 +28,20 @@ function createOrUpdateClientRole() {
     else
         echo "$T update client role [$2]"
         $KCADM update clients/$1/roles/$2 -r ElexisEnvironment -s "$3"
+    fi
+}
+
+# create or update a realm role
+# $1 role name
+# $2 params
+function createOrUpdateRealmRole() {
+    ROLE_ID=$($KCADM get-roles -r ElexisEnvironment --format csv --fields id,name --noquotes | grep ,$1$ | cut -d "," -f1)
+    if [ -z $ROLE_ID ]; then
+        echo "$T create realm role [$1]"
+        $KCADM create roles -r ElexisEnvironment -s name=$1 -s "$2"
+    else
+        echo "$T update realm role [$1]"
+        $KCADM update roles/$1 -r ElexisEnvironment -s "$2"
     fi
 }
 
