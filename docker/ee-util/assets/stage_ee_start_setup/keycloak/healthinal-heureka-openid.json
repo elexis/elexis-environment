@@ -1,0 +1,39 @@
+{
+    "clientId": "healthinal-heureka",
+    "surrogateAuthRequired": false,
+    "alwaysDisplayInConsole": false,
+    "clientAuthenticatorType": "client-secret",
+    "redirectUris": [],
+    "webOrigins": [],
+    "notBefore": 0,
+    "bearerOnly": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": true,
+    "serviceAccountsEnabled": false,
+    "publicClient": false,
+    "frontchannelLogout": false,
+    "protocol": "openid-connect",
+    "fullScopeAllowed": true,
+    "nodeReRegistrationTimeout": -1,
+    "protocolMappers": [
+      {
+        "id": "cdadd14b-ca14-4e75-a486-caa375c3df87",
+        "name": "elexisContactId",
+        "protocol": "openid-connect",
+        "protocolMapper": "oidc-usermodel-attribute-mapper",
+        "consentRequired": false,
+        "config": {
+          "aggregate.attrs": "false",
+          "multivalued": "false",
+          "userinfo.token.claim": "true",
+          "user.attribute": "elexisContactId",
+          "id.token.claim": "true",
+          "access.token.claim": "true",
+          "claim.name": "elexisContactId",
+          "jsonType.label": "String"
+        }
+      }
+    ]
+  }
