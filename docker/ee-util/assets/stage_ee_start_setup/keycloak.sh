@@ -201,6 +201,8 @@ source keycloak_elexis-web.sh
 
 source keycloak_solr.sh
 
+source keycloak_3rdparty_heureka.sh
+
 # ELEXIS-RCP-OPENID
 # references solr client in mapper
 source keycloak_elexis-rcp-openid.sh
