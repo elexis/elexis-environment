@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 docker pull medevit/eenv-config
 ${INSTALL_DIR}ee system cmd up -d --build
+${INSTALL_DIR}ee status --no-output --generate-report --send-report

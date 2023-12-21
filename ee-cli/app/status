@@ -153,4 +153,4 @@ if args.generatereport:
 
 if args.sendreport:
     put_url = "https://ee.medelexis.ch/reports/" + SITE_UUID+".json"
-    put(put_url, json=site_status)
+    put(put_url, json=site_status, timeout=5)
