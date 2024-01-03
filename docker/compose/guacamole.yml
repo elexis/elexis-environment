@@ -1,0 +1,36 @@
+version: '3'
+
+# see ee-util/assets/stage_configure/initializations.sh (on update version)
+# docker run --rm guacamole/guacamole:1.5.4 /opt/guacamole/bin/initdb.sh --mysql > docker/ee-util/assets/stage_configure/guacamole-init-mysql-db.sql
+# modify resulting script to remove guacadmin
+
+services:
+
+  guacamole-guacd:
+    image: guacamole/guacd:1.5.4
+    expose:
+      - 4822
+    networks:
+      - backend
+
+  guacamole-guacamole:
+    image: guacamole/guacamole:1.5.4
+    expose:
+      - 8080/tcp
+    depends_on: 
+      - guacamole-guacd
+    networks:
+      - backend
+    environment:
+      - GUACD_HOSTNAME=guacamole-guacd
+      - MYSQL_HOSTNAME=$RDBMS_HOST
+      - MYSQL_DATABASE=$RDBMS_GUACAMOLE_DATABASE
+      - MYSQL_USER=$RDBMS_GUACAMOLE_USERNAME
+      - MYSQL_PASSWORD=$RDBMS_GUACAMOLE_PASSWORD
+      - MYSQL_AUTO_CREATE_ACCOUNTS=true
+      - OPENID_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OPENID_JWKS_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OPENID_AUTHORIZATION_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OPENID_CLIENT_ID=guacamole
+      - OPENID_REDIRECT_URI=https://$EE_HOSTNAME/guacamole/
+      - EXTENSION_PRIORITY=*,openid

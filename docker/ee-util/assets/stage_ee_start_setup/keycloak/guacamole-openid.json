@@ -1,0 +1,42 @@
+{
+    "clientId": "guacamole",
+    "surrogateAuthRequired": false,
+    "alwaysDisplayInConsole": false,
+    "clientAuthenticatorType": "client-secret",
+    "redirectUris": [
+      "/guacamole/"
+    ],
+    "notBefore": 0,
+    "bearerOnly": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": true,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false,
+    "publicClient": true,
+    "frontchannelLogout": true,
+    "protocol": "openid-connect",
+    "attributes": {
+      "oidc.ciba.grant.enabled": "false",
+      "display.on.consent.screen": "false",
+      "oauth2.device.authorization.grant.enabled": "false",
+      "backchannel.logout.session.required": "true",
+      "backchannel.logout.revoke.offline.tokens": "false"
+    },
+    "authenticationFlowBindingOverrides": {},
+    "fullScopeAllowed": true,
+    "nodeReRegistrationTimeout": -1,
+    "defaultClientScopes": [
+      "web-origins",
+      "acr",
+      "roles",
+      "profile",
+      "email"
+    ],
+    "optionalClientScopes": [
+      "address",
+      "phone",
+      "offline_access",
+      "microprofile-jwt"
+    ]
+  }

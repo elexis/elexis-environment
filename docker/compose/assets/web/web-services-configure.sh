@@ -9,6 +9,7 @@ if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> 
 if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
 if [ $ENABLE_OCRMYPDF == "true" ]; then echo 'include conf/ocrmypdf.conf;' >> /etc/nginx/modules.conf; fi
 if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/modules.conf; fi
+if [ $ENABLE_GUACAMOLE == "true" ]; then echo 'include conf/guacamole.conf;' >> /etc/nginx/modules.conf; fi
 echo "" > /etc/nginx/wg_modules.conf
 case $WG_ACCESS_ROCKETCHAT in *wg*) echo 'include conf/rocketchat.conf;' >> /etc/nginx/wg_modules.conf; esac
 case $WG_ACCESS_BOOKSTACK in *wg*) echo 'include conf/bookstack.conf;' >> /etc/nginx/wg_modules.conf; esac
@@ -21,3 +22,4 @@ case $WG_ACCESS_BOOKSTACK in *pub*) echo 'include conf/bookstack.conf;' >> /etc/
 case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; esac
 case $WG_ACCESS_NEXTCLOUD in *pub*) echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; esac
 case $WG_ACCESS_ELEXIS_WEB in *pub*) echo 'include conf/elexis-web.conf;' >> /etc/nginx/ext_modules.conf; esac
+case $WG_ACCESS_GUACAMOLE in *pub*) echo 'include conf/guacamole.conf;' >> /etc/nginx/ext_modules.conf; esac

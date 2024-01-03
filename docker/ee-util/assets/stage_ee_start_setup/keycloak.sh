@@ -94,10 +94,14 @@ P6=$!
 ./keycloak_solr.sh &
 P7=$!
 
-./keycloak_3rdparty_heureka.sh &
+./keycloak_guacamole.sh &
 P8=$!
 
-wait $P1 $P2 $P3 $P4 $P5 $P6 $P7 $P8
+./keycloak_3rdparty_heureka.sh &
+P9=$!
+
+
+wait $P1 $P2 $P3 $P4 $P5 $P6 $P7 $P8 $P9
 
 # ELEXIS-RCP-OPENID
 # references solr client in mapper
