@@ -27,6 +27,7 @@ echo "$(date): Public Key: ${PUBLIC_KEY}"
 
 ### Upate MIS information
 MIS_ISSUE_JSON=$(curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request GET "${MIS_URL}/projects/${MIS_PROJECTID}/issues.json?subject=myelexis-bridge&tracker_id=15&limit=1")
+# TODO what if 401?
 MIS_ISSUE_ID=$(echo $MIS_ISSUE_JSON | jq .issues[0].id 2&>errors)
 if [ $MIS_ISSUE_ID = "null" ]; then
     echo "$(date): MIS - Creating issue" # update existing issue
@@ -44,6 +45,9 @@ echo "$(date): WG_SERVER_PUBKEY: $WG_SERVER_PUBKEY"
 ### Startup
 echo "$(date): Prepare iptables" >&2
 WEB_IP=$(getent hosts web | cut -d' ' -f1)
+if [ -z "${WEB_IP// }" ]; then
+      echo "ERROR - variable WEB_IP is empty"
+fi
 iptables -F
 iptables -A POSTROUTING -t nat -j MASQUERADE
 
@@ -56,11 +60,13 @@ HOST_IP=$(ip route show 0.0.0.0/0 | cut -d\  -f3)
 # value is set via docker sysctl parameter wireguard.yml
 sed -i 's|\[\[ $proto == -4 \]\] && cmd sysctl -q net\.ipv4\.conf\.all\.src_valid_mark=1|[[ $proto == -4 ]] \&\& [[ $(sysctl -n net.ipv4.conf.all.src_valid_mark) != 1 ]] \&\& cmd sysctl -q net.ipv4.conf.all.src_valid_mark=1|' /usr/bin/wg-quick
 
-POST_UP_IPTABLES="iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -p tcp --dport 8443 -j DNAT --to-destination ${WEB_IP}:8443"
-POST_UP_IPTABLES="${POST_UP_IPTABLES}; iptables -A FORWARD -i %i -j ACCEPT; iptables -t nat -A PREROUTING -i %i -p tcp --dport 443 -j DNAT --to-destination ${WEB_IP}:8444"
+POST_UP_IPTABLES="iptables -A FORWARD -i %i -j ACCEPT; iptables -A PREROUTING -t nat -i %i -p tcp --dport 8443 -j DNAT --to-destination ${WEB_IP}:8443"
+POST_UP_IPTABLES="${POST_UP_IPTABLES}; iptables -A FORWARD -i %i -j ACCEPT; iptables -A PREROUTING -t nat -i %i -p tcp --dport 443 -j DNAT --to-destination ${WEB_IP}:8444"
 if [ ! $WG_DISABLE_SSH_MANHOLE = "true" ]; then 
     POST_UP_IPTABLES="${POST_UP_IPTABLES}; iptables -t nat -A PREROUTING -i %i -p tcp --dport 22 -j DNAT --to-destination ${HOST_IP}:22"
 fi
+
+( ./run-iptables-update & )
 
 # generate /etc/wireguard/wg0.conf
 echo "$(date): Generating /etc/wireguard/wg0.conf" >&2

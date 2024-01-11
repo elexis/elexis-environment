@@ -6,6 +6,7 @@ WORKDIR /scripts
 ENV PATH="/scripts:${PATH}"
 
 COPY run /scripts
+COPY run-iptables-update /scripts
 RUN chmod 755 /scripts/*
 COPY mis_put.json.template /scripts
 COPY mis_post.json.template /scripts
