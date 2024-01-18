@@ -45,9 +45,10 @@ echo "$(date): WG_SERVER_PUBKEY: $WG_SERVER_PUBKEY"
 ### Startup
 echo "$(date): Prepare iptables" >&2
 WEB_IP=$(getent hosts web | cut -d' ' -f1)
-if [ -z "${WEB_IP// }" ]; then
-      echo "ERROR - variable WEB_IP is empty"
-fi
+# set default WEB_IP to 127.0.0.1 if not available,
+# may be the case if bridge started before EE
+echo "WEB_IP => ${WEB_IP:=127.0.0.1}"
+
 iptables -F
 iptables -A POSTROUTING -t nat -j MASQUERADE
 
