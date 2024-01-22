@@ -1,9 +1,36 @@
 version: '3'
 
 services:
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider#keycloak-oidc-auth-provider
+  # https://github.com/bitnami/containers/tree/main/bitnami/oauth2-proxy
+  oauth2-proxy:
+    image: bitnami/oauth2-proxy:7
+    networks:
+      - backend
+    expose:
+      - 4180
+    depends_on:
+      ee-config:
+        condition: service_completed_successfully
+      web:
+        condition: service_started
+    environment:
+      - OAUTH2_PROXY_COOKIE_SECRET
+      - OAUTH2_PROXY_PROVIDER=keycloak-oidc
+      - OAUTH2_PROXY_CLIENT_ID=oauth2-proxy
+      - OAUTH2_PROXY_CLIENT_SECRET
+      - OAUTH2_PROXY_REDIRECT_URL=https://$EE_HOSTNAME/oauth2/callback
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OAUTH2_PROXY_CODE_CHALLENGE_METHOD=S256
+      - OAUTH2_PROXY_SET_XAUTHREQUEST=true
+      - OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true
+      - OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+      - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
 
   web:
-    image: nginx:1.22-alpine
+    image: nginx:1.24-alpine
     volumes:
       - ./assets/web/web-services-configure.sh:/web-services-configure.sh:ro
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
@@ -26,7 +53,8 @@ services:
       - 8443 # to ext (proxy protocoll)
       - 8444 # to wg_services (ssl http2)
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_started
     command: >
       /bin/sh -c "/web-services-configure.sh && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready

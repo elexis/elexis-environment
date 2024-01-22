@@ -45,5 +45,5 @@ fi
 
 if [ $ENABLE_GUACAMOLE == "true" ]; then
     echo 'include conf/guacamole.conf;' >>/etc/nginx/modules.conf
-    case $WG_ACCESS_GUACAMOLE in *pub*) echo 'include conf/guacamole.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+    case $WG_ACCESS_GUACAMOLE in *pub*) echo 'include conf/guacamole-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi

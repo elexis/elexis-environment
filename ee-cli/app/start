@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
 docker pull medevit/eenv-config
+
+function randomSecret {
+    openssl rand -base64 32 | tr -- '+/' '-_'
+}
+
+OAUTH2_PROXY_COOKIE_SECRET=$(randomSecret) \
+OAUTH2_PROXY_CLIENT_SECRET=$(randomSecret) \
 ${INSTALL_DIR}ee system cmd up -d --build
-${INSTALL_DIR}ee status --no-output --generate-report --send-report
+
+${INSTALL_DIR}ee status --no-output --generate-report

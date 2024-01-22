@@ -11,7 +11,8 @@ services:
     cap_add:
       - NET_ADMIN
     depends_on:
-        - keycloak
+      keycloak:
+        condition: service_healthy
     environment:
       - EE_HOSTNAME
       - EE_HOST_INTERNAL_IP
@@ -43,6 +44,7 @@ services:
       - ENABLE_SOLR
       - ENABLE_3RDPARTY_HEUREKA
       - ENABLE_GUACAMOLE
+      - OAUTH2_PROXY_CLIENT_SECRET
       - X_EE_SITE_UUID
       - X_EE_ELEXIS_SERVER_CLIENT_SECRET
       - X_EE_ELEXIS_WEB_API_CLIENT_SECRET

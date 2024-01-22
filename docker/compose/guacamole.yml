@@ -28,9 +28,6 @@ services:
       - MYSQL_USER=$RDBMS_GUACAMOLE_USERNAME
       - MYSQL_PASSWORD=$RDBMS_GUACAMOLE_PASSWORD
       - MYSQL_AUTO_CREATE_ACCOUNTS=true
-      - OPENID_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
-      - OPENID_JWKS_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
-      - OPENID_AUTHORIZATION_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
-      - OPENID_CLIENT_ID=guacamole
-      - OPENID_REDIRECT_URI=https://$EE_HOSTNAME/guacamole/
-      - EXTENSION_PRIORITY=*,openid
+      - HEADER_ENABLED=true
+      - HTTP_AUTH_HEADER=X-User
+      - EXTENSION_PRIORITY=header,* # protected via oauth2-proxy

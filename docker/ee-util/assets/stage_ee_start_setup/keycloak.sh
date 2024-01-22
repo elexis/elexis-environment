@@ -71,6 +71,11 @@ LASTUPDATE=$(date +%s)000
 MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
 /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
 
+#
+# oauth2-proxy
+#
+./keycloak_oauth2-proxy.sh
+
 echo "$T Parallel keycloak configuration scripts ...."
 
 ./keycloak_browserflow.sh &
