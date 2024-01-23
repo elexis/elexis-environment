@@ -11,4 +11,5 @@ if [ -z $OAUTH2_PROXY_OPENID_CLIENTID ]; then
 fi
 
 echo "$T update client settings ... "
-$KCADM update clients/$OAUTH2_PROXY_OPENID_CLIENTID -r ElexisEnvironment -s clientAuthenticatorType=client-secret -s secret=$OAUTH2_PROXY_CLIENT_SECRET -s directAccessGrantsEnabled=false -s 'redirectUris=["/oauth2/callback"]'
+$KCADM update clients/$OAUTH2_PROXY_OPENID_CLIENTID -r ElexisEnvironment \
+    -s secret=$OAUTH2_PROXY_CLIENT_SECRET -f keycloak/oauth2-proxy-openid.json
