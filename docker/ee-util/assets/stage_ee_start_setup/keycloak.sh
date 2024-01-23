@@ -37,7 +37,8 @@ $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s brute
     -s loginTheme=elexis-environment -s accountTheme=elexis-environment -s adminTheme=keycloak -s emailTheme=elexis-environment \
     -s smtpServer.host=$EE_HOST_INTERNAL_IP  -s smtpServer.from=keycloak@$EE_HOSTNAME -s smtpServer.auth=false -s smtpServer.ssl=false \
     -s registrationAllowed=false -s internationalizationEnabled=true -s defaultLocale=de \
-    -s ssoSessionIdleTimeout=7200 -s ssoSessionMaxLifespan=86400
+    -s ssoSessionIdleTimeout=7200 -s ssoSessionMaxLifespan=86400 -s verifyEmail=true -s loginWithEmailAllowed=false \
+    -s duplicateEmailsAllowed=true
 
 #
 # Add realm roles according to Elexis defined roles
