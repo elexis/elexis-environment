@@ -21,11 +21,11 @@ done
 #
 # Assert Elexis-Environment Realm exists
 #
-REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
+REALMID=$($KCADM get realms/ElexisEnvironment --fields id --format csv --noquotes)
 if [ -z $REALMID ]; then
     echo -n "$T create ElexisEnvironment realm ... "
     $KCADM create realms -s realm=ElexisEnvironment -s enabled=true -s displayName=Elexis-Environment -s sslRequired=none -i
-    REALMID=$($KCADM get realms/ElexisEnvironment --fields id -c --format csv --noquotes)
+    REALMID=$($KCADM get realms/ElexisEnvironment --fields id --format csv --noquotes)
     echo "ok $REALMID"
 fi
 

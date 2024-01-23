@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-docker pull medevit/eenv-config
+pull_eenv-config
 
 function randomSecret {
     openssl rand -base64 32 | tr -- '+/' '-_'
