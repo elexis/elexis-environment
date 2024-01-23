@@ -81,6 +81,7 @@ services:
       - WG_ACCESS_ROCKETCHAT
       - WG_ACCESS_NEXTCLOUD
       - WG_ACCESS_ELEXIS_WEB
+      - WG_ACCESS_GUACAMOLE
 
 networks:
   backend:
