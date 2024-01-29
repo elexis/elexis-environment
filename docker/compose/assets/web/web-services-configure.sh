@@ -12,12 +12,12 @@ if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >
 echo "" > /etc/nginx/wg_modules.conf
 case $WG_ACCESS_ROCKETCHAT in *wg*) echo 'include conf/rocketchat.conf;' >> /etc/nginx/wg_modules.conf; esac
 case $WG_ACCESS_BOOKSTACK in *wg*) echo 'include conf/bookstack.conf;' >> /etc/nginx/wg_modules.conf; esac
-case $WG_ACCESS_ELEXIS_SERVER in *wg*) echo 'include conf/elexis-server.conf;' >> /etc/nginx/wg_modules.conf; esac
+case $WG_ACCESS_ELEXIS_SERVER in *wg*) echo 'include conf/elexis-server-ext.conf;' >> /etc/nginx/wg_modules.conf; esac
 case $WG_ACCESS_NEXTCLOUD in *wg*) echo 'include conf/nextcloud.conf;' >> /etc/nginx/wg_modules.conf; esac
 case $WG_ACCESS_ELEXIS_WEB in *wg*) echo 'include conf/elexis-web.conf;' >> /etc/nginx/wg_modules.conf; esac
 echo "" > /etc/nginx/ext_modules.conf
 case $WG_ACCESS_ROCKETCHAT in *pub*) echo 'include conf/rocketchat.conf;' >> /etc/nginx/ext_modules.conf; esac
 case $WG_ACCESS_BOOKSTACK in *pub*) echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; esac
-case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; esac
+case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server-ext.conf;' >> /etc/nginx/ext_modules.conf; esac
 case $WG_ACCESS_NEXTCLOUD in *pub*) echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; esac
 case $WG_ACCESS_ELEXIS_WEB in *pub*) echo 'include conf/elexis-web.conf;' >> /etc/nginx/ext_modules.conf; esac
