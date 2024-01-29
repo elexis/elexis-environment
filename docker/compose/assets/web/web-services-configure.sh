@@ -7,8 +7,8 @@ echo "" >/etc/nginx/ext_modules.conf
 
 if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
     echo 'include conf/elexis-server.conf;' >>/etc/nginx/modules.conf
-    case $WG_ACCESS_ELEXIS_SERVER in *wg*) echo 'include conf/elexis-server.conf;' >>/etc/nginx/wg_modules.conf ;; esac
-    case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+    case $WG_ACCESS_ELEXIS_SERVER in *wg*) echo 'include conf/elexis-server-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
+    case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi
 
 if [ $ENABLE_ROCKETCHAT == "true" ]; then
