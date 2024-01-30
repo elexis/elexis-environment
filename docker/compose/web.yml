@@ -20,6 +20,10 @@ services:
       - OAUTH2_PROXY_CLIENT_SECRET
       - OAUTH2_PROXY_REDIRECT_URL=https://$EE_HOSTNAME/oauth2/callback
       - OAUTH2_PROXY_OIDC_ISSUER_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OAUTH2_PROXY_LOGIN_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OAUTH2_PROXY_REDEEM_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
+      - OAUTH2_PROXY_OIDC_JWKS_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OAUTH2_PROXY_SKIP_OIDC_DISCOVERY=true
       - OAUTH2_PROXY_CODE_CHALLENGE_METHOD=S256
       - OAUTH2_PROXY_SET_XAUTHREQUEST=true
       - OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true
