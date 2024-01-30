@@ -11,8 +11,6 @@ services:
     expose:
       - 4180
     depends_on:
-      ee-config:
-        condition: service_completed_successfully
       web:
         condition: service_started
     environment:
