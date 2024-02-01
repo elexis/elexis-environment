@@ -5,7 +5,7 @@ S="[KEYCLOAK]"
 T=$S
 
 function randomClientSecret {
-    openssl rand -base64 33
+    openssl rand -base64 33 | tr -- '+/' '-_'
 }
 
 function getClientId() {
