@@ -3,7 +3,7 @@ source keycloak_functions.sh
 # SOLR Keycloak Initialization Script
 T="$S (solr)"
 
-SOLR_OPENID_CLIENTID=$(getClientId solr | cut -d "," -f1)
+SOLR_OPENID_CLIENTID=$(getClientId solr)
 if [ -z $SOLR_OPENID_CLIENTID ]; then
     echo -n "$T create client ... "
     SOLR_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=solr -i)

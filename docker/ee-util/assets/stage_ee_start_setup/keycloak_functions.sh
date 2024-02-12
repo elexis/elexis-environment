@@ -9,11 +9,11 @@ function randomClientSecret {
 }
 
 function getClientId() {
-    $KCADM get clients -r ElexisEnvironment --format csv --fields id,clientId --noquotes | grep $1 | cut -d "," -f1
+    grep $1 /tmp/keycloak-ee-clients.csv | cut -d "," -f1
 }
 
 function getUserId() {
-    $KCADM get users -r ElexisEnvironment --format csv --fields id,username --noquotes | grep $1 | cut -d "," -f1
+    $KCADM get users -r ElexisEnvironment --format csv --fields id,username --noquotes | grep ,$1$ | cut -d "," -f1
 }
 
 # create or update a role for a client
@@ -35,7 +35,7 @@ function createOrUpdateClientRole() {
 # $1 role name
 # $2 params
 function createOrUpdateRealmRole() {
-    ROLE_ID=$($KCADM get-roles -r ElexisEnvironment --format csv --fields id,name --noquotes | grep ,$1$ | cut -d "," -f1)
+    ROLE_ID=$(grep ,$1$ /tmp/keycloak-ee-realm-roles.csv | cut -d "," -f1)
     if [ -z $ROLE_ID ]; then
         echo "$T create realm role [$1]"
         $KCADM create roles -r ElexisEnvironment -s name=$1 -s "$2"
