@@ -3,7 +3,7 @@ source keycloak_functions.sh
 # Elexis-Web Keycloak Initialization Script
 T="$S (elexis-web-api)"
 
-ESWA_OPENID_CLIENTID=$(getClientId elexis-web-api)
+ESWA_OPENID_CLIENTID=$(getClientId elexis-web-api\$)
 if [ -z $ESWA_OPENID_CLIENTID ]; then
     echo -n "$T create client ... "
     ESWA_OPENID_CLIENTID=$($KCADM create clients -r ElexisEnvironment -s clientId=elexis-web-api -i)

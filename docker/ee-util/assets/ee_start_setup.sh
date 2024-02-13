@@ -5,6 +5,17 @@ B="=============================================================================
 T="[EE-UTIL] "
 echo "$B"
 echo "$T Start configure Elexis-Environment"
+
+
+WIREGUARD_HOST=$(getent hosts wireguard | awk '{ print $1 }')
+if [ -n "${WIREGUARD_HOST}" ]; then
+    echo "$T [WG]---<=>---[WG_SERVICES] Adding wg_services route via $WIREGUARD_HOST"
+    route add -net 10.101.0.0 netmask 255.255.0.0 gw $WIREGUARD_HOST
+else 
+    echo "Host wireguard not resolvable. Not adding wg_services route."
+fi
+
+
 echo "$B"
 ./elexis_db.sh
 ((exit_status = exit_status || $?))

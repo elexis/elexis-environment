@@ -1,6 +1,6 @@
-FROM nextcloud:25-fpm-alpine
+FROM nextcloud:27-fpm-alpine
 
-#RUN apk add --no-cache procps libsmbclient imagemagick
+RUN apk add --no-cache jq
 # https://www.reddit.com/r/NextCloud/comments/9e5ljv/nextcloud_and_phpfpm_adjustments/
 RUN sed -i -e 's/^pm\ =\ dynamic/pm\ =\ static/' /usr/local/etc/php-fpm.d/www.conf && \
     sed -i -e 's/^pm.max_children\ =\ 5/pm.max_children\ =\ 64/' /usr/local/etc/php-fpm.d/www.conf && \
@@ -9,5 +9,9 @@ RUN sed -i -e 's/^pm\ =\ dynamic/pm\ =\ static/' /usr/local/etc/php-fpm.d/www.co
 COPY assets/ee-pre-init.sh /
 COPY assets/ee-init.sh /
 COPY assets/entrypoint.sh /
-#COPY assets/usr/lib/php/extensions/no-debug-non-zts-20190902/smbclient.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/smbclient.so
-#COPY assets/usr/local/etc/php/conf.d/docker-php-ext-smbclient.ini /usr/local/etc/php/conf.d/docker-php-ext-smbclient.ini
+COPY assets/groupfolders.csv /
+
+COPY --chown=www-data:root assets/apps/acom_custom_js_css/ /var/www/acom_custom_js_css
+COPY --chown=www-data:root assets/core/img/logo/logo.svg /var/www/core/img/logo/logo.svg
+COPY --chown=www-data:root assets/core/img/logo/logo.png /var/www/core/img/logo/logo.png
+COPY --chown=www-data:root assets/core/doc/user/_static/custom.css /var/www/core/doc/user/_static/custom.css

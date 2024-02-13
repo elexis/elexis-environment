@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-docker pull medevit/eenv-config
+pull_eenv-config
 ${INSTALL_DIR}ee system cmd up --build ee-config

@@ -1,0 +1,8 @@
+{
+    "site-uuid": ($site_uuid),
+    "well-known-uri": ($well_known_uri),
+    "client-id": "healthinal-heureka",
+    "client-secret": ($client_secret),
+    "elexis-username": "heurekabot",
+    "elexis-password": ($elexis_password)
+}

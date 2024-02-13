@@ -3,7 +3,7 @@ version: '3'
 services:
 
   bookstack:
-    image: marcode79/bookstack:22.10.2-ee
+    image: marcode79/bookstack:v23.02.3-ee
     volumes:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
      - ../bookstack/resources/:/var/www/bookstack/resources/:ro
@@ -27,6 +27,7 @@ services:
       - STORAGE_TYPE=local_secure
       - APP_VIEWS_BOOKS=grid
       - AUTH_METHOD=saml2
+      - AUTH_AUTO_INITIATE=true
       - SAML2_NAME=Elexis-Environment
       - SAML2_IDP_ENTITYID=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/saml/descriptor
       - SAML2_AUTOLOAD_METADATA=true
@@ -35,7 +36,6 @@ services:
       - SAML2_USER_TO_GROUPS=true
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true
-      - SAML2_AUTOLOGIN=true
       - FILE_UPLOAD_SIZE_LIMIT=10
       - APP_DEBUG=true
     extra_hosts:

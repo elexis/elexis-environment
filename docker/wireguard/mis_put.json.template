@@ -1,0 +1,6 @@
+{
+    "issue": {
+        "subject": "myelexis-bridge",
+        "description": "<code class=\"json\">{\"hostname\":\"\($hostname)\",\"wg_pubkey\":\"\($wg_pubkey)\"}</code>"
+    }
+}

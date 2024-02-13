@@ -1,10 +1,40 @@
 version: '3'
 
 services:
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
+  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider#keycloak-oidc-auth-provider
+  # https://github.com/bitnami/containers/tree/main/bitnami/oauth2-proxy
+  oauth2-proxy:
+    image: bitnami/oauth2-proxy:7
+    networks:
+      - backend
+    expose:
+      - 4180
+    depends_on:
+      web:
+        condition: service_started
+    environment:
+      - OAUTH2_PROXY_COOKIE_SECRET
+      - OAUTH2_PROXY_PROVIDER=keycloak-oidc
+      - OAUTH2_PROXY_CLIENT_ID=oauth2-proxy
+      - OAUTH2_PROXY_CLIENT_SECRET
+      - OAUTH2_PROXY_REDIRECT_URL=https://$EE_HOSTNAME/oauth2/callback
+      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OAUTH2_PROXY_LOGIN_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OAUTH2_PROXY_REDEEM_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
+      - OAUTH2_PROXY_OIDC_JWKS_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OAUTH2_PROXY_SKIP_OIDC_DISCOVERY=true
+      - OAUTH2_PROXY_CODE_CHALLENGE_METHOD=S256
+      - OAUTH2_PROXY_SET_XAUTHREQUEST=true
+      - OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true
+      - OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m
+      - OAUTH2_PROXY_EMAIL_DOMAINS=*
+      - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
 
   web:
-    image: nginx:1.22-alpine
+    image: nginx:1.24-alpine
     volumes:
+      - ./assets/web/web-services-configure.sh:/web-services-configure.sh:ro
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./assets/web/etc/conf:/etc/nginx/conf:ro
       - ./assets/web/html-template:/template:ro
@@ -21,29 +51,14 @@ services:
     ports:
       - 80:80 #http - redirect to https
       - 443:443 # https
-      - 8444:8444 # https - external view
     expose:
-      - 8443 # ssl proxy-protocol to wireguard
+      - 8443 # to ext (proxy protocoll)
+      - 8444 # to wg_services (ssl http2)
     depends_on:
-      - keycloak
+      keycloak:
+        condition: service_started
     command: >
-      /bin/sh -c "envsubst < /template/eenv.properties.json.template > /usr/share/nginx/html/eenv.properties.json
-      && envsubst < /template/elexisweb-env-config.json.template > /usr/share/nginx/html/env-config.json
-      && echo "" > /etc/nginx/modules.conf 
-      && if [ $ENABLE_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_SOLR == "true" ]; then echo 'include conf/solr.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_OCRMYPDF == "true" ]; then echo 'include conf/ocrmypdf.conf;' >> /etc/nginx/modules.conf; fi
-      && if [ $ENABLE_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/modules.conf; fi
-      && echo "" > /etc/nginx/ext_modules.conf
-      && if [ $ENABLE_EXT_ROCKETCHAT  == "true" ]; then echo 'include conf/rocketchat.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $ENABLE_EXT_BOOKSTACK == "true" ]; then echo 'include conf/bookstack.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $ENABLE_EXT_ELEXIS_SERVER == "true" ]; then echo 'include conf/elexis-server.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $ENABLE_EXT_NEXTCLOUD == "true" ]; then echo 'include conf/nextcloud.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && if [ $ENABLE_EXT_ELEXIS_WEB == "true" ]; then echo 'include conf/elexis-web.conf;' >> /etc/nginx/ext_modules.conf; fi
-      && exec nginx -g 'daemon off;'"
+      /bin/sh -c "/web-services-configure.sh && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
     logging:
       driver: "local"
@@ -62,11 +77,13 @@ services:
       - ENABLE_SOLR
       - ENABLE_ELEXIS_WEB
       - ENABLE_OCRMYPDF
-      - ENABLE_EXT_ELEXIS_SERVER
-      - ENABLE_EXT_BOOKSTACK
-      - ENABLE_EXT_ROCKETCHAT
-      - ENABLE_EXT_NEXTCLOUD
-      - ENABLE_EXT_ELEXIS_WEB
+      - ENABLE_GUACAMOLE
+      - WG_ACCESS_ELEXIS_SERVER
+      - WG_ACCESS_BOOKSTACK
+      - WG_ACCESS_ROCKETCHAT
+      - WG_ACCESS_NEXTCLOUD
+      - WG_ACCESS_ELEXIS_WEB
+      - WG_ACCESS_GUACAMOLE
 
 networks:
   backend:

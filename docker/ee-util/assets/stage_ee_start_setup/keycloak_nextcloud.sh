@@ -14,9 +14,5 @@ if [ -z $NC_OPENID_CLIENTID ]; then
 fi
 
 echo "$T update client settings ... "
-NC_OPENID_CLIENT_SECRET=$(uuidgen)
 $KCADM update clients/$NC_OPENID_CLIENTID -r ElexisEnvironment -s enabled=$ENABLE_NEXTCLOUD \
-    -s baseUrl=https://$EE_HOSTNAME/cloud/ -s secret=$NC_OPENID_CLIENT_SECRET -f keycloak/nextcloud-openid.json
-
-# provide to nextcloud.sh
-echo $NC_OPENID_CLIENT_SECRET > /tmp/NC_OPENID_CLIENT_SECRET
+    -s baseUrl=https://$EE_HOSTNAME/cloud/ -s secret=$X_EE_NEXTCLOUD_CLIENT_SECRET -f keycloak/nextcloud-openid.json

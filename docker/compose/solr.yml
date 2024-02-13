@@ -2,7 +2,7 @@ version: '3'
 
 services:
     solr:
-        image: solr:8.11
+        image: solr:9.4
         expose:
             - 8983
         networks:
@@ -10,7 +10,7 @@ services:
         depends_on:
             - keycloak
         volumes:
-            - ./assets/solr/bin/solr-ee-startup:/opt/docker-solr/scripts/solr-ee-startup:ro
+            - ./assets/solr/bin/solr-ee-startup:/opt/solr/docker/scripts/solr-ee-startup:ro
             - ./assets/solr/bin/envsubst:/usr/local/bin/envsubst:ro
             - ./assets/solr/template/security.json.template:/template/security.json.template:ro
             - ./assets/solr/configsets/el-encounters:/opt/solr/server/solr/configsets/el-encounters:ro
@@ -20,6 +20,7 @@ services:
         command:
             - solr-ee-startup
         environment:
+            - SOLR_MODULES=jwt-auth
             - EE_HOSTNAME
             - ORGANISATION_NAME
             - X_EE_SOLR_ADMIN_PASSWORD_HASH

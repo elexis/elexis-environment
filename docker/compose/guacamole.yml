@@ -1,0 +1,33 @@
+version: '3'
+
+# see ee-util/assets/stage_configure/initializations.sh (on update version)
+# docker run --rm guacamole/guacamole:1.5.4 /opt/guacamole/bin/initdb.sh --mysql > docker/ee-util/assets/stage_configure/guacamole-init-mysql-db.sql
+# modify resulting script to remove guacadmin
+
+services:
+
+  guacamole-guacd:
+    image: guacamole/guacd:1.5.4
+    expose:
+      - 4822
+    networks:
+      - backend
+
+  guacamole-guacamole:
+    image: guacamole/guacamole:1.5.4
+    expose:
+      - 8080/tcp
+    depends_on: 
+      - guacamole-guacd
+    networks:
+      - backend
+    environment:
+      - GUACD_HOSTNAME=guacamole-guacd
+      - MYSQL_HOSTNAME=$RDBMS_HOST
+      - MYSQL_DATABASE=$RDBMS_GUACAMOLE_DATABASE
+      - MYSQL_USER=$RDBMS_GUACAMOLE_USERNAME
+      - MYSQL_PASSWORD=$RDBMS_GUACAMOLE_PASSWORD
+      - MYSQL_AUTO_CREATE_ACCOUNTS=true
+      - HEADER_ENABLED=true
+      - HTTP_AUTH_HEADER=X-User
+      - EXTENSION_PRIORITY=header,* # protected via oauth2-proxy

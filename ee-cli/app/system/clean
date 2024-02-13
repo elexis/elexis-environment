@@ -1,4 +1,14 @@
 #!/usr/bin/env bash
 ${INSTALL_DIR}ee system cmd rm -f
 docker container prune -f
+
+if [ $ENABLE_ELEXIS_WEB == true ]; then
+    ${INSTALL_DIR}ee system cmd rm -f elexis-web-api-php elexis-web-websockets elexis-web-api-nginx elexis-web-app-static-init-volume
+    docker volume rm -f elexis-environment_elexis-web-api_php elexis-web-app-static
+fi
+
+if [ $ENABLE_NEXTCLOUD == true ]; then
+    docker volume rm -f elexis-environment_nextcloud_php_socket
+fi
+
 docker image prune -f
