@@ -256,6 +256,26 @@
     <script src="assets/js/navigation.js"></script>
     <script src="assets/js/storepage.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        var $buoop = {required:{e:-4,f:0,o:-3,s:-1,c:0},insecure:true,api:2024.02,test: true,l:false,
+            text: {
+                'msg':'Your web browser ({brow_name}) is out of date.',
+                'msgmore': 'Elexis team suggest you to update your browser for more security, speed and the best experience on this site.',
+                'bupdate': 'Update browser',
+                'bignore': 'Ignore',
+                'remind': 'You will be reminded in {days} days.',
+                'bnever': 'Never show again'
+            }
+        };
+        function $buo_f(){
+            var e = document.createElement("script");
+            e.src = "//browser-update.org/update.min.js";
+            document.body.appendChild(e);
+        };
+
+        try {document.addEventListener("DOMContentLoaded", $buo_f,false)}
+        catch(e){window.attachEvent("onload", $buo_f)}
+    </script>
 </body>
 
 </html>
