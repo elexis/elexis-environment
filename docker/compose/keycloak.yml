@@ -14,7 +14,7 @@ services:
     command:
       - start
     volumes:
-      - ./assets/keycloak/themes/elexis-environment/:/opt/keycloak/themes/elexis-environment/:ro
+      - ./assets/keycloak/providers:/opt/keycloak/providers
     environment:
       - KC_DB=$RDBMS_TYPE
       - KC_DB_URL_HOST=$RDBMS_HOST
