@@ -56,11 +56,6 @@ createOrUpdateRealmRole ict-administrator 'description=Benutzer ist für Adminis
 createOrUpdateRealmRole poweruser 'description=Benutzer ist ??'
 
 #
-# Theme Building
-#
-echo "Build theme"
-bash /opt/keycloak/bin/kc.sh build
-#
 # Master Realm Theme setting
 #
 echo "$T Master realm theme settings ..."
