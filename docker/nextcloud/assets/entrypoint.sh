@@ -239,7 +239,7 @@ if expr "$1" : "apache" 1>/dev/null || [ "$1" = "php-fpm" ] || [ "${NEXTCLOUD_UP
 fi
 
 # Added for Elexis-Environment ############################
-su -p www-data -s /bin/sh /ee-init.sh
+su -p www-data -s /bin/bash /ee-init.sh
 ###########################################################
 
 exec "$@"

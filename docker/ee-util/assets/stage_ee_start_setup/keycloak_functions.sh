@@ -16,6 +16,17 @@ function getUserId() {
     $KCADM get users -r ElexisEnvironment --format csv --fields id,username --noquotes | grep ,$1$ | cut -d "," -f1
 }
 
+# create or update a realm group
+# $1 realm group name
+function assertRealmGroupExistence() {
+    REALM_GROUP_ID=$(grep ,$1$ /tmp/keycloak-ee-realm-groups.csv | cut -d "," -f1 )
+    if [ -z $REALM_GROUP_ID ]; then
+        echo -n "$T create realm group [$1]"
+        $KCADM create groups -r ElexisEnvironment -s name=$1   
+    fi
+}
+# https://www.keycloak.org/docs/latest/server_admin/index.html#adding-client-roles-to-a-group
+
 # create or update a role for a client
 # $1 client id
 # $2 role name
@@ -23,10 +34,10 @@ function getUserId() {
 function createOrUpdateClientRole() {
     CLIENT_ROLE_ID=$($KCADM get-roles -r ElexisEnvironment --cid $1 --format csv --fields id,name --noquotes | grep ,$2$ | cut -d "," -f1)
     if [ -z $CLIENT_ROLE_ID ]; then
-        echo -n "$T create role [$2]"
+        echo -n "$T create client [$1] role [$2]"
         $KCADM create clients/$1/roles -r ElexisEnvironment -s name=$2 -s "$3"
     else
-        echo "$T update client role [$2]"
+        echo "$T update client [$1] role [$2]"
         $KCADM update clients/$1/roles/$2 -r ElexisEnvironment -s "$3"
     fi
 }

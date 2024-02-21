@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
+# deactive direct oidc login: config:app:set user_oidc allow_multiple_user_backends --value=0
 ${INSTALL_DIR}ee system cmd exec -u 82 nextcloud ./occ $@

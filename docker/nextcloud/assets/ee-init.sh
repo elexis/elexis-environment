@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "$(date): Elexis-Environment specific setup"
 ln -sf /var/www/html /var/www/html/cloud
 
@@ -27,8 +27,17 @@ $OCC user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
     -d https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration \
     --mapping-uid=preferred_username --check-bearer=1 --unique-uid=0 \
     --mapping-email=email Keycloak
+# https://github.com/nextcloud/user_oidc/issues/791
+PROVIDER_ID=$($OCC user_oidc:provider --output json "Keycloak" | jq .id -r)
+$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-groupProvisioning" --value 1
+$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-bearerProvisioning" --value 1
+$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-mappingGroups" --value "groups"
 # https://github.com/nextcloud/user_oidc#id4me-option
-$OCC config:app:set --value=0 user_oidc id4me_enabled
+$OCC config:app:set user_oidc id4me_enabled --value=0
+
+#https://github.com/nextcloud/user_oidc?tab=readme-ov-file#disable-other-login-methods
+# use https://EE_HOSTNAME/cloud/index.php?direct=1
+$OCC config:app:set user_oidc allow_multiple_user_backends --value=0
 
 echo "$(date): Apply theming ..."
 $OCC config:app:set theming name --value "${ORGANISATION_NAME//__/\ }"
@@ -54,22 +63,36 @@ $OCC db:add-missing-columns
 echo "$(date): Set enforce default theme ..."
 $OCC config:system:set enforce_theme --value=default
 
+# need to assert groups exist, as they are
+# required for groupfolder right assignment
+echo "$(date): Asserting group existence ..."
+$OCC group:add medical-practitioner
+$OCC group:add medical-assistant
+$OCC group:add bot
+$OCC group:add mpa
+$OCC group:add mpk
+$OCC group:add third-party
+
 # https://github.com/nextcloud/groupfolders
 echo "$(date): Assert groupfolders existence ..."
 EXISTING_GROUPFOLDERS=$($OCC groupfolders:list --output=json | jq .[] | jq -r ."mount_point")
 while IFS= read -r line; do
     FOLDER_NAME=$(echo "$line" | cut -d';' -f1)
-    if echo "$EXISTING_GROUPFOLDERS" | grep -q "$FOLDER_NAME"; then
-        echo -e ""
-    else
+    FOLDER_GROUPRIGHTS=$(echo "$line" | cut -d';' -f2)
+    if ! echo "$EXISTING_GROUPFOLDERS" | grep -q "$FOLDER_NAME"; then
+        # we do not update groupfolders, we only
+        # create them with default group/right mapping
         echo "Create groupfolder $FOLDER_NAME ..."
         FOLDER_ID=$($OCC groupfolders:create --no-ansi $FOLDER_NAME)
-        # TODO role right mapping
-        $OCC groupfolders:group $FOLDER_ID user write
+
+        IFS=',' read -ra GROUPRIGHTS <<< "$FOLDER_GROUPRIGHTS"
+        for entry in "${GROUPRIGHTS[@]}"; do
+            IFS=':' read -ra PARTS <<< "$entry"
+            GROUP="${PARTS[0]}"
+            RIGHT="read ${PARTS[1]}"
+            echo "Setting groupfolder $FOLDER_NAME group $GROUP rights ..."
+            $OCC groupfolders:group $FOLDER_ID $GROUP $RIGHT
+        done
     fi
 done < "/groupfolders.csv"
 
-
-# we have to return 0, as calling script is set -e
-# which will exit if user_saml is already installed (return code)
-return 0

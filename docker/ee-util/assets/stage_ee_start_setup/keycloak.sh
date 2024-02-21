@@ -41,19 +41,32 @@ $KCADM update realms/ElexisEnvironment -s userManagedAccessAllowed=true -s brute
     -s duplicateEmailsAllowed=true
 
 #
+# Assert realm groups
+#
+$KCADM get groups -r ElexisEnvironment --format csv --fields id,name --noquotes > /tmp/keycloak-ee-realm-groups.csv
+assertRealmGroupExistence GroupArzt
+assertRealmGroupExistence GroupAssistent
+assertRealmGroupExistence GroupMPA
+assertRealmGroupExistence GroupMPK
+assertRealmGroupExistence GroupPraktikant
+assertRealmGroupExistence GroupIntern
+assertRealmGroupExistence GroupThirdParty
+
+#
 # Add realm roles according to Elexis defined roles
+# we use those roles all over elexis applications, thus for ease of usage
+# we define them in the realm and not in the client 
 #
 $KCADM get-roles -r ElexisEnvironment --format csv --fields id,name --noquotes > /tmp/keycloak-ee-realm-roles.csv
-createOrUpdateRealmRole user 'description=Menschlicher Benutzer von Elexis, kann sich in Elexis RCP anmelden'
+createOrUpdateRealmRole user 'description=Login-Recht ohne Medizinische Daten '
 createOrUpdateRealmRole bot 'description=Bot Benutzer, keine reale Person, kann sich nicht in Elexis RCP anmelden'
-createOrUpdateRealmRole medical-user 'description=Benutzer kann auf medizinische Daten zugreifen'
-createOrUpdateRealmRole medical-practitioner 'description=Benutzer ist Dr. med. und agiert als solcher'
-createOrUpdateRealmRole medical-assistant 'description=Benutzer ist medizinischer Assistent und agiert als solcher'
-createOrUpdateRealmRole mandator 'description=Benutzer in dessen Namen Leistungen verrechnet und Rechnungen gestellt werden können'
-createOrUpdateRealmRole mpa 'description=Benutzer ist praktischer Assistent, ohne Zugriff auf medizinische Daten'
-createOrUpdateRealmRole mpk 'description=Benutzer ist ??'
-createOrUpdateRealmRole ict-administrator 'description=Benutzer ist für Administration der Praxis zuständig. Kein Zugang auf medizinische Daten'
-createOrUpdateRealmRole poweruser 'description=Benutzer ist ??'
+createOrUpdateRealmRole medical-user 'description=Medizinisches Personal mit Zugriff auf medizinische Daten'
+createOrUpdateRealmRole medical-practitioner 'description=Höhere medizinische Fachkraft'
+createOrUpdateRealmRole medical-assistant 'description=Medizinische Assistenz oder Fachkraft in Ausbildung'
+createOrUpdateRealmRole mandator 'description=Rechnungssteller'
+createOrUpdateRealmRole mpa 'description=Personal mit der Tätigkeit einer Medizinische Praxis Assistentin'
+createOrUpdateRealmRole mpk 'description=Personal mit der Tätigkeit einer Medizinische Praxis Koordinatorin'
+createOrUpdateRealmRole ict-administrator 'description=Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten'
 
 #
 # Master Realm Theme setting
