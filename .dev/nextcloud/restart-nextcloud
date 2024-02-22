@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+../../ee system cmd stop nextcloud
+../../ee system cmd rm -f nextcloud
+../../ee system cmd up -d nextcloud
+../../ee tf nextcloud

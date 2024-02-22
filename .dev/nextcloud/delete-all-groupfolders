@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Will delete all groupfolders, no confirmation required
+../../ee cmd nextcloud groupfolder:list --output=json | jq .[].id | xargs -n1 docker exec -i -u 82 elexis-environment-nextcloud-1 ./occ groupfolder:delete -f 

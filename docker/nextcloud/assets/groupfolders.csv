@@ -1,10 +1,10 @@
 ElexisData;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
 ElexisData/.Bestellungen;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
 ElexisData/.Bestellungen/IGM;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/.Config;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/.Config/Etiketten;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/.Config/Icons;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/.Config/Perspektiven;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
+ElexisData/.Config;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/.Config/Etiketten;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/.Config/Icons;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/.Config/Perspektiven;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 ElexisData/.Kommunikation;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
 ElexisData/.Kommunikation/EKG;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
 ElexisData/.Kommunikation/LuFu;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
@@ -24,15 +24,15 @@ ElexisData/Auswertung;medical-practitioner:write delete,medical-assistant:write 
 ElexisData/Auswertung/Archie;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 ElexisData/Auswertung/Automatische_Auswertungen;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 ElexisData/Auswertung/Lagerlisten;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
-ElexisData/Dokumente;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Briefe;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Briefe/PatBriefe;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Briefe/Templates;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Briefe/Templates/Custom;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Briefe/Templates/System;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/.Omnivore;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/Eingangsfach;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
-ElexisData/Dokumente/Eingangsfach_Input;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
+ElexisData/Dokumente;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Briefe;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Briefe/PatBriefe;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Briefe/Templates;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Briefe/Templates/Custom;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Briefe/Templates/System;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/.Omnivore;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/Eingangsfach;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
+ElexisData/Dokumente/Eingangsfach_Input;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party:write delete
 ElexisData/Dokumente/Eingangsfach_Input/.In_progress;bot:write delete
 ElexisData/Dokumente/Vorlagen;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
 ElexisData/Labor;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
@@ -51,7 +51,7 @@ ElexisData/Labor/QualityControl;medical-practitioner:write delete,medical-assist
 ElexisData/Zahlungen;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 ElexisData/Zahlungen/CAMT054;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 ElexisData/Zahlungen/Journale_eingelesen;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
-Praxis;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete,third-party
+Praxis;medical-practitioner:write delete,medical-assistant:write delete,bot:write delete,mpa:write delete,mpk:write delete
 Praxis/Allgemein;medical-practitioner:write delete,medical-assistant:write delete,mpa:write delete,mpk:write delete
 Praxis/Ärzte;medical-practitioner:write share delete
 Praxis/MPA;mpa:write share delete,mpk:write share delete
