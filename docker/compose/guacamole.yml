@@ -10,6 +10,9 @@ services:
     image: guacamole/guacd:1.5.4
     expose:
       - 4822
+    depends_on:
+      keycloak:
+        condition: service_healthy
     networks:
       - backend
 

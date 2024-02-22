@@ -10,6 +10,9 @@ services:
      - 8080
     networks:
       - backend
+    depends_on:
+      keycloak:
+        condition: service_healthy
     environment:
       - DB_HOST="$RDBMS_HOST:$RDBMS_PORT"
       - DB_DATABASE="$RDBMS_BOOKSTACK_DATABASE"

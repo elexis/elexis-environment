@@ -10,6 +10,9 @@ services:
             - nextcloud_php_socket:/var/run/php-fpm-sock
         networks:
             - backend
+        depends_on:
+          keycloak:
+            condition: service_healthy
         environment:
             - EE_HOSTNAME
             - ORGANISATION_NAME

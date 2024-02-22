@@ -8,7 +8,8 @@ services:
         networks:
             - backend
         depends_on:
-            - keycloak
+          keycloak:
+            condition: service_healthy
         volumes:
             - ./assets/solr/bin/solr-ee-startup:/opt/solr/docker/scripts/solr-ee-startup:ro
             - ./assets/solr/bin/envsubst:/usr/local/bin/envsubst:ro
