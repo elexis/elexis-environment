@@ -31,7 +31,7 @@ $OCC user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
 PROVIDER_ID=$($OCC user_oidc:provider --output json "Keycloak" | jq .id -r)
 $OCC config:app:set user_oidc "provider-${PROVIDER_ID}-groupProvisioning" --value 1
 $OCC config:app:set user_oidc "provider-${PROVIDER_ID}-bearerProvisioning" --value 1
-$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-mappingGroups" --value "groups"
+$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-mappingGroups" --value "nextcloud-groups"
 # https://github.com/nextcloud/user_oidc#id4me-option
 $OCC config:app:set user_oidc id4me_enabled --value=0
 

@@ -78,7 +78,7 @@
         "user.attribute": "foo",
         "id.token.claim": "true",
         "access.token.claim": "true",
-        "claim.name": "groups",
+        "claim.name": "nextcloud-groups",
         "jsonType.label": "String"
       }
     },
@@ -94,7 +94,7 @@
         "user.attribute": "foo",
         "id.token.claim": "true",
         "access.token.claim": "true",
-        "claim.name": "groups",
+        "claim.name": "nextcloud-groups",
         "jsonType.label": "String"
       }
     }

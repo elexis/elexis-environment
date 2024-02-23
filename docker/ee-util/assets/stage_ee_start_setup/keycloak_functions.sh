@@ -34,7 +34,7 @@ function assertRealmGroupExistence() {
 function createOrUpdateClientRole() {
     CLIENT_ROLE_ID=$($KCADM get-roles -r ElexisEnvironment --cid $1 --format csv --fields id,name --noquotes | grep ,$2$ | cut -d "," -f1)
     if [ -z $CLIENT_ROLE_ID ]; then
-        echo -n "$T create client [$1] role [$2]"
+        echo "$T create client [$1] role [$2]"
         $KCADM create clients/$1/roles -r ElexisEnvironment -s name=$2 -s "$3"
     else
         echo "$T update client [$1] role [$2]"
