@@ -3,9 +3,14 @@ version: '3'
 services:
 
   ocrmypdf:
-    image: jbarlow83/ocrmypdf:v15.4.4
+    image: jbarlow83/ocrmypdf:v16.1.1
     entrypoint: ["python3", "webservice.py"]
     networks:
       - backend
+    depends_on:
+      keycloak:
+        condition: service_healthy
+    mem_limit: 2G
+    memswap_limit: 2G
     expose:
       - 5000

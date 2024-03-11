@@ -34,3 +34,5 @@ services:
       - HEADER_ENABLED=true
       - HTTP_AUTH_HEADER=X-User
       - EXTENSION_PRIORITY=header,* # protected via oauth2-proxy
+    mem_limit: 2G
+    memswap_limit: 2G

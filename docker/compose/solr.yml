@@ -25,6 +25,8 @@ services:
             - EE_HOSTNAME
             - ORGANISATION_NAME
             - X_EE_SOLR_ADMIN_PASSWORD_HASH
+        mem_limit: 2G
+        memswap_limit: 2G
 
 volumes:
     solr_data:

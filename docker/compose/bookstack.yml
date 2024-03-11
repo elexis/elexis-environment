@@ -39,6 +39,8 @@ services:
       - SAML2_REMOVE_FROM_GROUPS=true
       - FILE_UPLOAD_SIZE_LIMIT=10
       - APP_DEBUG=true
+    mem_limit: 512M
+    memswap_limit: 512M
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
 

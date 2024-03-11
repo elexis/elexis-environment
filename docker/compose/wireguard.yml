@@ -19,7 +19,8 @@ services:
             - EE_HOSTNAME
             - MIS_APIKEY
             - MIS_PROJECTID
-
+        mem_limit: 256M
+        memswap_limit: 256M
 
 # healthcheck
 volumes:
