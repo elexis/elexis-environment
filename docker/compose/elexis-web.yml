@@ -36,6 +36,8 @@ services:
       - elexis-server
     networks:
       - backend
+    mem_limit: 512M
+    memswap_limit: 512M
     environment:
       - APP_DEBUG=true
       - APP_ENV="local"
@@ -80,6 +82,8 @@ services:
       - 6001
     networks:
       - backend
+    mem_limit: 512M
+    memswap_limit: 512M
     environment:
       - APP_DEBUG=true
       - APP_NAME="Lumen"
@@ -102,6 +106,8 @@ services:
     working_dir: /www
     expose:
       - 3005
+    mem_limit: 1G
+    memswap_limit: 1G
     volumes:
       - elexis-web-api_php:/www
       - ./assets/elexisweb/etc/nginx:/etc/nginx/conf.d:ro
