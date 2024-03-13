@@ -104,4 +104,3 @@ echo "$(date) Configure Nextcloud Office ..."
 $OCC app:install richdocuments
 $OCC app:update richdocuments
 $OCC config:app:set --value https://${EE_HOSTNAME} richdocuments wopi_url
-$OCC richdocuments:activate-config
