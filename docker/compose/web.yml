@@ -13,6 +13,8 @@ services:
     depends_on:
       web:
         condition: service_started
+    mem_limit: 512M
+    memswap_limit: 512M
     environment:
       - OAUTH2_PROXY_COOKIE_SECRET
       - OAUTH2_PROXY_PROVIDER=keycloak-oidc
@@ -60,6 +62,8 @@ services:
     command: >
       /bin/sh -c "/web-services-configure.sh && exec nginx -g 'daemon off;'"
     restart: "on-failure" # handle host not found in upstream if not yet ready
+    mem_limit: 1G
+    memswap_limit: 1G
     logging:
       driver: "local"
       options:
