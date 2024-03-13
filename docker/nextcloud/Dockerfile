@@ -1,4 +1,4 @@
-FROM nextcloud:27-fpm-alpine
+FROM nextcloud:28-fpm-alpine
 
 RUN apk add --no-cache jq bash
 # https://www.reddit.com/r/NextCloud/comments/9e5ljv/nextcloud_and_phpfpm_adjustments/
