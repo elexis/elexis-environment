@@ -5,6 +5,7 @@ ln -sf /var/www/html /var/www/html/cloud
 OCC="php /var/www/html/occ"
 
 # EE UI Customization
+# TODO UPDATE
 echo "$(date): Copy EE customization files"
 cp -R /var/www/acom_custom_js_css /var/www/html/apps
 cp /var/www/core/img/logo/logo.svg /var/www/html/core/img/logo/logo.svg
@@ -50,6 +51,9 @@ $OCC app:disable circles
 $OCC app:disable firstrunwizard
 $OCC app:disable federation
 $OCC app:disable survey_client
+# try updates
+$OCC app:update groupfolders
+
 
 echo "$(date): Set cron as background job manager ..."
 $OCC background:cron
@@ -96,3 +100,8 @@ while IFS= read -r line; do
     fi
 done < "/groupfolders.csv"
 
+echo "$(date) Configure Nextcloud Office ..."
+$OCC app:install richdocuments
+$OCC app:update richdocuments
+$OCC config:app:set --value https://${EE_HOSTNAME} richdocuments wopi_url
+$OCC richdocuments:activate-config

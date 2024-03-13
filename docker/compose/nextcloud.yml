@@ -33,8 +33,29 @@ services:
             - OBJECTSTORE_S3_OBJECT_PREFIX=nc_ # must not be urn:oid: which cannot be stored on NTFS
             - OBJECTSTORE_S3_USEPATH_STYLE=true
             - OBJECTSTORE_S3_LEGACYAUTH=true
-        mem_limit: 4G
-        memswap_limit: 4G
+        # https://docs.nextcloud.com/server/latest/admin_manual/installation/system_requirements.html
+        mem_limit: 2G
+        memswap_limit: 2G
+
+    # https://github.com/CollaboraOnline/online/
+    # https://docs.nextcloud.com/server/latest/admin_manual/office/index.html
+    code-server:
+        image: docker.io/collabora/code
+        restart: unless-stopped
+        cap_add:
+            - MKNOD
+        networks:
+            - backend
+        expose:
+            - 9980
+        mem_limit: 1G
+        memswap_limit: 1G
+        environment:
+            - dictionaries=de_DE
+            - aliasgroup1=https://$EE_HOSTNAME:443
+            - extra_params=--o:ssl.enable=false --o:ssl.termination=true
+            - username=admin
+            - password=$ADMIN_PASSWORD
 
     web:
         volumes:
