@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# see https://www.bookstackapp.com/docs/admin/commands/
+${INSTALL_DIR}ee system cmd exec bookstack php artisan $@
