@@ -1,0 +1,429 @@
+/**
+ * Includes the main navigation header and the faded toolbar.
+ */
+
+header .grid {
+  grid-template-columns: auto min-content auto;
+  max-width: 1400px;
+  margin: 0 auto !important;
+  padding: 0 16px;
+}
+
+@include smaller-than($l) {
+  header .grid {
+    grid-template-columns: 1fr;
+    grid-row-gap: 0;
+  }
+}
+
+header {
+  position: relative;
+  display: block;
+  z-index: 11;
+  top: 0;
+  box-shadow: 0px 0px 24px rgb(0 0 0 / 25%);
+  min-height: 85px;
+  padding: $-xxs 0;
+  padding-top: 15px;
+
+  @include lightDark(border-bottom-color, #DDD, #000);
+
+  //@include whenDark {
+  //  filter: saturate(0.8) brightness(0.8);
+  //}
+
+  .links {
+    display: inline-block;
+    vertical-align: top;
+  }
+  .links a {
+    display: inline-block;
+    padding: $-m $-xs;
+    color: $text-dark;
+
+    @include whenDark {
+      color: $text-light;
+    }
+  }
+  .dropdown-container {
+    padding-inline-start: $-m;
+    padding-inline-end: 0;
+  }
+  .avatar, .user-name {
+    display: inline-block;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+  }
+  .user-name {
+    vertical-align: top;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    > * {
+      vertical-align: top;
+    }
+    > span {
+      padding-inline-start: $-xs;
+      display: inline-block;
+      padding-top: $-xxs;
+    }
+    > svg {
+      padding-top: 4px;
+      font-size: 18px;
+    }
+    @include between($l, $xl) {
+      padding-inline-start: $-xs;
+      .name {
+        display: none;
+      }
+    }
+  }
+}
+
+.header *, .primary-background * {
+  outline-color: #FFF;
+}
+
+
+.header-search {
+  display: inline-block;
+}
+header .search-box {
+  display: inline-block;
+  margin-top: 10px;
+
+  input {
+    background-color: #f2f2f2;
+    border: 1px solid #CFCFCF;
+    border-radius: 4px;
+    color: $text-dark;
+    z-index: 2;
+    padding-inline-start: 40px;
+
+    @include whenDark {
+      background-color: #222;
+      border: 1px solid #CFCFCF;
+      color: $text-light;
+    }
+
+    &:focus {
+      outline: none;
+      border-width: 1px;
+      border-color: #007BFF !important;
+      box-shadow: 0 0 8px #66b8e2;
+    }
+
+    &::placeholder {
+      color: #929292;
+    }
+  }
+
+  button {
+    z-index: 1;
+    left: 16px;
+    color: #929292;
+    @include rtl {
+      left: auto;
+      right: 16px;
+    }
+
+    @include whenDark {
+      color: #f6f6f6;
+    }
+
+    svg {
+      margin-block-end: 0;
+    }
+  }
+  ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #929292;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: #929292;
+  }
+  @include between($l, $xl) {
+    max-width: 200px;
+  }
+}
+
+.logo {
+  display: inline-block;
+  &:hover {
+    color: #FFF;
+    text-decoration: none;
+  }
+}
+.logo-text {
+  //display: inline-block;
+  display: none;
+  font-size: 1.8em;
+  color: $text-dark;
+  font-weight: 400;
+  @include padding(14px, $-l, 14px, 0);
+  vertical-align: top;
+  line-height: 1;
+
+  @include whenDark {
+    color: $text-light;
+  }
+}
+.logo-image {
+  @include margin($-xs, $-s, $-xs, 0);
+  vertical-align: top;
+  width: 123px;
+  height: 42px;
+
+  @include whenDark() {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.mobile-menu-toggle {
+  color: $text-dark;
+  fill: $text-dark;
+  font-size: 2em;
+  border: 2px solid $text-dark;
+  border-radius: 4px;
+  padding: 0 $-xs;
+  position: absolute;
+  right: $-m;
+  top: 50%;
+  transform: translate(0,-50%);
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+
+
+  @include whenDark {
+    color: $text-light;
+    fill: $text-light;
+    border: 2px solid $text-light;
+  }
+
+  svg {
+    margin: 0;
+    bottom: -2px;
+  }
+  @include rtl() {
+    left: $-m;
+    right: auto;
+  }
+}
+
+
+
+@include smaller-than($l) {
+  header .header-links {
+    @include lightDark(background-color, #fff, #333);
+    display: none;
+    z-index: 10;
+    right: $-m;
+    border-radius: 4px;
+    overflow: hidden;
+    position: absolute;
+    box-shadow: $bs-hover;
+    margin-top: -$-xs;
+    &.show {
+      display: block;
+    }
+  }
+  header .links a, header .dropdown-container ul li a, header .dropdown-container ul li button {
+    text-align: start;
+    display: block;
+    padding: $-s $-m;
+    color: $text-dark;
+
+    @include lightDark(color, $text-dark, #eee);
+    svg {
+      margin-inline-end: $-s;
+    }
+    &:hover {
+      @include lightDark(background-color, #eee, #333);
+      @include lightDark(color, #000, #fff);
+      text-decoration: none;
+    }
+  }
+  header .dropdown-container {
+    display: block;
+    padding-inline-start: 0;
+  }
+  header .links {
+    display: block;
+  }
+  header .dropdown-container ul {
+    display: block !important;
+    position: relative;
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+  }
+}
+
+.tri-layout-mobile-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  @include lightDark(background-color, #fff, #333);
+  border-bottom: 1px solid #DDD;
+  @include lightDark(border-color, #ddd, #929292);
+  box-shadow: $bs-card;
+}
+.tri-layout-mobile-tab {
+  text-align: center;
+  border-bottom: 3px solid #BBB;
+  @include lightDark(color, $text-dark, $text-light);
+  @include lightDark(border-color, #bbb, #444);
+  cursor: pointer;
+  &:first-child {
+    border-inline-end: 1px solid #DDD;
+  }
+  &.active {
+    border-bottom-color: currentColor;
+  }
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  opacity: 0.7;
+  .icon-list-item {
+    width: auto;
+    padding-top: $-xs;
+    padding-bottom: $-xs;
+  }
+  .separator {
+    display: inline-block;
+    fill: #aaa;
+    font-size: 1.6em;
+    line-height: 0.8;
+    margin: -2px 0 0;
+  }
+  &:hover, &:focus-within {
+    opacity: 1;
+  }
+}
+
+@include smaller-than($l) {
+  .breadcrumbs .icon-list-item {
+    padding: $-xs;
+    > span + span {
+      display: none;
+    }
+    > span:first-child {
+      margin-inline-end: 0;
+    }
+  }
+}
+
+.dropdown-search {
+  position: relative;
+  .dropdown-search-toggle {
+    padding: 6px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    &:hover {
+      border-color: #DDD;
+    }
+  }
+  .svg-icon {
+    margin-inline-end: 0;
+  }
+}
+
+.faded {
+  a, button, span, span > div {
+    color: #666;
+    fill: #666;
+  }
+  .text-button {
+    opacity: 0.5;
+    transition: all ease-in-out 120ms;
+    &:hover {
+      opacity: 1;
+      text-decoration: none;
+    }
+  }
+}
+
+.faded span.faded-text {
+  display: inline-block;
+  padding: $-s;
+}
+
+.action-buttons .text-button {
+  display: inline-block;
+  padding: $-xs $-s;
+  &:last-child {
+    padding-inline-end: 0;
+  }
+  &:first-child {
+    padding-inline-start: 0;
+  }
+}
+
+
+.action-buttons .dropdown-container:last-child a {
+  padding-inline-end: 0;
+  padding-inline-start: $-s;
+}
+.action-buttons {
+  text-align: end;
+  &.text-left {
+    text-align: start;
+    .text-button {
+      padding-inline-end: $-m;
+      padding-inline-start: 0;
+    }
+  }
+  &.text-center {
+    text-align: center;
+  }
+}
+
+@include smaller-than($m) {
+  .action-buttons .text-button {
+    padding: $-xs $-xs;
+  }
+  .action-buttons .dropdown-container:last-child a {
+    padding-inline-start: $-xs;
+  }
+}
+
+#content {
+  padding-top: 50px;
+}
+
+a.logo:before {
+  @include whenDark() {
+    content: '';
+    position: absolute;
+    top: 31px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    mix-blend-mode: exclusion;
+    z-index: 3;
+  }
+}
+
+a.logo:after {
+  @include whenDark() {
+    content: '';
+    position: absolute;
+    background: rgba(255, 255, 255, 0.85);
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: 31px;
+    bottom: 0;
+  }
+}

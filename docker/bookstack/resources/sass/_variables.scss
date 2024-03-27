@@ -1,0 +1,72 @@
+// Variables
+///////////////
+
+// Screen breakpoints
+$xxl: 1400px;
+$xl: 1100px;
+$ipad-width: 1028px; // Is actually 1024 but we go over to ensure functionality.
+$l: 1000px;
+$m: 880px;
+$s: 600px;
+$xs: 400px;
+$xxs: 360px;
+$screen-lg: 1200px;
+$screen-md: 992px;
+$screen-sm: 768px;
+
+// List of screen sizes
+$screen-sizes: (('xxs', $xxs), ('xs', $xs), ('s', $s), ('m', $m), ('l', $l), ('xl', $xl));
+
+// Spacing (Margins+Padding)
+$-xxxl: 64px;
+$-xxl: 48px;
+$-xl: 32px;
+$-l: 24px;
+$-m: 16px;
+$-s: 12px;
+$-xs: 6px;
+$-xxs: 3px;
+
+// List of our spacing sizes
+$spacing: (('none', 0), ('xxs', $-xxs), ('xs', $-xs), ('s', $-s), ('m', $-m), ('l', $-l), ('xl', $-xl), ('xxl', $-xxl));
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap');
+
+$text: 'Roboto', sans-serif;
+$mono: 'Roboto', sans-serif;
+$heading: $text;
+$fs-m: 14px;
+$fs-s: 12px;
+
+// Colours
+:root {
+  --color-primary: #929292 !important;
+  --color-primary-light: #f2f2f2 !important;
+
+  --color-page: #206ea7 !important;
+  --color-page-draft: #7e50b1 !important;
+  --color-chapter: #af4d0d !important;
+  --color-book: #077b70 !important;
+  --color-bookshelf: #a94747 !important;
+}
+
+$positive: #51a351;
+$negative: #bd362f;
+$info: #2f96b4;
+$warning: #f89406;
+
+$border-color: #CFCFCF;
+
+// Text colours
+$text-dark: #929292;
+$text-light: #f6f6f6;
+
+// Shadows
+$bs-light: 0 0 4px 1px #CCC;
+$bs-dark: 0px 0px 20px 2px rgba(112,112,112,0.25);
+$bs-med: 0px 0px 20px 2px rgba(112,112,112,0.25);
+$bs-large: 0px 0px 20px 2px rgba(112,112,112,0.25);
+$bs-card: 0px 0px 20px 2px rgba(112,112,112,0.25);
+$bs-card-dark: 0px 0px 20px 2px rgba(112,112,112,0.25);
+$bs-hover: 0px 0px 35px 7px rgba(129, 129, 129, 0.25);

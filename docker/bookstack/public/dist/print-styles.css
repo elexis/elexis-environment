@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap");
+:root {
+  --color-primary: #929292 !important;
+  --color-primary-light: #f2f2f2 !important;
+  --color-page: #206ea7 !important;
+  --color-page-draft: #7e50b1 !important;
+  --color-chapter: #af4d0d !important;
+  --color-book: #077b70 !important;
+  --color-bookshelf: #a94747 !important;
+}
+
+header {
+  display: none;
+}
+
+html, body {
+  font-size: 12px;
+  background-color: #FFF;
+}
+
+.page-content {
+  margin: 0 auto;
+}
+
+.print-hidden {
+  display: none !important;
+}
+
+.tri-layout-container {
+  grid-template-columns: 1fr;
+  grid-template-areas: "b";
+  margin-inline-start: 0;
+  margin-inline-end: 0;
+  display: block;
+}
+
+.card {
+  box-shadow: none;
+}
+
+.content-wrap.card {
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+}
+
+/*# sourceMappingURL=print-styles.css.map */
