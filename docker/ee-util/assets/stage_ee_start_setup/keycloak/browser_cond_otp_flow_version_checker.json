@@ -1,0 +1,13 @@
+{
+  "requirement": "REQUIRED",
+  "displayName": "Conditional browser outdated",
+  "requirementChoices": [
+    "REQUIRED",
+    "ALTERNATIVE",
+    "DISABLED"
+  ],
+  "configurable": true,
+  "providerId": "conditional-browser-outdated",
+  "level": 1,
+  "index": 1
+}
