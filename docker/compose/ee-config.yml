@@ -1,7 +1,4 @@
-version: '3'
-
 services:
-
   ee-config:
     build: ../ee-util
     command: /ee_start_setup.sh

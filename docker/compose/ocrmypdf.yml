@@ -1,7 +1,4 @@
-version: '3'
-
 services:
-
   ocrmypdf:
     image: jbarlow83/ocrmypdf:v16.1.1
     entrypoint: ["python3", "webservice.py"]

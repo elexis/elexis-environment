@@ -1,11 +1,7 @@
-version: '3'
-
 # see ee-util/assets/stage_configure/initializations.sh (on update version)
 # docker run --rm guacamole/guacamole:1.5.4 /opt/guacamole/bin/initdb.sh --mysql > docker/ee-util/assets/stage_configure/guacamole-init-mysql-db.sql
 # modify resulting script to remove guacadmin
-
 services:
-
   guacamole-guacd:
     image: guacamole/guacd:1.5.4
     expose:

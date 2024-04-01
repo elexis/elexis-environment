@@ -1,7 +1,4 @@
-version: '3'
-
 services:
-
   bookstack:
     image: marcode79/bookstack:v23.02.3-ee
     volumes:

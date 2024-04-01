@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
   # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider#keycloak-oidc-auth-provider

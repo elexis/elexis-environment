@@ -1,6 +1,4 @@
-version: '2'
 # https://hub.docker.com/_/nextcloud
-
 services:
     nextcloud:
         build: ../nextcloud
@@ -57,6 +55,7 @@ services:
             - username=admin
             - password=$ADMIN_PASSWORD
 
+    # contribute to the web container
     web:
         volumes:
             - nextcloud_html:/var/www/html/cloud:ro

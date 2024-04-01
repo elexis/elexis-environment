@@ -1,7 +1,4 @@
-version: '2'
-
 services:
-
   elexis-server:
     image: medevit/elexis-server:master
     volumes:
