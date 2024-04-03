@@ -5,6 +5,8 @@ elif [ "$1" == "elexis-server" ]; then
     USQL_PARAM="mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE}"
 elif [ "$1" == "guacamole" ]; then
     USQL_PARAM="mysql://${RDBMS_GUACAMOLE_USERNAME}:${RDBMS_GUACAMOLE_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_GUACAMOLE_DATABASE}"
+elif [ "$1" == "bookstack" ]; then
+    USQL_PARAM="mysql://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE}"
 else 
     exit -1;
 fi;
