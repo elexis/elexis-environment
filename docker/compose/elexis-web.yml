@@ -70,6 +70,7 @@ services:
       - ENABLE_API_COMPONENT_NEXTCLOUD=true
       - ENABLE_API_COMPONENT_SETTINGS=false
       - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir}
+      - CLOUD_API_URL=${CLOUD_API_URL-https://$EE_HOSTNAME/cloud}
 
   # websockets
   elexis-web-websockets:
