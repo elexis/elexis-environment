@@ -31,7 +31,9 @@ $OCC user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
 # https://github.com/nextcloud/user_oidc/issues/791
 PROVIDER_ID=$($OCC user_oidc:provider --output json "Keycloak" | jq .id -r)
 $OCC config:app:set user_oidc "provider-${PROVIDER_ID}-groupProvisioning" --value 1
-$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-bearerProvisioning" --value 1
+# Deactivate bearer provisioning as the elexis-web access token does not carry the
+# required group-information ATM
+$OCC config:app:set user_oidc "provider-${PROVIDER_ID}-bearerProvisioning" --value 0
 $OCC config:app:set user_oidc "provider-${PROVIDER_ID}-mappingGroups" --value "nextcloud-groups"
 # https://github.com/nextcloud/user_oidc#id4me-option
 $OCC config:app:set user_oidc id4me_enabled --value=0
@@ -51,12 +53,15 @@ $OCC app:disable circles
 $OCC app:disable firstrunwizard
 $OCC app:disable federation
 $OCC app:disable survey_client
+$OCC app:disable spreed # Nextcloud Talk
 # try updates
 $OCC app:update groupfolders
 
 
 echo "$(date): Set cron as background job manager ..."
 $OCC background:cron
+# https://docs.nextcloud.com/server/28/admin_manual/configuration_server/background_jobs_configuration.html#parameters
+$OCC config:system:set maintenance_window_start --type=integer --value=1
 
 echo "$(date): Check big int conversion ..."
 $OCC db:convert-filecache-bigint
