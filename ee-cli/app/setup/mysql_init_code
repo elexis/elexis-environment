@@ -29,3 +29,12 @@ echo "CREATE USER $RDBMS_GUACAMOLE_USERNAME@'%' IDENTIFIED BY '$RDBMS_GUACAMOLE_
 echo "GRANT CREATE,REFERENCES,SELECT,INSERT,UPDATE,DELETE ON $RDBMS_GUACAMOLE_DATABASE.* TO $RDBMS_GUACAMOLE_USERNAME@'%';"
 echo ""
 echo "FLUSH PRIVILEGES;"
+
+echo ""
+echo "===== [BOOKSTACK TEMPLATE IMPORT] ====="
+echo "1) Download https://download.medelexis.ch/elexis-environment/templates/Bookstack_initial_20240403.sql"
+echo "2) Restore to DB $RDBMS_BOOKSTACK_DATABASE"
+echo "3) wget https://download.medelexis.ch/elexis-environment/templates/elexis-environment_bookstack_storage_uploads.tar.gz"
+echo "4) docker run --rm --volumes-from elexis-environment-bookstack-1 -v $(pwd):/backup busybox tar xvzf /backup/elexis-environment_bookstack_storage_uploads.tar.gz"
+echo "5) rm elexis-environment_bookstack_storage_uploads.tar.gz"
+echo "6) AFTER STARTUP: ./ee cmd bookstack bookstack:update-url https://ee-master.myelexis.ch/ https://$EE_HOSTNAME/"
