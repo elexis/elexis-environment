@@ -17,7 +17,7 @@ export EXOSCALE_API_SECRET=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f2 -d:)
 
 # run | renew
 function run-goacme-lego {
-    docker run --rm --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego \
+    docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego \
         --email sysadmin-ee@medelexis.ch --accept-tos --dns exoscale --domains ${EE_HOSTNAME} \
         --dns.resolvers 1.1.1.1 --dns.resolvers 8.8.8.8 \
         --path /goacme-lego $1
