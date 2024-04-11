@@ -12,30 +12,48 @@ if [[ ! "$EE_HOSTNAME" =~ ^.*\.myelexis.ch$ ]]; then
     exit -1
 fi
 
-# TODO test X_EE_CERTBOT_SHARED_SECRET
-mkdir -p ${SITE_DIR}letsencrypt
-echo "===================================================================="
-echo "Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
-echo "===================================================================="
-docker pull certbot/certbot
-docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name certbot -v "${SITE_DIR}letsencrypt:/etc/letsencrypt" -v "${INSTALL_DIR}/docker/certbot/:/mnt/certbot/" --env EE_TOOLS_CERTBOT_SHARED_SECRET certbot/certbot certonly \
-   --logs-dir /etc/letsencrypt/logs --work-dir /etc/letsencrypt/work --agree-tos --non-interactive \
-   --email sysadmin-ee@medelexis.ch --manual --preferred-challenges=dns --manual-auth-hook /mnt/certbot/manual-auth-hook.sh \
-   --manual-cleanup-hook /mnt/certbot/manual-cleanup-hook.sh -d ${EE_HOSTNAME}
+export EXOSCALE_API_KEY=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f1 -d:)
+export EXOSCALE_API_SECRET=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f2 -d:)
 
-if [ ! -f ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/cert.pem ]; then
+# run | renew
+function run-goacme-lego {
+    docker run --rm --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego \
+        --email sysadmin-ee@medelexis.ch --accept-tos --dns exoscale --domains ${EE_HOSTNAME} \
+        --dns.resolvers 1.1.1.1 --dns.resolvers 8.8.8.8 \
+        --path /goacme-lego $1
+}
+
+# TODO test X_EE_CERTBOT_SHARED_SECRET
+mkdir -p ${SITE_DIR}goacme-lego
+echo "=============================================================================================="
+echo "Creating/Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
+echo "=============================================================================================="
+
+docker pull goacme/lego
+CERTFILE=${SITE_DIR}goacme-lego/certificates/$EE_HOSTNAME.crt
+
+if [ -f "$CERTFILE" ]; 
+then
+    echo "Existing cert found, calling renew ..."
+    run-goacme-lego renew
+else
+    echo "No existing cert found, calling run ..."
+    run-goacme-lego run
+fi
+
+if [ ! -f $CERTFILE ]; then
     echo -e -e "\033[36mABORT\033[39m: No generated certificate found, not installing symlinks"
     exit -1
 fi
 
-# cert is now available in ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/*pem
+# cert is now available in ${SITE_DIR}goacme-lego/certificates/
 # if files exist, and are not symlinks to our cert, back them up
 FILE=${SITE_DIR}certificate.crt
 [ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
-ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/fullchain.pem $FILE
+ln -sf $CERTFILE $FILE
 
 FILE=${SITE_DIR}certificate.key
 [ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
-ln -sf ${SITE_DIR}letsencrypt/live/$EE_HOSTNAME/privkey.pem $FILE
+ln -sf ${SITE_DIR}goacme-lego/certificates/$EE_HOSTNAME.key $FILE
 
 echo "=> Remember to restart web container to pick-up cert changes"
