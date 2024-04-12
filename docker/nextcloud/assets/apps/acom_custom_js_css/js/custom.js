@@ -1,18 +1,20 @@
-var cumulativeOffset = function (element) {
-    let offsetTop = 0, offsetLeft = 0;
+let cumulativeOffset = function (element) {
+    let offsetTop = 0
+        , offsetLeft = 0;
     do {
         offsetTop += element.offsetTop || 0;
         offsetLeft += element.offsetLeft || 0;
         element = element.offsetParent;
     } while (element);
-    return {offsetTop, offsetLeft};
+    return {
+        offsetTop,
+        offsetLeft
+    };
 };
 
 const elxsNavigation = {
     initialized: false,
-    logoSelectors: [
-        '#nextcloud',
-    ],
+    logoSelectors: ['#nextcloud',],
     navigationList: {
         ENABLE_HOME: {
             img: 'data:image/png;base64,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',
@@ -121,7 +123,7 @@ const elxsNavigation = {
                 #elxs-nav-container.elxs-bottom-left.elxs-show {
                     transform: translate(0, 0);
                     top: 100%;
-                    left: 5px;
+                    left: 0;
                 }
                 #elxs-nav-container.elxs-top-center.elxs-show {
                     transform: translate(-50%, 0);
@@ -156,7 +158,7 @@ const elxsNavigation = {
 						[data-themes="dark-highcontrast"] #elxs-nav-list{
 								background: #222;
 								box-shadow: none;
-								filter: drop-shadow(0 1px 5px var(--color-box-shadow));
+								filter: drop-shadow(0 1px 5px let(--color-box-shadow));
 						}
 
                 #elxs-nav-list-active {
@@ -273,69 +275,295 @@ const elxsNavigation = {
     },
     loadConfig() {
         const url = "/.eenv.properties.json";
-        return fetch(url).then((resp) => resp.json())
-            .then((data) => data)
-            .catch((error3) => {
+        return fetch(url).then((resp) => resp.json()).then((data) => data).catch((error3) => {
                 return {
                     "ENABLE_BOOKSTACK": true,
                     "ENABLE_ROCKETCHAT": false,
                     "ENABLE_NEXTCLOUD": false,
                     "ENABLE_OCRMYPDF": false
                 };
-            });
+            }
+        );
     },
     run() {
         return this.loadConfig().then((configObject) => {
-            this.renderStyles();
-            this.logoSelectors.forEach((selector) => {
-                const el = document.querySelector(selector);
-                if (el && !this.initialized) {
-                    const navigationContainer = this.buildNavigation(configObject);
-                    const handleResize = () => {
-                        navigationContainer.classList = "";
-                        let bottom = window.innerHeight - el.clientHeight;
-                        bottom = bottom - el.offsetTop;
-                        const {offsetLeft} = cumulativeOffset(el);
-                        if (bottom < 200 && offsetLeft < 200) {
-                            navigationContainer.classList.add("elxs-top-left");
-                        } else if (bottom < 200) {
-                            navigationContainer.classList.add("elxs-top-center");
-                        } else if (offsetLeft < 200) {
-                            navigationContainer.classList.add("elxs-bottom-left");
-                        } else {
-                            navigationContainer.classList.add("elxs-bottom-center");
+                this.renderStyles();
+                this.logoSelectors.forEach((selector) => {
+                        const el = document.querySelector(selector);
+                        if (el && !this.initialized) {
+                            const navigationContainer = this.buildNavigation(configObject);
+                            const handleResize = () => {
+                                    navigationContainer.classList = "";
+                                    let bottom = window.innerHeight - el.clientHeight;
+                                    bottom = bottom - el.offsetTop;
+                                    const {offsetLeft} = cumulativeOffset(el);
+                                    if (bottom < 200 && offsetLeft < 200) {
+                                        navigationContainer.classList.add("elxs-top-left");
+                                    } else if (bottom < 200) {
+                                        navigationContainer.classList.add("elxs-top-center");
+                                    } else if (offsetLeft < 200) {
+                                        navigationContainer.classList.add("elxs-bottom-left");
+                                    } else {
+                                        navigationContainer.classList.add("elxs-bottom-center");
+                                    }
+                                }
+                            ;
+                            handleResize();
+                            window.onresize = handleResize;
+                            el.style.position = "relative";
+                            el.appendChild(navigationContainer);
+                            this.initialized = true;
+                            const handleOpen = (e) => {
+                                    if (!navigationContainer.classList.contains("elxs-show")) {
+                                        e.preventDefault();
+                                        e.stopImmediatePropagation();
+                                        navigationContainer.classList.add("elxs-show");
+                                    }
+                                }
+                            ;
+                            const handleClose = () => {
+                                    navigationContainer.classList.remove("elxs-show");
+                                }
+                            ;
+                            const isTouch = "ontouchstart" in window || navigator.msMaxTouchPoints > 0;
+                            if (isTouch) {
+                                el.addEventListener("touchstart", handleOpen);
+                                document.addEventListener("touchstart", (e) => {
+                                        if (!el.contains(e.target))
+                                            handleClose();
+                                    }
+                                );
+                            } else {
+                                el.addEventListener("mouseover", handleOpen);
+                                el.addEventListener("mouseout", handleClose);
+                            }
                         }
-                    };
-                    handleResize();
-                    window.onresize = handleResize;
-                    el.style.position = "relative";
-                    el.appendChild(navigationContainer);
-                    this.initialized = true;
-                    const handleOpen = (e) => {
-                        if (!navigationContainer.classList.contains("elxs-show")) {
-                            e.preventDefault();
-                            e.stopImmediatePropagation();
-                            navigationContainer.classList.add("elxs-show");
-                        }
-                    };
-                    const handleClose = () => {
-                        navigationContainer.classList.remove("elxs-show");
-                    };
-                    const isTouch = "ontouchstart" in window || navigator.msMaxTouchPoints > 0;
-                    if (isTouch) {
-                        el.addEventListener("touchstart", handleOpen);
-                        document.addEventListener("touchstart", (e) => {
-                            if (!el.contains(e.target))
-                                handleClose();
-                        });
-                    } else {
-                        el.addEventListener("mouseover", handleOpen);
-                        el.addEventListener("mouseout", handleClose);
                     }
-                }
-            });
-        }).catch(function (error3) {
+                );
+                // this.wrapHeaderLogo();
+                // this.closeSidebar();
+                // this.hideSidebar();
+            }
+        ).catch(function (error3) {
         });
     }
 };
 elxsNavigation.run();
+
+function hideSidebar(navigationWrap) {
+    let element = document.querySelector('.app-navigation-toggle');
+    let body = document.querySelector('body');
+    document.querySelector('#app-navigation-vue')?.removeAttribute('inert')
+
+    if (element) {
+        body.classList.add('sidebar')
+
+        if (window.innerWidth <= 1200) {
+            body.setAttribute('aria-expanded', 'false');
+        } else {
+            body.setAttribute('aria-expanded', 'true');
+        }
+
+        if (screen.orientation.type === 'landscape-primary' && window.innerWidth <= 1366) {
+            body.setAttribute('aria-expanded', 'false');
+            navigationWrap.classList.add('app-navigation--close')
+        }
+
+        screen.orientation.addEventListener("change", (event) => {
+            let body = document.querySelector('body');
+
+            if (event.target.type === 'landscape-primary' && window.innerWidth <= 1366) {
+                setTimeout(() => {
+                    body.setAttribute('aria-expanded', 'false');
+                    navigationWrap.classList.add('app-navigation--close')
+                }, 100)
+                console.log('assad')
+            }
+        });
+
+        let observer = new MutationObserver(function (mutations) {
+                mutations.forEach(function (mutation) {
+                    if (mutation.type === "attributes") {
+                        let attr = mutation.target.getAttribute('aria-expanded');
+                        if (attr === 'false') {
+                            body.setAttribute('aria-expanded', 'false')
+                            document.querySelector('#app-navigation-vue')?.removeAttribute('inert')
+                        } else if (attr === 'true') {
+                            body.setAttribute('aria-expanded', 'true');
+                            document.querySelector('#app-navigation-vue')?.removeAttribute('inert')
+                        }
+                    }
+                });
+            }
+        );
+
+        observer.observe(element, {
+            attributes: true
+        });
+    } else {
+        if (location.pathname.toString().includes("/apps/dashboard/")) body.classList.add('no-sidebar')
+    }
+}
+
+function createNavBtn(navWrap) {
+    let navigationBtn = document.querySelector('.app-navigation-toggle');
+    let body = document.querySelector('body');
+
+    if (!navWrap.classList.contains('app-navigation')) navWrap.classList.add('app-navigation')
+
+    if (navigationBtn) return;
+    if (location.pathname.toString().includes("/apps/dashboard/")) body.classList.add('no-sidebar')
+    if (!location.pathname.toString().includes("/apps/dashboard/")) {
+        let toggle = document.createElement('button');
+        let spanWrapper = document.createElement('span');
+        spanWrapper.classList.add('button-vue__wrapper')
+        toggle.classList.add('app-navigation-toggle')
+        toggle.setAttribute('type', 'button')
+        if (window.innerWidth <= 1200) {
+            toggle.setAttribute('aria-expanded', 'false');
+            navWrap.setAttribute('aria-hidden', 'true');
+        } else {
+            toggle.setAttribute('aria-expanded', 'true');
+        }
+        toggle.appendChild(spanWrapper)
+        if (window.innerWidth >= 1200) {
+            navWrap.appendChild(toggle)
+        }
+        body.classList.add('sidebar')
+        if (window.innerWidth <= 1200) {
+            body.setAttribute('aria-expanded', 'false');
+            console.log('lessssss')
+        } else {
+            body.setAttribute('aria-expanded', 'true');
+        }
+        toggle.addEventListener('click', () => {
+            navWrap.classList.toggle('app-navigation--close')
+            let attr = toggle.getAttribute('aria-expanded');
+            if (attr === 'false') {
+                toggle.setAttribute('aria-expanded', 'true')
+                body.setAttribute('aria-expanded', 'true')
+            } else if (attr === 'true') {
+                toggle.setAttribute('aria-expanded', 'false')
+                body.setAttribute('aria-expanded', 'false')
+            }
+        })
+    }
+}
+
+function tooltips() {
+    let sidebarItems = document.querySelectorAll('.app-navigation-entry-link'),
+        sidebarWithoutClass = document.querySelectorAll('.app-navigation li  a'),
+        sidebarSettings = document.querySelectorAll('.app-navigation .settings-button'),
+        body = document.querySelector('body');
+
+    function tooltip(arrayOfTooltips) {
+        if (body.getAttribute('aria-expanded') === true) return;
+
+        arrayOfTooltips?.forEach(tooltip => {
+            tooltip.setAttribute('data-tooltip', '')
+            tooltip.addEventListener('mouseleave', (e) => {
+                removeAllTooltips();
+            })
+            tooltip.addEventListener('mouseenter', (e) => {
+                let tooltip = document.createElement('div')
+                tooltip.classList.add('ee-tooltip');
+                tooltip.setAttribute('role', 'tooltip');
+                tooltip.innerHTML = e.currentTarget.innerText;
+
+                removeAllTooltips()
+                body.appendChild(tooltip)
+
+                let cords = e.currentTarget.getBoundingClientRect();
+
+                tooltip.style.left = cords.left + e.currentTarget.clientWidth + 15 + 'px';
+                tooltip.style.top = cords.top + (e.currentTarget.clientHeight * 0.5) - (tooltip.clientHeight * 0.5) + 'px';
+                tooltip.classList.add('show')
+            })
+        })
+    }
+
+    function removeAllTooltips() {
+        document.querySelectorAll('.ee-tooltip').forEach(tooltip => {
+            tooltip.remove();
+        })
+    }
+
+    sidebarItems && tooltip(sidebarItems);
+    sidebarWithoutClass && tooltip(sidebarWithoutClass);
+    sidebarSettings && tooltip(sidebarSettings);
+}
+
+function tableActiveRow() {
+    let tableRow = document.querySelectorAll('.files-list__table .files-list__row')
+
+    tableRow.forEach(row => {
+            let checkboxBox = row.querySelector('.checkbox-radio-switch-checkbox')
+            checkboxBox.addEventListener('change', (e) => {
+                    checkboxBox.classList.contains('checkbox-radio-switch--checked')
+                        ? row.classList.add('files-list__row--checked')
+                        : row.classList.remove('files-list__row--checked')
+                }
+            )
+        }
+    )
+}
+
+function hideNotice() {
+    let menuToggle = document.querySelectorAll('.files-list__table tr .action-item__menutoggle');
+
+    menuToggle.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+           setTimeout(()=>{
+               let rename = document.querySelector('.action.files-list__row-action-rename');
+               rename.addEventListener('click', () => {
+                   rename.closest('.action-item__popper').remove();
+               })
+           },10)
+        })
+    })
+}
+
+const mutationConfig = {attributes: false, childList: true, characterData: false, subtree: true};
+
+let observer = new MutationObserver(function (mutations) {
+    let navigationWrap =
+        document.querySelector('.app-navigation') ??
+        document.querySelector('#app-navigation') ??
+        document.querySelector('#app-navigation-vue');
+
+    if (document.contains(navigationWrap)) {
+        if (window.innerWidth <= 1200) {
+            navigationWrap.classList.add('app-navigation--close')
+        }
+        createNavBtn(navigationWrap);
+        hideSidebar(navigationWrap);
+        tooltips()
+        // tableActiveRow()
+    }
+
+    observer.disconnect()
+});
+
+
+observer.observe(document, mutationConfig);
+
+window.addEventListener("load", (event) => {
+    tableActiveRow()
+    hideNotice()
+
+    let navigationWrap =
+        document.querySelector('.app-navigation') ??
+        document.querySelector('#app-navigation') ??
+        document.querySelector('#app-navigation-vue');
+
+    if (document.contains(navigationWrap)) {
+        if (window.innerWidth <= 1200) {
+            navigationWrap.classList.add('app-navigation--close')
+        }
+        createNavBtn(navigationWrap);
+        hideSidebar(navigationWrap);
+        tooltips()
+        // tableActiveRow()
+    }
+}, false,);
+
