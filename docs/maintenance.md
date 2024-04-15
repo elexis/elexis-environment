@@ -38,6 +38,16 @@ In order to update an existing installation, perform the following steps:
 7. Pull current version images: `./ee system cmd pull --include-deps`
 8. Start EE with new containers being built: `./ee system cmd up -d --build`
 
+## Upgrading an existing EE installation
+
+In order to upgrade an existing installation, stop EE and execute clean `./ee system clean`.
+Then call `./ee setup ee_upgrade_site` to switch to the next higher branch.
+
+### Specific upgrade remarks
+
+Upgrade from [R2 to R3](upgrade-r2-to-r3.md)
+
+
 ## Moving docker data to another filesystem
 
 We will [move](https://linuxconfig.org/how-to-move-docker-s-default-var-lib-docker-to-another-directory-on-ubuntu-debian-linux) the docker default volumes directory to a new directory.

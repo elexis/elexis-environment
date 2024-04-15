@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-#Upgrade R1 to R2 branch
+#Upgrade R2 to R3 branch
 set -e # exit on failure
 ORIGIN_BRANCH=$(git -C $INSTALL_DIR branch --show-current)
-TARGET_BRANCH=R2
+TARGET_BRANCH=R3
 
 source $INSTALL_DIR/ee-cli/app/system/common.sh
 assert_docker_stopped
 
-if [ $ORIGIN_BRANCH != 'R1' ]; then
+if [ $ORIGIN_BRANCH != 'R2' ]; then
     sepline
     echo "Unsupported origin branch -> $ORIGIN_BRANCH";
     sepline
