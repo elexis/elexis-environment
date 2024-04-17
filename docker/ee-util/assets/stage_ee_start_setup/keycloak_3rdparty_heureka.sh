@@ -6,6 +6,11 @@ source keycloak_functions.sh
 #
 T="$S (3rdparty-healthinal-heureka)"
 
+if [ $ENABLE_3RDPARTY_HEUREKA == "false" ]; then
+    echo "$T not enabled"
+    exit 0
+fi
+
 # Public Certificate for productive heureka registration endpoint, as supplied by Healthinal
 HEALTHINAL_PRODREG_PUBKEY=sha256//Cf3eutsSUu4UUXkdQ6ca+EzRvhCdGlMoyOCfq++wyT4=
 
