@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ "$1" == "restart" ]; then 
+    ${INSTALL_DIR}ee system cmd stop web
+    ${INSTALL_DIR}ee system cmd rm -f web
+    ${INSTALL_DIR}ee system cmd up -d web
+fi
