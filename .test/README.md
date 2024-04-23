@@ -1,1 +1,0 @@
-Contains data for automated tests only

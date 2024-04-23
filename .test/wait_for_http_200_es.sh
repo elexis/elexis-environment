@@ -1,1 +1,0 @@
-timeout 300 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w ''%{http_code}'' https://localhost/services/swagger.json)" != "200" ]]; do sleep 5; done' 
