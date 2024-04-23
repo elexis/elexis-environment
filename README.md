@@ -1,4 +1,4 @@
-# Elexis-Environment (EE) master
+# Elexis-Environment (EE) R3
 
 An integrated Elexis environment providing elexis-server, single-sign-on, wiki and a chat system.
 
