@@ -5,6 +5,7 @@
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:SECRET_ELEXIS_WEB_API_JSON)",
+    "publicClient": false,
     "directAccessGrantsEnabled": false,
     "redirectUris": [
         "/api/elexisweb/oidc/callback"

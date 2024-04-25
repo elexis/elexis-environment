@@ -4,6 +4,7 @@
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:SECRET_OAUTH2_PROXY_JSON)",
+    "publicClient": false,
     "standardFlowEnabled": true,
     "redirectUris": [
         "/oauth2/callback"

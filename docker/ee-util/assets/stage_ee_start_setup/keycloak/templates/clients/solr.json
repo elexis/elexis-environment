@@ -5,6 +5,7 @@
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:SECRET_SOLR_JSON)",
+    "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,
     "implicitFlowEnabled": false,

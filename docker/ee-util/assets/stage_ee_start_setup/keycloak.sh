@@ -11,7 +11,7 @@ STATUS="$?"
 LOOP_COUNT=0
 while [ $STATUS != 0 ]; do
     echo "$T Waiting for keycloak [$STATUS] ($RESPONSE) ..."
-    sleep 15
+    sleep 10
     RESPONSE=$($KCADM config credentials --server http://keycloak:8080/keycloak/auth --realm master --user KeycloakAdmin --client admin-cli --password $ADMIN_PASSWORD)
     STATUS="$?"
     ((LOOP_COUNT += 1))
@@ -42,33 +42,33 @@ for client_file in keycloak/templates/clients/*.json; do
     # we provide a client secret for every client
     BASENAME=$(basename $client_file | tr a-z A-Z)
     export SECRET_${BASENAME//[\.-]/_}="$(randomClientSecret)"
-    echo "$T Setting ENV SECRET_${BASENAME//[\.-]/_}"
+    echo "$T client $client_file (adding env SECRET_${BASENAME//[\.-]/_})"
     jq --argjson client "$(jq -c '.' "$client_file")" '.clients += [$client]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
 for client_roles_file in keycloak/templates/client-roles/*.json; do
+    echo "$T client roles $client_roles_file "
     jq --argjson clientroles "$(jq -c '.' "$client_roles_file")" '.roles.client += $clientroles' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
-for client_roles_file in keycloak/templates/flows/*.json; do
-    jq --argjson authflow "$(jq -c '.' "$client_roles_file")" '.authenticationFlows += [$authflow]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+for flows_file in keycloak/templates/flows/*.json; do
+    echo "$T flow $flows_file "
+    jq --argjson authflow "$(jq -c '.' "$flows_file")" '.authenticationFlows += [$authflow]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
 echo "$T Apply ElexisEnvironment realm settings ..."
-#java -jar /bin/keycloak-config-cli-23.0.7.jar \
-#	--keycloak.url=https://${EE_HOSTNAME}/keycloak/auth \
-#	--keycloak.ssl-verify=true \
- #   	--keycloak.user=KeycloakAdmin \
-  #  	--keycloak.password=${ADMIN_PASSWORD} \
-   # 	--import.validate=true \
-	#	--import.var-substitution.enabled=true \
-	#	--import.files.locations=./result/elexis-environment.json
-
-exit 0
+java -jar /ee-bin/keycloak-config-cli-23.0.7.jar \
+	--keycloak.url=https://${EE_HOSTNAME}/keycloak/auth \
+	--keycloak.ssl-verify=true \
+   	--keycloak.user=KeycloakAdmin \
+  	--keycloak.password=${ADMIN_PASSWORD} \
+ 	--import.validate=true \
+    --import.var-substitution.enabled=true \
+    --import.files.locations=$RESULT_FILE
 
 #
 # Provide Elexis-Environment realm keys to other services
-# used by rocketchat.sh
+# used by Elexis self and rocketchat
 #
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
 $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
@@ -76,11 +76,17 @@ echo "$T Add realm public key to DB ${RDBMS_ELEXIS_DATABASE}"
 REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
 LASTUPDATE=$(date +%s)000
 
-# Put realm public key into elexis database
-MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
-/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
 
-source keycloak/keycloak_elexis-rcp-openid.sh
+if [ $ENABLE_ELEXIS_SERVER == "true" ] || [ $ENABLE_ELEXIS_RCP == "true" ]; then
+    # Put realm public key into elexis database
+    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
+    /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
+
+    echo "$T insert clientId/secret into elexis database .."
+    LASTUPDATE=$(date +%s)000
+    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${SECRET_ELEXIS_RCP_JSON}') ON DUPLICATE KEY UPDATE wert = '${SECRET_ELEXIS_RCP_JSON}', lastupdate='${LASTUPDATE}'"
+    /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
+fi
 
 if [ $ENABLE_3RDPARTY_HEUREKA == "true" ]; then
     source keycloak/keycloak_3rdparty_heureka.sh
