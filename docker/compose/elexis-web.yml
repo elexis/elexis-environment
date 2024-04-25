@@ -12,7 +12,7 @@ services:
     command: >
       /bin/sh -c 'cd /volume 
       && rm -Rf *
-      && wget -q https://${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN}@gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/develop/deploy.tar
+      && wget -q https://${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN}@gitlab.medelexis.ch/api/v4/projects/43/packages/generic/elexisweb/release-3/deploy.tar
       && tar xvf deploy.tar
       && rm deploy.tar
       && mv build/* .
@@ -23,9 +23,9 @@ services:
       - elexis-web-app-static:/volume/
 
   # api-php
-  # https://git.qix.sx/elexis/web/-/blob/develop/env-readme.md
+  # https://git.qix.sx/elexis/web/-/blob/release-3/env-readme.md
   elexis-web-api-php:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-3
     volumes:
       - elexis-web-api_php:/www
     depends_on:
@@ -74,7 +74,7 @@ services:
 
   # websockets
   elexis-web-websockets:
-    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-3
     volumes:
       - elexis-web-api_php:/www
     entrypoint: php artisan websockets:serve
