@@ -5,6 +5,12 @@ CLI_ENTRYPOINT=$(basename $0)
 
 . "$ROOT_DIR/utils"
 
+if [[ ! -f "$ROOT_DIR/../.env" ]]; then
+    echo >&2 -e "\n\033[31m== Not initialized - ./env file missing == \033[39m\n"
+else
+    export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
+fi
+
 export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
 export INSTALL_DIR=${ROOT_DIR//ee-cli}
 export DOCKER_DIR=${INSTALL_DIR}/docker/compose/
