@@ -478,6 +478,9 @@ function tooltips() {
                 tooltip.style.left = cords.left + e.currentTarget.clientWidth + 15 + 'px';
                 tooltip.style.top = cords.top + (e.currentTarget.clientHeight * 0.5) - (tooltip.clientHeight * 0.5) + 'px';
                 tooltip.classList.add('show')
+                setTimeout(()=>{
+                    tooltip.classList.remove('show')
+                },1200)
             })
         })
     }
@@ -560,7 +563,7 @@ window.addEventListener("load", (event) => {
         if (window.innerWidth <= 1200) {
             navigationWrap.classList.add('app-navigation--close')
         }
-        createNavBtn(navigationWrap);
+        // createNavBtn(navigationWrap);
         hideSidebar(navigationWrap);
         tooltips()
         // tableActiveRow()
