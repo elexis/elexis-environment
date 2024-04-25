@@ -1,8 +1,0 @@
-{
-    "requirement": "ALTERNATIVE",
-    "displayName": "EE Browser Dynamic Otp forms",
-    "configurable": false,
-    "authenticationFlow": true,
-    "level": 0,
-    "index": 1
-}

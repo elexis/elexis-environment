@@ -1,0 +1,28 @@
+{
+    "bookstack-saml": [
+        {
+            "name": "viewer",
+            "description": "User can view books & their content behind authentication",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "admin",
+            "description": "Administrator of the whole application",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "editor",
+            "description": "User can edit Books, Chapters & Pages",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "public",
+            "description": "The role given to public visitors if allowed",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}

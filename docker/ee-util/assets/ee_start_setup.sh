@@ -19,6 +19,7 @@ fi
 echo "$B"
 ./elexis_db.sh
 ((exit_status = exit_status || $?))
+
 echo "$B"
 ./keycloak.sh
 ((exit_status = exit_status || $?))

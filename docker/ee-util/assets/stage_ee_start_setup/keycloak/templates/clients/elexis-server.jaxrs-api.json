@@ -1,0 +1,13 @@
+{
+    "clientId": "elexis-server.jaxrs-api",
+    "description": "Elexis-Server JAXRS API (Bearer only)",
+    "enabled": "$(env:ENABLE_ELEXIS_SERVER)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:X_EE_ELEXIS_SERVER_CLIENT_SECRET)",
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false
+}

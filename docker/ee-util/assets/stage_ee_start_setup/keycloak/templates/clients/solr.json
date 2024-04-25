@@ -1,0 +1,13 @@
+{
+    "clientId": "solr",
+    "description": "Solr (Bearer only)",
+    "enabled": "$(env:ENABLE_SOLR)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:SECRET_SOLR_JSON)",
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false
+}
