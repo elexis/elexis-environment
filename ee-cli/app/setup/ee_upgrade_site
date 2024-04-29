@@ -33,6 +33,10 @@ echo "--> ee setup configure"
 ./ee setup configure
 
 sepline
+echo "--> Resetting auto git pull state"
+rm -f .enable-auto-git-pull
+
+sepline
 echo "1) Verify and supplement the EE variables"
 echo "2) Re-Run setup configure"
 echo "3) Start EE"
