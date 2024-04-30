@@ -118,6 +118,24 @@ for key, value in os.environ.items():
     if key.startswith('ENABLE'):
         config[key.replace('_', '-').lower()] = value
 
+# ee.config.bridge
+bridgeconfig = {}
+ee['config']['bridge'] = bridgeconfig
+
+for key, value in os.environ.items():
+    if key.startswith('WG'):
+        bridgeconfig[key.replace('_', '-').lower()[3:]] = value
+
+
+# ee.bridge
+bridgestatus = {}
+ee['bridge'] = bridgestatus
+
+bridgestatus["status"] = "down"
+bridge_status = subprocess.run(["./ee", "bridge", "status", "json"], stdout=subprocess.PIPE, text=True)
+if bridge_status.returncode == 0:
+    bridgestatus["status"] = "up"
+    bridgestatus["state"] = json.loads(bridge_status.stdout)["wg0"]
 
 # ee.site
 site = {}

@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN apk add --no-cache -U wireguard-tools curl jq iptables
+RUN apk add --no-cache -U wireguard-tools curl jq iptables fping
 
 WORKDIR /scripts
 ENV PATH="/scripts:${PATH}"
