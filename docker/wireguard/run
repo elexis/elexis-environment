@@ -84,5 +84,7 @@ echo "PersistentKeepalive = 25" >>/etc/wireguard/wg0.conf
 echo "$(date): Starting Wireguard wg0"
 wg-quick up wg0
 
+monitor.sh &
+
 sleep infinity &
 wait $!

@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-${INSTALL_DIR}ee system cmd -f ${DOCKER_DIR}/wireguard.yml exec wireguard wg
+if [ "$1" == "json" ]; then 
+    ${INSTALL_DIR}ee system cmd -f ${DOCKER_DIR}/wireguard.yml exec wireguard wg-json
+else
+    ${INSTALL_DIR}ee system cmd -f ${DOCKER_DIR}/wireguard.yml exec wireguard wg
+fi
