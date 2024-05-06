@@ -37,6 +37,9 @@ cp $TEMPLATE_FILE $RESULT_FILE
 openssl req -nodes -new -x509 -days 730 -keyout /rocketchat-saml-private.key -out /rocketchat-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Rocketchat"
 export RC_SAML_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert | sed '1,1d' | sed '$ d')
 
+#
+# Generate ElexisEnvironment.json input file for keycloak-config-cli
+#
 echo "$T Determine ElexisEnvironment realm settings ... "
 for client_file in keycloak/templates/clients/*.json; do
     # we provide a client secret for every client
@@ -56,8 +59,11 @@ for flows_file in keycloak/templates/flows/*.json; do
     jq --argjson authflow "$(jq -c '.' "$flows_file")" '.authenticationFlows += [$authflow]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
+#
+# Execute keycloak-config-cli
+#
 echo "$T Apply ElexisEnvironment realm settings ..."
-java -jar /ee-bin/keycloak-config-cli-23.0.7.jar \
+java -jar $KC_CONFIG_CLI_JAR \
 	--keycloak.url=https://${EE_HOSTNAME}/keycloak/auth \
 	--keycloak.ssl-verify=true \
    	--keycloak.user=KeycloakAdmin \

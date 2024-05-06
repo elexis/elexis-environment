@@ -6,8 +6,6 @@ source keycloak_functions.sh
 #
 T="$S (3rdparty-healthinal-heureka)"
 
-# ASSERT SECRET_3RDPARTY_HEUREKA_JSON is set
-
 # Public Certificate for productive heureka registration endpoint, as supplied by Healthinal
 HEALTHINAL_PRODREG_PUBKEY=sha256//Cf3eutsSUu4UUXkdQ6ca+EzRvhCdGlMoyOCfq++wyT4=
 

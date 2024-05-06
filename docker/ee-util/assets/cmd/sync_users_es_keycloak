@@ -12,4 +12,4 @@ fi
 sed -i '/^$/d' ./users.csv
 cat ./users.csv
 
-java -jar /KeycloakUtil.jar -l KeycloakAdmin -t -v -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/keycloak/auth -c syncUsersFromElexisCsv -f ./users.csv
+java -jar /ee-bin/keycloak/util/KeycloakUtil.jar -l KeycloakAdmin -t -v -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/keycloak/auth -c syncUsersFromElexisCsv -f ./users.csv
