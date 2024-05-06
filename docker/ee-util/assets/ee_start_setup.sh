@@ -30,12 +30,6 @@ if [[ $ENABLE_ROCKETCHAT == true ]]; then
     ((exit_status = exit_status || $?))
 fi
 
-if [[ $ENABLE_NEXTCLOUD == true ]]; then
-    echo "$B"
-    ./nextcloud.sh
-    ((exit_status = exit_status || $?))
-fi
-
 if [[ $ENABLE_BOOKSTACK == true ]]; then
     echo "$B"
     ./bookstack.sh

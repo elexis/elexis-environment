@@ -44,6 +44,7 @@ $OCC config:app:set user_oidc allow_multiple_user_backends --value=0
 
 echo "$(date): Apply theming ..."
 $OCC config:app:set theming name --value "${ORGANISATION_NAME//__/\ }"
+$OCC config:app:set theming url --value "https://$EE_HOSTNAME/cloud"
 
 echo "$(date): App management ..."
 $OCC app:install groupfolders
