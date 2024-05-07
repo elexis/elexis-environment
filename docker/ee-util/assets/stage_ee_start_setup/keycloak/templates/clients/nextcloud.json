@@ -2,7 +2,7 @@
     "clientId": "nextcloud",
     "description": "Nextcloud",
     "enabled": "$(env:ENABLE_NEXTCLOUD)",
-    "rootUrl": "https://$(env:ENABLE_NEXTCLOUD)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
     "baseUrl": "/cloud",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",

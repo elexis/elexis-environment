@@ -6,6 +6,8 @@
     "adminUrl": "https://$(env:EE_HOSTNAME)/chat/_saml_metadata/rocketchat-saml",
     "surrogateAuthRequired": false,
     "clientAuthenticatorType": "client-secret",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/chat",
     "redirectUris": [
         "/chat/*"
     ],

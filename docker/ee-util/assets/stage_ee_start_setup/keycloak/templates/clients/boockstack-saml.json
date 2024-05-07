@@ -1,10 +1,12 @@
 {
-    "clientId": "bookstack-saml",
+    "clientId": "https://$(env:EE_HOSTNAME)/bookstack/saml2/metadata",
     "description": "Bookstack client",
     "enabled": "$(env:ENABLE_BOOKSTACK)",
     "protocol": "saml",
     "surrogateAuthRequired": false,
     "clientAuthenticatorType": "client-secret",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/bookstack",
     "redirectUris": [
         "/bookstack/saml2/acs"
     ],

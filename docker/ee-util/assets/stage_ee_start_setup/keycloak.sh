@@ -5,7 +5,6 @@ echo "$T $(date)"
 #
 # Wait for Login
 #
-echo -n "$T"
 RESPONSE=$($KCADM config credentials --server http://keycloak:8080/keycloak/auth --realm master --user KeycloakAdmin --client admin-cli --password $ADMIN_PASSWORD)
 STATUS="$?"
 LOOP_COUNT=0
@@ -84,13 +83,13 @@ LASTUPDATE=$(date +%s)000
 
 
 if [ $ENABLE_ELEXIS_SERVER == "true" ] || [ $ENABLE_ELEXIS_RCP == "true" ]; then
-    # Put realm public key into elexis database
+    echo "$T Put realm public key into elexis database .."
     MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_KC_REALM_PUBLIC_KEY', '${REALM_PUBLIC_KEY}') ON DUPLICATE KEY UPDATE wert = '${REALM_PUBLIC_KEY}', lastupdate='${LASTUPDATE}'"
     /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
 
     echo "$T insert clientId/secret into elexis database .."
     LASTUPDATE=$(date +%s)000
-    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${SECRET_ELEXIS_RCP_JSON}') ON DUPLICATE KEY UPDATE wert = '${SECRET_ELEXIS_RCP_JSON}', lastupdate='${LASTUPDATE}'"
+    MYSQL_STRING="INSERT INTO CONFIG(lastupdate, param, wert) VALUES ('${LASTUPDATE}','EE_RCP_OPENID_SECRET', '${SECRET_ELEXIS_RCP_OPENID_JSON}') ON DUPLICATE KEY UPDATE wert = '${SECRET_ELEXIS_RCP_OPENID_JSON}', lastupdate='${LASTUPDATE}'"
     /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"
 fi
 

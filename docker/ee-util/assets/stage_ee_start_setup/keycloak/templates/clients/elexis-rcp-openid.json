@@ -1,10 +1,10 @@
 {
-    "clientId": "elexis-rcp",
+    "clientId": "elexis-rcp-openid",
     "description": "Elexis RCP application",
     "enabled": "$(env:ENABLE_ELEXIS_RCP)",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
-    "secret": "$(env:SECRET_ELEXIS_RCP_JSON)",
+    "secret": "$(env:SECRET_ELEXIS_RCP_OPENID_JSON)",
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,
