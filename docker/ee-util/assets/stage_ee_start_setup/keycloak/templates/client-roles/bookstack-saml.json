@@ -1,5 +1,5 @@
 {
-    "bookstack-saml": [
+    "https://$(env:EE_HOSTNAME)/bookstack/saml2/metadata": [
         {
             "name": "viewer",
             "description": "User can view books & their content behind authentication",

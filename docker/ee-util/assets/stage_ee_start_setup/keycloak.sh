@@ -63,8 +63,8 @@ done
 #
 echo "$T Apply ElexisEnvironment realm settings ..."
 java -jar $KC_CONFIG_CLI_JAR \
-	--keycloak.url=https://${EE_HOSTNAME}/keycloak/auth \
-	--keycloak.ssl-verify=true \
+	--keycloak.url=http://keycloak:8080/keycloak/auth \
+	--keycloak.ssl-verify=false \
    	--keycloak.user=KeycloakAdmin \
   	--keycloak.password=${ADMIN_PASSWORD} \
  	--import.validate=true \
