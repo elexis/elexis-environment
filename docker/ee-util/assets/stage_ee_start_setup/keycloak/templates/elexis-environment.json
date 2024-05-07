@@ -1,6 +1,5 @@
 {
-  "id": "elexis-environment",
-  "realm": "elexis-environment",
+  "realm": "ElexisEnvironment",
   "displayName": "Elexis-Environment $(date:yyyy-MM-dd HH:mm)",
   "internationalizationEnabled": true,
   "sslRequired": "none",
@@ -124,5 +123,5 @@
     "auth": "false",
     "ssl": "false"
   },
-  "browserFlow": "EE Browser Dynamic Otp Forms"
+  "browserFlow": "EE browser dynamic otp"
 }

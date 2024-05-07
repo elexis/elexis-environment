@@ -1,25 +1,25 @@
-{
-    "id": "ee-browser-dynamic-otp-forms",
-    "alias": "EE Browser Dynamic Otp Forms",
-    "description": "Browser based authentication with enforced otp on external port",
-    "providerId": "basic-flow",
-    "topLevel": true,
-    "builtIn": false,
-    "authenticationExecutions": [
-      {
-        "authenticator": "auth-username-password-form",
-        "authenticatorFlow": false,
-        "requirement": "REQUIRED",
-        "priority": 0,
-        "userSetupAllowed": false
-      },
-      {
-        "authenticatorConfig": "EE-Conditional-Otp-Ingress",
-        "authenticator": "auth-conditional-otp-form",
-        "authenticatorFlow": false,
-        "requirement": "REQUIRED",
-        "priority": 1,
-        "userSetupAllowed": false
-      }
-    ]
-  }
+{ 
+      "alias": "EE browser dynamic otp",
+      "description": "browser based authentication with conditional otp",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false, 
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 0,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 1,
+          "autheticatorFlow": true,
+          "flowAlias": "EE Browser Dynamic Otp Forms",
+          "userSetupAllowed": false
+        }
+      ]
+    }
