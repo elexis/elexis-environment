@@ -2,11 +2,15 @@
 pull_eenv-config
 
 function randomSecret {
-    openssl rand -base64 32 | tr -- '+/' '-_'
+    openssl rand -base64 33 | tr -- '+/' '-_'
 }
 
+# Initialize fresh client secrets on every start
+ELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
+ELEXIS_WEB_API_CLIENT_SECRET=$(randomSecret) \
 OAUTH2_PROXY_COOKIE_SECRET=$(randomSecret) \
 OAUTH2_PROXY_CLIENT_SECRET=$(randomSecret) \
+NEXTCLOUD_CLIENT_SECRET=$(randomSecret) \
 ${INSTALL_DIR}ee system cmd up -d --build
 
 ${INSTALL_DIR}ee status --no-output --generate-report

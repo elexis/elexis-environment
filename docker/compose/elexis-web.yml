@@ -53,7 +53,7 @@ services:
       - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/ # fallback to referrer url
       - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
       - OIDC_AUTO_REFRESH_TOKEN=true
-      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
+      - OIDC_CLIENT_SECRET=$ELEXIS_WEB_API_CLIENT_SECRET
       - OIDC_PUBLIC_KEY=jwt-key.key
       - BROADCAST_DRIVER=pusher
       - PUSHER_APP_ID=local

@@ -4,7 +4,7 @@
     "enabled": "$(env:ENABLE_ELEXIS_SERVER)",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
-    "secret": "$(env:X_EE_ELEXIS_SERVER_CLIENT_SECRET)",
+    "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,

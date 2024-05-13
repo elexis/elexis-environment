@@ -3,7 +3,7 @@
     "description": "Gatekeeper for Guacamole",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
-    "secret": "$(env:SECRET_OAUTH2_PROXY_JSON)",
+    "secret": "$(env:OAUTH2_PROXY_CLIENT_SECRET)",
     "publicClient": false,
     "standardFlowEnabled": true,
     "redirectUris": [

@@ -6,7 +6,7 @@
     "baseUrl": "/cloud",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
-    "secret": "$(env:X_EE_NEXTCLOUD_CLIENT_SECRET)",
+    "secret": "$(env:NEXTCLOUD_CLIENT_SECRET)",
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": true,
