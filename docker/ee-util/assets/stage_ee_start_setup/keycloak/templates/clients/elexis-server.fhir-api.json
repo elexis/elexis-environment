@@ -5,6 +5,7 @@
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",
+    "bearerOnly": false,
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,
