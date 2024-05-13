@@ -1,0 +1,13 @@
+{
+    "clientId": "solr",
+    "description": "Solr (Only used to define client roles - keep disabled)",
+    "enabled": "false",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false
+}
