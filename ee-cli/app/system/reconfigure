@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-pull_eenv-config
-#${INSTALL_DIR}ee system cmd up --build ee-config
-echo "Only via ./ee start"
