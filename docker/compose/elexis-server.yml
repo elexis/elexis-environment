@@ -40,3 +40,10 @@ services:
     memswap_limit: 2G
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
+
+  # restart elexis-server on an ee-config run
+  # due to OAUTH_SECRET_ELEXIS-SERVER.* update
+  ee-config:
+    depends_on:
+      elexis-server: 
+        condition: service_started

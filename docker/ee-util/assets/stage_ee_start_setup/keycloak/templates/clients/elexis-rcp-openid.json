@@ -4,7 +4,7 @@
     "enabled": "$(env:ENABLE_ELEXIS_RCP)",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
-    "secret": "$(env:SECRET_ELEXIS_RCP_OPENID_JSON)",
+    "secret": "$(env:ELEXIS_RCP_CLIENT_SECRET)",
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,

@@ -61,6 +61,13 @@ services:
             - nextcloud_html:/var/www/html/cloud:ro
             - nextcloud_php_socket:/var/run/php-fpm-sock
 
+  # restart nextcloud on an ee-config run
+  # due to NEXTCLOUD_CLIENT_SECRET update
+    ee-config:
+        depends_on:
+            nextcloud: 
+                condition: service_started
+
 volumes:
     nextcloud_html:
     nextcloud_data:
