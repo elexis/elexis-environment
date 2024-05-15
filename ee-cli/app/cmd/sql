@@ -13,4 +13,4 @@ else
     exit -1;
 fi;
 
-${INSTALL_DIR}ee system cmd run --rm ee-config ./usql $USQL_PARAM
+${INSTALL_DIR}ee system cmd run --rm --no-deps ee-config ./usql $USQL_PARAM
