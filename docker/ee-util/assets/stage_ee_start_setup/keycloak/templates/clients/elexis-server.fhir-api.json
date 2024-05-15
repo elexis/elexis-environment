@@ -1,0 +1,15 @@
+{
+    "clientId": "elexis-server.fhir-api",
+    "description": "Elexis-Server FHIR API (Bearer only)",
+    "enabled": "$(env:ENABLE_ELEXIS_SERVER)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",
+    "bearerOnly": false,
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false
+}

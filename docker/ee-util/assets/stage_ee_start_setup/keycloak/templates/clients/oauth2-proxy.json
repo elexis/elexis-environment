@@ -1,0 +1,12 @@
+{
+    "clientId": "oauth2-proxy",
+    "description": "Gatekeeper for Guacamole",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:OAUTH2_PROXY_CLIENT_SECRET)",
+    "publicClient": false,
+    "standardFlowEnabled": true,
+    "redirectUris": [
+        "/oauth2/callback"
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "nextcloud": [
+        {
+            "name": "admin",
+            "description": "User with full administrator privileges",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "third-party",
+            "description": "External user allowed to access specific folders",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+{
+    "clientId": "elexis-web-api",
+    "description": "Elexis-Web",
+    "enabled": "$(env:ENABLE_ELEXIS_WEB)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:ELEXIS_WEB_API_CLIENT_SECRET)",
+    "publicClient": false,
+    "directAccessGrantsEnabled": false,
+    "redirectUris": [
+        "/api/elexisweb/oidc/callback"
+    ]
+}

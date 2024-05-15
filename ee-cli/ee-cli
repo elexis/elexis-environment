@@ -23,6 +23,11 @@ pull_eenv-config() {
 }
 export -f pull_eenv-config
 
+randomSecret() {
+    openssl rand -base64 33 | tr -- '+/' '-_'
+}
+export -f randomSecret
+
 ee_util() {
     tput setaf 8
     pull_eenv-config

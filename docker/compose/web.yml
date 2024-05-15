@@ -30,6 +30,13 @@ services:
       - OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m
       - OAUTH2_PROXY_EMAIL_DOMAINS=*
       - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
+  
+  # restart oauth2-proxy on an ee-config run
+  # due to OAUTH2_PROXY_COOKIE_SECRET update
+  ee-config:
+    depends_on:
+      oauth2-proxy: 
+        condition: service_started
 
   web:
     image: nginx:1.24-alpine

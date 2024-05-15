@@ -1,12 +1,23 @@
 #!/usr/bin/env bash
 pull_eenv-config
 
-function randomSecret {
-    openssl rand -base64 32 | tr -- '+/' '-_'
-}
+if [ "$#" -eq 0 ]; then
+  #$@ is empty"
+  COMMAND="${INSTALL_DIR}ee system cmd up --build -d"
+else
+  # called from system/reconfigure
+  COMMAND="${INSTALL_DIR}ee system cmd up --build $@"
+fi
 
+# Initialize fresh client secrets on every start
+ELEXIS_RCP_CLIENT_SECRET=$(randomSecret) \
+ELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
+ELEXIS_WEB_API_CLIENT_SECRET=$(randomSecret) \
 OAUTH2_PROXY_COOKIE_SECRET=$(randomSecret) \
 OAUTH2_PROXY_CLIENT_SECRET=$(randomSecret) \
-${INSTALL_DIR}ee system cmd up -d --build
+NEXTCLOUD_CLIENT_SECRET=$(randomSecret) \
+HEUREKA_3RDPARTY_CLIENT_SECRET=$(randomSecret) \
+${COMMAND}
+
 
 ${INSTALL_DIR}ee status --no-output --generate-report

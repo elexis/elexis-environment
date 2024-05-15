@@ -1,0 +1,10 @@
+{
+    "clientId": "healthinal-heureka",
+    "description": "https://heureka.health",
+    "enabled": "$(env:ENABLE_3RDPARTY_HEUREKA)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:HEUREKA_3RDPARTY_CLIENT_SECRET)",
+    "publicClient": false,
+    "directAccessGrantsEnabled": true
+}

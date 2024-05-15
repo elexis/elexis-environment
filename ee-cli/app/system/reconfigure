@@ -1,3 +1,2 @@
 #!/usr/bin/env bash
-pull_eenv-config
-${INSTALL_DIR}ee system cmd up --build ee-config
+${INSTALL_DIR}ee start ee-config 

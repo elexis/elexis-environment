@@ -1,0 +1,127 @@
+{
+  "realm": "ElexisEnvironment",
+  "displayName": "Elexis-Environment $(date:yyyy-MM-dd HH:mm)",
+  "internationalizationEnabled": true,
+  "sslRequired": "none",
+  "registrationAllowed": false,
+  "registrationEmailAsUsername": false,
+  "loginWithEmailAllowed": false,
+  "duplicateEmailsAllowed": true,
+  "verifyEmail": true,
+  "editUsernameAllowed": false,
+  "loginTheme": "elexis-environment",
+  "accountTheme": "elexis-environment",
+  "adminTheme": "keycloak",
+  "emailTheme": "elexis-environment",
+  "defaultLocale": "de",
+  "supportedLocales": [
+    "de",
+    "en"
+  ],
+  "ssoSessionIdleTimeout": 7200,
+  "ssoSessionMaxLifespan": 86400,
+  "authenticationFlows": [],
+  "roles": {
+    "realm": [
+      {
+        "name": "bot",
+        "description": "Bot Benutzer, keine reale Person, kann sich nicht in Elexis RCP anmelden"
+      },
+      {
+        "name": "guacamole",
+        "description": "Benutzer des Guacamole Remote Desktop Client"
+      },
+      {
+        "name": "guacamole-admin",
+        "description": "Administrator des Guacamole Remote Desktop Client"
+      },
+      {
+        "name": "ict-administrator",
+        "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten"
+      },
+      {
+        "name": "mpk",
+        "description": "Personal mit der Tätigkeit einer Medizinische Praxis Koordinatorin"
+      },
+      {
+        "name": "medical-assistant",
+        "description": "Medizinische Assistenz oder Fachkraft in Ausbildung"
+      },
+      {
+        "name": "medical-practitioner",
+        "description": "Höhere medizinische Fachkraft"
+      },
+      {
+        "name": "mpa",
+        "description": "Personal mit der Tätigkeit einer Medizinische Praxis Assistentin"
+      },
+      {
+        "name": "medical-user",
+        "description": "Medizinisches Personal mit Zugriff auf medizinische Daten"
+      },
+      {
+        "name": "mandator",
+        "description": "Rechnungssteller"
+      },
+      {
+        "name": "user",
+        "description": "Login-Recht ohne Medizinische Daten "
+      }
+    ],
+    "client": {}
+  },
+  "scopeMappings": [],
+  "clients": [],
+  "components": {},
+  "identityProviders": [],
+  "groups": [
+    {
+      "name": "GroupArzt",
+      "path": "/GroupArzt"
+    },
+    {
+      "name": "GroupAssistent",
+      "path": "/GroupAssistent"
+    },
+    {
+      "name": "GroupMPA",
+      "path": "/GroupMPA"
+    },
+    {
+      "name": "GroupMPK",
+      "path": "/GroupMPK"
+    },
+    {
+      "name": "GroupPraktikant",
+      "path": "/GroupPraktikant"
+    },
+    {
+      "name": "GroupIntern",
+      "path": "/GroupIntern"
+    },
+    {
+      "name": "GroupThirdParty",
+      "path": "/GroupThirdParty"
+    }
+  ],
+  "requiredActions": [],
+  "authenticatorConfig": [
+    {
+      "id": "ee-conditional-otp-ingress",
+      "alias": "EE-Conditional-Otp-Ingress",
+      "config": {
+        "defaultOtpOutcome": "force",
+        "noOtpRequiredForHeaderPattern": "X-EE-Ingress-Port: 443"
+      }
+    }
+  ],
+  "messageBundles": {},
+  "smtpServer": {
+    "host": "127.0.0.11",
+    "from": "keycloak@$(env:EE_HOSTNAME)",
+    "starttls": "",
+    "auth": "false",
+    "ssl": "false"
+  },
+  "browserFlow": "EE browser dynamic otp"
+}

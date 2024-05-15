@@ -15,8 +15,8 @@ services:
       - REDMINE_APIKEY
       - MIS_APIKEY
       - MIS_PROJECTID
-      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
-      - OAUTH_SECRET_ELEXIS_SERVER.JAXRS-API=$X_EE_ELEXIS_SERVER_CLIENT_SECRET
+      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=${ELEXIS_SERVER_CLIENT_SECRET-""}
+      - OAUTH_SECRET_ELEXIS_SERVER.JAXRS-API=${ELEXIS_SERVER_CLIENT_SECRET-""}
       - CUPS_SERVER
       - IPP_PORT
       - X_EE_SOLR_ELEXIS_SERVER_PASSWORD
@@ -40,3 +40,10 @@ services:
     memswap_limit: 2G
     extra_hosts:
       - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
+
+  # restart elexis-server on an ee-config run
+  # due to OAUTH_SECRET_ELEXIS-SERVER.* update
+  ee-config:
+    depends_on:
+      elexis-server: 
+        condition: service_started

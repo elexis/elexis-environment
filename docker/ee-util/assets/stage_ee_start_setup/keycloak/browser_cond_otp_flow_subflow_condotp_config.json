@@ -1,7 +1,0 @@
-{
-    "alias": "EE-Conditional-Otp-Ingress",
-    "config": {
-        "defaultOtpOutcome": "force",
-        "noOtpRequiredForHeaderPattern": "X-EE-Ingress-Port: 443"
-    }
-}

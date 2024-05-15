@@ -1,0 +1,16 @@
+{
+    "solr": [
+        {
+            "name": "user",
+            "description": "Read and query",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "indexer",
+            "description": "Allowed to update collections",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}
