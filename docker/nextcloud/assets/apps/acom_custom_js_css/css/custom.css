@@ -399,8 +399,8 @@ div.app-navigation-entry .app-navigation-entry-link .app-navigation-entry-icon .
 	}
 }
 
-.app-navigation .app-navigation-list > li .active > a,
-.app-navigation .app-navigation__list > li .active > a {
+.app-navigation .app-navigation-list > li .active > a .app-navigation-entry-icon,
+.app-navigation .app-navigation__list > li .active > a .app-navigation-entry-icon {
 	filter: brightness(0) saturate(100%) invert(28%) sepia(47%) saturate(732%) hue-rotate(199deg) brightness(96%) contrast(92%);
 }
 
@@ -3444,6 +3444,12 @@ div.app-navigation.app-navigation {
 	height: calc(100svh - 79px) !important;
 }
 
+@media screen and (max-width: 1024px) {
+	div.app-navigation.app-navigation {
+		position: relative;
+	}
+}
+
 div#div.app-navigation {
 	display: flex;
 	flex-direction: column;
@@ -3474,6 +3480,7 @@ div.app-navigation.app-navigation--close {
 	flex: 1 0 65px;
 	overflow-y: auto;
 	overflow-x: hidden;
+	margin: 0;
 }
 
 
