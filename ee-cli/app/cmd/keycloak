@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 # https://www.keycloak.org/docs/latest/server_admin/#admin-cli
 
-ee_util /cmd.sh kcadm  "$@ -r ElexisEnvironment" 
+ee_util /cmd.sh kcadm $@  
