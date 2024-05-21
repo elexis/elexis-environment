@@ -1,2 +1,8 @@
 #!/usr/bin/env bash
-${INSTALL_DIR}ee start ee-config 
+${INSTALL_DIR}ee start --build ee-config 
+
+if [ $ENABLE_ELEXIS_WEB == "true" ]; then
+    # inconsistencies in dependency structure,
+    # temporary workaround to fix elexisweb availability
+    ${INSTALL_DIR}ee system cmd restart elexis-web-api-nginx
+fi
