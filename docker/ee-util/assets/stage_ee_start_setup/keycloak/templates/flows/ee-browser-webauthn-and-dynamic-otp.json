@@ -1,0 +1,25 @@
+{
+    "alias": "EE Browser Webauthn and Conditional OTP",
+    "description": "Browser based authentication with Webauthn and Conditional OTP",
+    "providerId": "basic-flow",
+    "topLevel": true,
+    "builtIn": false,
+    "authenticationExecutions": [
+      {
+        "authenticator": "auth-cookie",
+        "authenticatorFlow": false,
+        "requirement": "ALTERNATIVE",
+        "priority": 0,
+        "autheticatorFlow": false,
+        "userSetupAllowed": false
+      },
+      {
+        "authenticatorFlow": true,
+        "requirement": "ALTERNATIVE",
+        "priority": 1,
+        "autheticatorFlow": true,
+        "flowAlias": "EE Browser Webauthn and Conditional OTP Forms",
+        "userSetupAllowed": false
+      }
+    ]
+  }

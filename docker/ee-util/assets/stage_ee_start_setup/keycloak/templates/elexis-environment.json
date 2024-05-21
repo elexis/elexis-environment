@@ -113,6 +113,14 @@
         "defaultOtpOutcome": "force",
         "noOtpRequiredForHeaderPattern": "X-EE-Ingress-Port: 443"
       }
+    },
+    {
+      "id": "password-and-conditional-otp-ingress",
+      "alias": "Password-And-Conditional-Otp-Ingress",
+      "config": {
+        "defaultOtpOutcome": "force",
+        "noOtpRequiredForHeaderPattern": "X-EE-Ingress-Port: 443"
+      }
     }
   ],
   "messageBundles": {},
@@ -123,5 +131,5 @@
     "auth": "false",
     "ssl": "false"
   },
-  "browserFlow": "EE browser dynamic otp"
+  "browserFlow": "EE Browser Webauthn and Conditional OTP"
 }
