@@ -54,6 +54,7 @@ $KCADM add-roles --uusername heurekabot --rolename medical-user -r ElexisEnviron
 echo -n "$T Posting to https://10.101.0.11/ee-register ..."
 WELL_KNOWN_URI="https://${EE_HOSTNAME}/.well-known/elexis-environment"
 POST_BODY=$(jq -n --arg site_uuid ${X_EE_SITE_UUID} --arg client_secret ${X_EE_3RDP_HEALTHINAL_HEUREKA_CLIENT_SECRET} --arg elexis_password ${RANDOM_USER_PASSWORD}  --arg well_known_uri ${WELL_KNOWN_URI} -f keycloak_3rdparty_heureka_register.json.template)
+echo "$T BODY=$POST_BODY"
 curl -k --max-time 5 --pinnedpubkey ${HEALTHINAL_PRODREG_PUBKEY} --header 'Content-Type: application/json' --request POST --location 'https://10.101.0.11/ee-register' -d "${POST_BODY}"
 
 # TODO: auto creation of bot user
