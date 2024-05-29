@@ -11,6 +11,9 @@
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": true,
     "serviceAccountsEnabled": false,
+    "authenticationFlowBindingOverrides": {
+        "direct_grant": "direct grant password only"
+    },
     "protocolMappers": [
         {
             "name": "solr-client-role-mapper",

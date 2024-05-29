@@ -6,5 +6,9 @@
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:HEUREKA_3RDPARTY_CLIENT_SECRET)",
     "publicClient": false,
-    "directAccessGrantsEnabled": true
+    "directAccessGrantsEnabled": true,
+    "standardFlowEnabled": false,
+    "authenticationFlowBindingOverrides": {
+        "direct_grant": "direct grant password only"
+    }
 }
