@@ -39,7 +39,7 @@ else
     curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request PUT "$MIS_URL/issues/$MIS_ISSUE_ID.json" -d "${PUT_BODY}"
 fi
 
-WG_SERVER_PUBKEY=$(curl -s --location "https://tools.medelexis.ch//bridge-myelexis-ch/wireguard/pubkey")
+WG_SERVER_PUBKEY=$(curl -s --location "http://tools.myelexis.ch/bridge-myelexis-ch/wireguard/pubkey")
 echo "$(date): WG_SERVER_PUBKEY: $WG_SERVER_PUBKEY"
 
 ### Startup
