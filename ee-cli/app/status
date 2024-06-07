@@ -65,7 +65,7 @@ if os.path.isdir('/lost+found'):
 network = {}
 system['network'] = network
 
-external_ip = get('https://tools.medelexis.ch/myip').text
+external_ip = get('http://tools.myelexis.ch/myip').text
 network['external-ip'] = external_ip
 
 # system.disk
@@ -133,6 +133,7 @@ ee['bridge'] = bridgestatus
 
 bridgestatus["status"] = "down"
 bridge_status = subprocess.run(["./ee", "bridge", "status", "json"], stdout=subprocess.PIPE, text=True)
+# service "wireguard" is not running
 if bridge_status.returncode == 0:
     bridgestatus["status"] = "up"
     bridgestatus["state"] = json.loads(bridge_status.stdout)["wg0"]
