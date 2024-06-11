@@ -1,6 +1,8 @@
 services:
   elexis-server:
     image: medevit/elexis-server:3.12
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - ../../site/elexis-server/:/elexis/    # default uid = 1001, gid = 1001
     environment:

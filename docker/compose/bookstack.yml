@@ -1,6 +1,8 @@
 services:
   bookstack:
     image: marcode79/bookstack:v23.02.3-ee
+    security_opt:
+      - no-new-privileges:true
     volumes:
      - bookstack_storage_uploads:/var/www/bookstack/storage/uploads
     expose:

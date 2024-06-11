@@ -9,6 +9,8 @@ services:
   # TODO remove the key
   elexis-web-app-static-init-volume:
     image: alpine:3
+    security_opt:
+      - no-new-privileges:true
     command: >
       /bin/sh -c 'cd /volume 
       && rm -Rf *
@@ -26,6 +28,8 @@ services:
   # https://git.qix.sx/elexis/web/-/blob/release-3/env-readme.md
   elexis-web-api-php:
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-3
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - elexis-web-api_php:/www
     depends_on:
@@ -74,7 +78,13 @@ services:
 
   # websockets
   elexis-web-websockets:
+<<<<<<< HEAD
     image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:release-3
+=======
+    image: gitlab.medelexis.ch:4567/elexis-web/web-docker/api:develop
+    security_opt:
+      - no-new-privileges:true
+>>>>>>> 3682aec ([26392] Security_opt no new privileges)
     volumes:
       - elexis-web-api_php:/www
     entrypoint: php artisan websockets:serve
@@ -102,6 +112,8 @@ services:
   # api-nginx
   elexis-web-api-nginx:
     image: nginx:1.20-alpine
+    security_opt:
+      - no-new-privileges:true
     depends_on:
       - elexis-web-api-php
     working_dir: /www
