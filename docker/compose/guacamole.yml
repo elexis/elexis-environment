@@ -4,6 +4,8 @@
 services:
   guacamole-guacd:
     image: guacamole/guacd:1.5.4
+    security_opt:
+      - no-new-privileges:true
     expose:
       - 4822
     depends_on:
@@ -16,6 +18,8 @@ services:
 
   guacamole-guacamole:
     image: guacamole/guacamole:1.5.4
+    security_opt:
+      - no-new-privileges:true
     expose:
       - 8080/tcp
     depends_on: 

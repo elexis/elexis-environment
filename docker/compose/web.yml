@@ -4,6 +4,8 @@ services:
   # https://github.com/bitnami/containers/tree/main/bitnami/oauth2-proxy
   oauth2-proxy:
     image: bitnami/oauth2-proxy:7
+    security_opt:
+      - no-new-privileges:true
     networks:
       - backend
     expose:
@@ -40,6 +42,8 @@ services:
 
   web:
     image: nginx:1.24-alpine
+    security_opt:
+      - no-new-privileges:true
     volumes:
       - ./assets/web/web-services-configure.sh:/web-services-configure.sh:ro
       - ./assets/web/etc/nginx.conf:/etc/nginx/nginx.conf:ro

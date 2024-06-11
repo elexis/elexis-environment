@@ -5,6 +5,8 @@ services:
   # https://www.keycloak.org/server/reverseproxy
   keycloak: 
     image: quay.io/keycloak/keycloak:23.0
+    security_opt:
+      - no-new-privileges:true
     networks:
       - backend
     expose:
