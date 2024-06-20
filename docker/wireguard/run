@@ -26,8 +26,14 @@ PUBLIC_KEY=$(cat /etc/wireguard/private-key | wg pubkey)
 echo "$(date): Public Key: ${PUBLIC_KEY}"
 
 ### Upate MIS information
-MIS_ISSUE_JSON=$(curl -s --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request GET "${MIS_URL}/projects/${MIS_PROJECTID}/issues.json?subject=myelexis-bridge&tracker_id=15&limit=1")
-# TODO what if 401?
+CALL_STATUS=$(curl -s -w "%{http_code}" --header "X-Redmine-API-Key:${MIS_APIKEY}" --header 'Content-Type: application/json' --location --request GET "${MIS_URL}/projects/${MIS_PROJECTID}/issues.json?subject=myelexis-bridge&tracker_id=15&limit=1" -o curl_response_body)
+if [ $CALL_STATUS != "200" ]; then
+    echo "$(date): MIS - Issue query (project-id $MIS_PROJECTID) returned HTTP Status Code $CALL_STATUS - check MIS settings. Exiting."
+    exit -1
+fi
+
+MIS_ISSUE_JSON=$(cat curl_response_body)
+rm curl_response_body
 MIS_ISSUE_ID=$(echo $MIS_ISSUE_JSON | jq .issues[0].id 2&>errors)
 if [ $MIS_ISSUE_ID = "null" ]; then
     echo "$(date): MIS - Creating issue" # update existing issue
