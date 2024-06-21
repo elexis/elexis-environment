@@ -70,6 +70,7 @@
     ],
     "client": {}
   },
+  "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
   "scopeMappings": [],
   "clients": [],
   "components": {},
@@ -115,11 +116,26 @@
       }
     },
     {
-      "id": "password-and-conditional-otp-ingress",
       "alias": "Password-And-Conditional-Otp-Ingress",
       "config": {
         "defaultOtpOutcome": "force",
         "noOtpRequiredForHeaderPattern": "X-EE-Ingress-Port: 443"
+      }
+    },
+    {
+      "alias": "is-external-connection",
+      "config": {
+        "negate_outcome": "true",
+        "search_pattern": "X-EE-Ingress-Port: 443"
+      }
+    },
+    {
+      "alias": "deny-external-user-access-without-second-factor",
+      "config": {
+        "require-otp": "true",
+        "denyErrorMessage": "You do not have a second factor configured. Initial configuration has to be made via the internal connection.",
+        "require-webauthn": "true",
+        "requirement-mode": "ALTERNATIVE"
       }
     }
   ],

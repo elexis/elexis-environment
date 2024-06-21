@@ -15,6 +15,14 @@
       },
       {
         "authenticatorFlow": true,
+        "requirement": "CONDITIONAL",
+        "priority": 1,
+        "autheticatorFlow": true,
+        "flowAlias": "deny-external-access-without-configured-twofactor",
+        "userSetupAllowed": false
+      },
+      {
+        "authenticatorFlow": true,
         "requirement": "REQUIRED",
         "priority": 1,
         "autheticatorFlow": true,
