@@ -57,7 +57,7 @@ services:
       - OID_LOGIN_SUCCESS_URL=https://$EE_HOSTNAME/elexisweb/ # fallback to referrer url
       - OID_LOGIN_ERROR_URL=https://$EE_HOSTNAME/elexisweb/error
       - OIDC_AUTO_REFRESH_TOKEN=true
-      - OIDC_CLIENT_SECRET=$X_EE_ELEXIS_WEB_API_CLIENT_SECRET
+      - OIDC_CLIENT_SECRET=${ELEXIS_WEB_API_CLIENT_SECRET-""}
       - OIDC_PUBLIC_KEY=jwt-key.key
       - BROADCAST_DRIVER=pusher
       - PUSHER_APP_ID=local
@@ -75,6 +75,13 @@ services:
       - ENABLE_API_COMPONENT_SETTINGS=false
       - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir}
       - CLOUD_API_URL=${CLOUD_API_URL-https://$EE_HOSTNAME/cloud}
+
+  # restart elexis-web-api-php on an ee-config run
+  # due to OIDC_CLIENT_SECRET update
+  ee-config:
+    depends_on:
+     elexis-web-api-php: 
+        condition: service_started
 
   # websockets
   elexis-web-websockets:

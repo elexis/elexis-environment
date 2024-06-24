@@ -1,0 +1,27 @@
+{
+    "alias": "deny-external-access-without-configured-twofactor",
+    "description": "Deny access to user connecting from extern if no second factor was configured",
+    "providerId": "basic-flow",
+    "topLevel": false,
+    "builtIn": false,
+    "authenticationExecutions": [
+      {
+        "authenticatorConfig": "is-external-connection",
+        "authenticator": "conditional-http-header",
+        "authenticatorFlow": false,
+        "requirement": "REQUIRED",
+        "priority": 0,
+        "autheticatorFlow": false,
+        "userSetupAllowed": false
+      },
+      {
+        "authenticatorConfig": "deny-external-user-access-without-second-factor",
+        "authenticator": "deny-access-user-no-secondfactor",
+        "authenticatorFlow": false,
+        "requirement": "REQUIRED",
+        "priority": 1,
+        "autheticatorFlow": false,
+        "userSetupAllowed": false
+      }
+    ]
+  }

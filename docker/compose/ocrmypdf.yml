@@ -1,6 +1,5 @@
 services:
   ocrmypdf:
-
     image: jbarlow83/ocrmypdf:v16.3.1
     security_opt:
       - no-new-privileges:true

@@ -1,0 +1,19 @@
+{
+    "clientId": "nextcloud",
+    "description": "Nextcloud",
+    "enabled": "$(env:ENABLE_NEXTCLOUD)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/cloud",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:NEXTCLOUD_CLIENT_SECRET)",
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false,
+    "redirectUris": [
+        "/cloud/*"
+    ]
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-source ../stage_ee_start_setup/keycloak_functions.sh
+source ../stage_ee_start_setup/keycloak/keycloak_functions.sh
 echo "$T $(date)"
 
 $KCADM config credentials --server https://$EE_HOSTNAME/keycloak/auth  --realm master --user KeycloakAdmin --client admin-cli --password $ADMIN_PASSWORD

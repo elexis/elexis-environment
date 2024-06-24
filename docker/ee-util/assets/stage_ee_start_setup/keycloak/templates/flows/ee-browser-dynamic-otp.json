@@ -1,0 +1,25 @@
+{ 
+      "alias": "EE browser dynamic otp",
+      "description": "browser based authentication with conditional otp",
+      "providerId": "basic-flow",
+      "topLevel": true,
+      "builtIn": false, 
+      "authenticationExecutions": [
+        {
+          "authenticator": "auth-cookie",
+          "authenticatorFlow": false,
+          "requirement": "ALTERNATIVE",
+          "priority": 0,
+          "autheticatorFlow": false,
+          "userSetupAllowed": false
+        },
+        {
+          "authenticatorFlow": true,
+          "requirement": "ALTERNATIVE",
+          "priority": 1,
+          "autheticatorFlow": true,
+          "flowAlias": "EE Browser Dynamic Otp Forms",
+          "userSetupAllowed": false
+        }
+      ]
+    }

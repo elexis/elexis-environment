@@ -24,7 +24,7 @@ echo "$(date): Configure user_oidc ..."
 # Accept keycloak to be on localhost address
 $OCC config:system:set allow_local_remote_servers --value true
 # https://github.com/nextcloud/user_oidc
-$OCC user_oidc:provider -c nextcloud -s $X_EE_NEXTCLOUD_CLIENT_SECRET \
+$OCC user_oidc:provider -c nextcloud -s $NEXTCLOUD_CLIENT_SECRET \
     -d https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration \
     --mapping-uid=preferred_username --check-bearer=1 --unique-uid=0 \
     --mapping-email=email Keycloak
