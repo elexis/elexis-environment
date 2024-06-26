@@ -133,7 +133,7 @@
       "alias": "deny-external-user-access-without-second-factor",
       "config": {
         "require-otp": "true",
-        "denyErrorMessage": "You do not have a second factor configured. Initial configuration has to be made via the internal connection.",
+        "denyErrorMessage": "Sie haben keine Zwei-Faktor-Authentifizierung eingerichtet. Die erstmalige Einrichtung muss über die interne Verbindung in der Praxis erfolgen.",
         "require-webauthn": "true",
         "requirement-mode": "ALTERNATIVE"
       }
