@@ -41,8 +41,6 @@ services:
     # https://docs.nextcloud.com/server/latest/admin_manual/office/index.html
     code-server:
         image: docker.io/collabora/code
-        security_opt:
-            - no-new-privileges:true
         restart: unless-stopped
         cap_add:
             - MKNOD
