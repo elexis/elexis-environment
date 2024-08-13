@@ -4,7 +4,7 @@ services:
   # https://www.keycloak.org/server/all-config
   # https://www.keycloak.org/server/reverseproxy
   keycloak: 
-    image: quay.io/keycloak/keycloak:24.0
+    image: quay.io/keycloak/keycloak:25.0
     security_opt:
       - no-new-privileges:true
     networks:
@@ -29,10 +29,10 @@ services:
       - KC_PROXY=edge
       - KC_HTTP_RELATIVE_PATH=/keycloak/auth
       - KC_HEALTH_ENABLED=true
-    mem_limit: 2G
-    memswap_limit: 2G
+    mem_limit: 1536M
+    memswap_limit: 1536M
     healthcheck:
-      test: ['CMD-SHELL', '[ -f /tmp/HealthCheck.java ] || echo "public class HealthCheck { public static void main(String[] args) throws java.lang.Throwable { System.exit(java.net.HttpURLConnection.HTTP_OK == ((java.net.HttpURLConnection)new java.net.URL(args[0]).openConnection()).getResponseCode() ? 0 : 1); } }" > /tmp/HealthCheck.java && java /tmp/HealthCheck.java http://localhost:8080/keycloak/auth/health/live']
-      interval: 30s
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"]
+      interval: 20s
       timeout: 5s
       retries: 30
