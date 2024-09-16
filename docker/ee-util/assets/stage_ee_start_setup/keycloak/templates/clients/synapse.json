@@ -1,0 +1,18 @@
+{
+    "clientId": "synapse",
+    "description": "Synapse, a Matrix homeserver implementation",
+    "enabled": "$(env:ENABLE_MATRIX)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:SYNAPSE_CLIENT_SECRET)",
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false,
+    "redirectUris": [
+        "/_synapse/client/oidc/callback"
+    ]
+}

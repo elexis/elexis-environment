@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [ "$1" == "backup" ]; then
+    docker exec -u postgres elexis-environment-postgres-1 pg_dumpall  > site/backup/elexis-environment-postgres-1-backup.sql
+fi
+# docker exec -u postgres elexis-environment-postgres-1 $@

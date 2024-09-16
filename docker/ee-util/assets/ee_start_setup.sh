@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# triggered by ./ee start or ./ee system reconfigure
+
 cd /stage_ee_start_setup
 B="========================================================================================================"
 T="[EE-UTIL] "
@@ -39,6 +41,12 @@ fi
 if [[ $ENABLE_SOLR == true ]]; then
     echo "$B"
     ./solr.sh
+    ((exit_status = exit_status || $?))
+fi
+
+if [[ $ENABLE_MATRIX == true ]]; then
+    echo "$B"
+    ./matrix.sh
     ((exit_status = exit_status || $?))
 fi
 

@@ -14,6 +14,7 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 [[ $ENABLE_OCRMYPDF == true ]] && params+=(-f ${DOCKER_DIR}/ocrmypdf.yml)
 [[ $ENABLE_ELEXIS_WEB == true ]] && params+=(-f ${DOCKER_DIR}/elexis-web.yml)
 [[ $ENABLE_GUACAMOLE == true ]] && params+=(-f ${DOCKER_DIR}/guacamole.yml)
+[[ $ENABLE_MATRIX == true ]] && params+=(-f ${DOCKER_DIR}/matrix.yml) && params+=(-f ${DOCKER_DIR}/postgres.yml)
 
 # allow overrides of default values for specific installations (e.g. development)
 if [ -e ${INSTALL_DIR}/.env.override ]
