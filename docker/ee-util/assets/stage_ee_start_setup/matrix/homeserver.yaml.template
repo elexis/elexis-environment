@@ -68,6 +68,8 @@ user_directory:
   prefer_local_users: true
 auto_join_rooms:
   - "#general:${EE_HOSTNAME}"
+utocreate_auto_join_rooms: true
+autocreate_auto_join_rooms_federated: false
 # Disable presence tracking, which is currently fairly resource intensive
 # More info: https://github.com/matrix-org/synapse/issues/9478
 use_presence: false
@@ -79,5 +81,21 @@ use_presence: false
 limit_remote_rooms:
   enabled: true
   complexity: 3.0
+#
+# https://github.com/matrix-org/synapse-s3-storage-provider
+#
+# Configuration for media storage providers
+media_storage_providers:
+  - module: s3_storage_provider.S3StorageProviderBackend
+    store_local: True 
+    store_remote: True
+    store_synchronous: True
+    config:
+      bucket: ${S3_BUCKET_NAME}
+      endpoint_url: ${S3_LIKE_SERVICE_ENDPOINT_URL}
+      access_key_id: ${S3_ACCESS_KEY_ID}
+      secret_access_key: ${S3_SECRET_ACCESS_KEY}
+      prefix: "synapse/"
+      threadpool_size: 20
 
 # vim:ft=yaml

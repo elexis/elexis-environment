@@ -4,13 +4,14 @@ services:
   #   Database is initialized during ./ee setup configure
   #   Configuration file homeserver.yaml is written during startup 
   synapse:
-    image: docker.io/matrixdotorg/synapse:v1.114.0
+    build: ../synapse
     security_opt:
       - no-new-privileges:true
+    user: "991:991"
     expose:
       - 8008 # client
       - 8448 # federation
-    volumes: # synapse-1  | PermissionError: [Errno 13] Permission denied: '/data/media_store/local_content'
+    volumes:
       - synapse_media_store:/data/media_store
       - ../../site/matrix/synapse/data/:/site/data/
       - ../../site/matrix/synapse/homeserver.yaml:/data/homeserver.yaml:ro
