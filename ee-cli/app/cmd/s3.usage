@@ -1,0 +1,1 @@
+(test | execute s3cmd in default bucket)

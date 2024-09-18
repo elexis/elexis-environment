@@ -17,14 +17,7 @@ listeners:
     type: http
     x_forwarded: true
     resources:
-      - names: [client]
-        compress: false
-  - port: 8448
-    tls: false
-    type: http
-    x_forwarded: true
-    resources:
-      - names: [federation]
+      - names: [${NAMES}]
         compress: false
 database:
   name: psycopg2
@@ -97,5 +90,8 @@ media_storage_providers:
       secret_access_key: ${S3_SECRET_ACCESS_KEY}
       prefix: "synapse/"
       threadpool_size: 20
+federation_domain_whitelist:
+  - medelexis.ch
+  - myelexis.ch
 
 # vim:ft=yaml

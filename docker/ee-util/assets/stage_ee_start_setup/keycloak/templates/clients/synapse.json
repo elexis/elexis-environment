@@ -14,5 +14,9 @@
     "serviceAccountsEnabled": false,
     "redirectUris": [
         "/_synapse/client/oidc/callback"
-    ]
+    ],
+    "attributes": {
+        "backchannel.logout.session.required": "true",
+        "backchannel.logout.url": "https://$(env:EE_HOSTNAME)/_synapse/client/oidc/backchannel_logout"
+      }
 }
