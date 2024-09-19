@@ -9,8 +9,7 @@ services:
       - no-new-privileges:true
     user: "991:991"
     expose:
-      - 8008 # client
-      - 8448 # federation
+      - 8008
     volumes:
       - synapse_media_store:/data/media_store
       - ../../site/matrix/synapse/data/:/site/data/
