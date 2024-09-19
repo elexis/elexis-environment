@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: docker.io/postgres:16-alpine
+    volumes:
+      - postgres_pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+    mem_limit: 1G
+    memswap_limit: 1G
+    healthcheck:
+      test: ["CMD", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: ${ADMIN_PASSWORD}
+
+volumes:
+    postgres_pgdata:

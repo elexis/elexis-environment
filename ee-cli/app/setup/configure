@@ -10,3 +10,63 @@ pull_eenv-config
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
 docker run --rm  --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh $@
+
+#
+# Executed on the host system
+#
+
+ENABLE_MATRIX=$(grep -E '^ENABLE_MATRIX=' ${INSTALL_DIR}.env | cut -d'=' -f2)
+[ "$ENABLE_MATRIX" == true ] && ENABLE_POSTGRES=true
+
+assertMatrixDatabase() {
+    echo "======= (Postgres) Asserting synapse database"
+
+    SYNAPSE_USER_DATABASE_PASSWORD=$(randomSecret)
+    POSTGRES_CMD="docker exec -u postgres elexis-environment-postgres-1"
+
+    # Check if the user exists and create if not,  update the password
+    USER_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='synapse_user'")
+    if [ "$USER_EXISTS" != "1" ]; then
+        echo "======== (Postgres) Creating synapse user"
+       $POSTGRES_CMD createuser synapse_user
+        echo "======== (Postgres) Creating synapse user done"
+    fi
+    
+    echo "======== (Postgres) Updating synapse user password"
+    $POSTGRES_CMD psql -c "ALTER USER synapse_user WITH PASSWORD '${SYNAPSE_USER_DATABASE_PASSWORD}';"
+    echo "======== (Postgres) Updating synapse user password done"
+    
+    mkdir -p ${INSTALL_DIR}site/matrix/synapse
+    echo $SYNAPSE_USER_DATABASE_PASSWORD > ${INSTALL_DIR}site/matrix/synapse/postgres_password
+    chmod go-r ${INSTALL_DIR}site/matrix/synapse/postgres_password
+
+    # assert database exists
+    DATABASE_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_database WHERE datname='synapse'")
+    # else createdb --encoding=UTF8 --locale=C --template=template0 --owner=synapse_user synapse
+    if [ "$DATABASE_EXISTS" != "1" ]; then
+        echo "======== (Postgres) Creating synapse database"
+        $POSTGRES_CMD createdb --encoding=UTF8 --locale=C --template=template0 --owner=synapse_user synapse
+        echo "======== (Postgres) Creating synapse database done"
+    fi
+
+    echo "======= (Postgres) Asserting synapse database done"
+}
+
+if [ $ENABLE_POSTGRES == true ]; then
+    echo "==== (Postgres) starting"
+    ./ee system cmd up -d postgres
+
+    # Wait for postgres to be ready
+    until ./ee system cmd exec postgres pg_isready; do
+        echo "Waiting for postgres to be ready..."
+        sleep 1
+    done
+
+    if [ "$ENABLE_MATRIX" == "true" ]; then
+        assertMatrixDatabase
+    fi
+
+    echo "==== (Postgres) stopping"
+    ./ee system cmd stop postgres
+fi
+

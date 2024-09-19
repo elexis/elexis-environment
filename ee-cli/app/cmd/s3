@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
+cat <<EOF | envsubst > ${INSTALL_DIR}.s3cfg
+# Setup endpoint
+host_base = \$S3_LIKE_SERVICE_ENDPOINT_URL
+host_bucket = \$S3_BUCKET_NAME
+use_https = True
+
+# Setup access keys
+access_key = \$S3_ACCESS_KEY_ID
+secret_key = \$S3_SECRET_ACCESS_KEY
+
+# Enable S3 v4 signature APIs
+signature_v2 = True
+EOF
+if [ "$1" == "test" ]; then
+    ${INSTALL_DIR}ee system cmd run -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro --rm --no-deps ee-config s3cmd -q ls > /dev/null 2>&1
+    # see https://github.com/s3tools/s3cmd/blob/master/S3/ExitCodes.py for exit codes
+    exit $?
+fi
+${INSTALL_DIR}ee system cmd run -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro --rm --no-deps ee-config s3cmd $@
