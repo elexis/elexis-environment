@@ -14,7 +14,7 @@ docker run --rm  --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/
 #
 # Executed on the host system
 #
-
+ENABLE_POSTGRES=false
 ENABLE_MATRIX=$(grep -E '^ENABLE_MATRIX=' ${INSTALL_DIR}.env | cut -d'=' -f2)
 [ "$ENABLE_MATRIX" == true ] && ENABLE_POSTGRES=true
 

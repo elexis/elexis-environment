@@ -61,7 +61,7 @@ user_directory:
   prefer_local_users: true
 auto_join_rooms:
   - "#general:${EE_HOSTNAME}"
-utocreate_auto_join_rooms: true
+autocreate_auto_join_rooms: true
 autocreate_auto_join_rooms_federated: false
 # Disable presence tracking, which is currently fairly resource intensive
 # More info: https://github.com/matrix-org/synapse/issues/9478
@@ -88,6 +88,7 @@ media_storage_providers:
       endpoint_url: ${S3_LIKE_SERVICE_ENDPOINT_URL}
       access_key_id: ${S3_ACCESS_KEY_ID}
       secret_access_key: ${S3_SECRET_ACCESS_KEY}
+      verify: false
       prefix: "synapse/"
       threadpool_size: 20
 federation_domain_whitelist:

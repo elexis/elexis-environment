@@ -23,6 +23,14 @@ if [ $ENABLE_BOOKSTACK == "true" ]; then
     case $WG_ACCESS_BOOKSTACK in *pub*) echo 'include conf/bookstack.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi
 
+if [ $ENABLE_MATRIX == "true" ]; then
+    # $ENABLE_MATRIX_FEDERATION is considered when creating homeserver.yaml
+    # Matrix has to go before Nextcloud to catch .wellknown/matrix urls first
+    echo 'include conf/matrix.conf;' >>/etc/nginx/modules.conf
+    case $WG_ACCESS_MATRIX in *wg*) echo 'include conf/matrix-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
+    case $WG_ACCESS_MATRIX in *pub*) echo 'include conf/matrix-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+fi
+
 if [ $ENABLE_NEXTCLOUD == "true" ]; then
     echo 'include conf/nextcloud.conf;' >>/etc/nginx/modules.conf
     echo 'include conf/code-server.conf;' >>/etc/nginx/modules.conf
@@ -49,11 +57,4 @@ fi
 if [ $ENABLE_GUACAMOLE == "true" ]; then
     echo 'include conf/guacamole.conf;' >>/etc/nginx/modules.conf
     case $WG_ACCESS_GUACAMOLE in *pub*) echo 'include conf/guacamole-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
-fi
-
-if [ $ENABLE_MATRIX == "true" ]; then
-    # $ENABLE_MATRIX_FEDERATION is considered when creating homeserver.yaml
-    echo 'include conf/matrix.conf;' >>/etc/nginx/modules.conf
-    case $WG_ACCESS_MATRIX in *wg*) echo 'include conf/matrix-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
-    case $WG_ACCESS_MATRIX in *pub*) echo 'include conf/matrix-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi

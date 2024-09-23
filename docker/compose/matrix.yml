@@ -7,7 +7,6 @@ services:
     build: ../synapse
     security_opt:
       - no-new-privileges:true
-    user: "991:991"
     expose:
       - 8008
     volumes:
