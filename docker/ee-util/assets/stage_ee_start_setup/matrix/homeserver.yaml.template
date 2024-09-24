@@ -33,6 +33,11 @@ email:
   notif_from: "Matrix <noreply@${EE_HOSTNAME}>"
 retention:
   enabled: true
+  default_policy:
+    min_lifetime: 30d
+    max_lifetime: 92d
+  allowed_lifetime_min: 60d
+  allowed_lifetime_max: 184d
 media_store_path: /data/media_store
 report_stats: false
 # If this file does not exist, Synapse will create a new signing key on startup and store it in this file.

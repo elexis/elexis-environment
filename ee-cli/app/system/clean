@@ -11,4 +11,8 @@ if [ $ENABLE_NEXTCLOUD == true ]; then
     docker volume rm -f elexis-environment_nextcloud_php_socket
 fi
 
+if [ $ENABLE_MATRIX == true ]; then
+    docker volume rm -f elexis-environment_element_html
+fi
+
 docker image prune -f

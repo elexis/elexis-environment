@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+if [ $ENABLE_MATRIX == true ]; then
+    ${INSTALL_DIR}ee cmd synapse s3_media_upload
+fi
+
 ${INSTALL_DIR}ee system cmd stop
 
 if [ $ENABLE_ELEXIS_WEB == true ]; then

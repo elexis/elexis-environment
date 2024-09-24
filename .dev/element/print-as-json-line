@@ -1,0 +1,2 @@
+#!/bin/bash
+jq -c '.' config.json  | sed 's/"/\\"/g; s/^/"/; s/$/"/'

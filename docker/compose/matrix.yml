@@ -10,9 +10,8 @@ services:
     expose:
       - 8008
     volumes:
-      - synapse_media_store:/data/media_store
       - ../../site/matrix/synapse/data/:/site/data/
-      - ../../site/matrix/synapse/homeserver.yaml:/data/homeserver.yaml:ro
+      - ../../site/matrix/synapse/homeserver.yaml:/site/homeserver.yaml:ro
     networks:
       - backend
     depends_on:
@@ -25,12 +24,25 @@ services:
       retries: 3
       start_period: 5s
     environment:
-      - SYNAPSE_CONFIG_PATH=/data/homeserver.yaml
+      - SYNAPSE_CONFIG_PATH=/site/homeserver.yaml
       - SYNAPSE_SERVER_NAME=${EE_HOSTNAME}
       - SYNAPSE_REPORT_STATS=yes
-      - TZ="Europe/Zurich"
+      - TZ=Europe/Zurich
     mem_limit: 1G
     memswap_limit: 1G
 
+  element-init:
+    image: docker.io/alpine:3
+    command: >
+      /bin/sh -c "cd /var/www/html 
+      && wget https://github.com/element-hq/element-web/releases/download/v1.11.77/element-v1.11.77.tar.gz -O - | tar  --strip-components 1 -xzf - "
+    volumes:
+      - element_html:/var/www/html
+
+  # contribute to the web container
+  web:
+    volumes:
+      - element_html:/var/www/html/chat:ro
+
 volumes:
-  synapse_media_store:
+  element_html:

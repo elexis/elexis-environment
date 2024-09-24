@@ -3,4 +3,5 @@ PATH=/usr/local/bin:/usr/bin:/bin
 @hourly ~/.githooks/update-status
 @daily ~/.githooks/auto-git-pull-repo
 @weekly ~/.githooks/create-refresh-cert
+@hourly ~/.githooks/synapse-cron
 */10 * * * * ~/.githooks/nextcloud-cron
