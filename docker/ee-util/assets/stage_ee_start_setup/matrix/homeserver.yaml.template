@@ -62,9 +62,9 @@ oidc_providers:
         display_name_template: "{{ user.name }}"
         email_template: "{{ user.email }}"
     backchannel_logout_enabled: true
-# https://github.com/matrix-org/synapse/issues/11290
-client_whitelist:
-  - https://${EE_HOSTNAME}/chat
+sso:
+  client_whitelist:
+    - https://${EE_HOSTNAME}/chat
 # https://matrix-org.github.io/synapse/latest/usage/configuration/config_documentation.html#user_directory
 user_directory:
   enabled: true

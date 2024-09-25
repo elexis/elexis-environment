@@ -6,7 +6,7 @@
         	}
 	},
 	"branding": {
-		"auth_header_logo_url": "https://$host/assets/img/2E_transparent.png"
+		"auth_header_logo_url": "https://$host/b_pub/img/2E_transparent.png"
 	},
 	"embedded_pages": {
 		"login_for_welcome": true
