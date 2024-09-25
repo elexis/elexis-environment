@@ -33,11 +33,15 @@ services:
 
   element-init:
     image: docker.io/alpine:3
+    # we determine the newest version of element by contacting
+    # the hosted copy, see https://github.com/element-hq/element-web?tab=readme-ov-file#getting-started
     command: >
-      /bin/sh -c "cd /var/www/html 
-      && wget https://github.com/element-hq/element-web/releases/download/v1.11.77/element-v1.11.77.tar.gz -O - | tar  --strip-components 1 -xzf - "
+      /bin/sh -c "cd /var/www/html
+      && VERSION=$(wget -qO- https://app.element.io/version)
+      && wget https://github.com/element-hq/element-web/releases/download/v$${VERSION}/element-v$${VERSION}.tar.gz -O - | tar  --strip-components 1 -xzf - "
     volumes:
       - element_html:/var/www/html
+
 
   # contribute to the web container
   web:
