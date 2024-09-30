@@ -22,7 +22,6 @@ services:
       - CUPS_SERVER
       - IPP_PORT
       - X_EE_SOLR_ELEXIS_SERVER_PASSWORD
-      - ENABLE_ROCKETCHAT
     expose:
       - 8380
     depends_on:

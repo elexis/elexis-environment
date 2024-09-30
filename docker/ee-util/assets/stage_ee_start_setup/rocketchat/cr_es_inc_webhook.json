@@ -1,8 +1,0 @@
-{
-    "type": "webhook-incoming",
-    "channel": "#elexis-server",
-    "name": "elexis-server-messages",
-    "enabled": true,
-    "username": "elexis-server",
-    "scriptEnabled": false
-}
