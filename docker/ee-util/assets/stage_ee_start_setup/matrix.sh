@@ -10,6 +10,6 @@ if [ $ENABLE_MATRIX_FEDERATION == "true" ]; then
     NAMES+=", federation"
 fi
 export NAMES
-REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json) \
+REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | select(.use == "SIG") | .publicKey' -r /ElexisEnvironmentRealmKeys.json) \
 SYNAPSE_USER_DATABASE_PASSWORD=$(cat /site/matrix/synapse/postgres_password) \
 envsubst < matrix/homeserver.yaml.template > $HOMESERVER_YAML

@@ -66,12 +66,12 @@ java -jar $KC_CONFIG_CLI_JAR \
 
 #
 # Provide Elexis-Environment realm keys to other services
-# used by Elexis self
+# used by Elexis self and rocketchat
 #
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
 $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
 echo "$T Add realm public key to DB ${RDBMS_ELEXIS_DATABASE}"
-REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
+REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | select(.use == "SIG") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
 LASTUPDATE=$(date +%s)000
 
 
