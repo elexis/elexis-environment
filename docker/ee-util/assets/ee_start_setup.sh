@@ -26,12 +26,6 @@ echo "$B"
 ./keycloak.sh
 ((exit_status = exit_status || $?))
 
-if [[ $ENABLE_ROCKETCHAT == true ]]; then
-    echo "$B"
-    ./rocketchat.sh
-    ((exit_status = exit_status || $?))
-fi
-
 if [[ $ENABLE_BOOKSTACK == true ]]; then
     echo "$B"
     ./bookstack.sh

@@ -11,12 +11,6 @@ if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
     case $WG_ACCESS_ELEXIS_SERVER in *pub*) echo 'include conf/elexis-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi
 
-if [ $ENABLE_ROCKETCHAT == "true" ]; then
-    echo 'include conf/rocketchat.conf;' >>/etc/nginx/modules.conf
-    case $WG_ACCESS_ROCKETCHAT in *wg*) echo 'include conf/rocketchat.conf;' >>/etc/nginx/wg_modules.conf ;; esac
-    case $WG_ACCESS_ROCKETCHAT in *pub*) echo 'include conf/rocketchat.conf;' >>/etc/nginx/ext_modules.conf ;; esac
-fi
-
 if [ $ENABLE_BOOKSTACK == "true" ]; then
     echo 'include conf/bookstack.conf;' >>/etc/nginx/modules.conf
     case $WG_ACCESS_BOOKSTACK in *wg*) echo 'include conf/bookstack.conf;' >>/etc/nginx/wg_modules.conf ;; esac

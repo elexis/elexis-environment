@@ -32,10 +32,6 @@ TEMPLATE_FILE=keycloak/templates/elexis-environment.json
 RESULT_FILE=keycloak/result-elexis-environment.json
 cp $TEMPLATE_FILE $RESULT_FILE
 
-# rocketchat preparation
-openssl req -nodes -new -x509 -days 730 -keyout /rocketchat-saml-private.key -out /rocketchat-saml-public.cert -subj "/C=CH/ST=$ORGANISATION_NAME/L=SAML/O=Rocketchat"
-export RC_SAML_PUBLIC_CERT=$(cat /rocketchat-saml-public.cert | sed '1,1d' | sed '$ d')
-
 #
 # Generate ElexisEnvironment.json input file for keycloak-config-cli
 #
@@ -70,7 +66,7 @@ java -jar $KC_CONFIG_CLI_JAR \
 
 #
 # Provide Elexis-Environment realm keys to other services
-# used by Elexis self and rocketchat
+# used by Elexis self
 #
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
 $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
