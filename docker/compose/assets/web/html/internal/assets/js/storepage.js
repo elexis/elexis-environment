@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 url: '/bookstack',
                 title: 'Praxishandbuch',
             },
-            ENABLE_ROCKETCHAT: {
+            ENABLE_CHAT: {
                 url: '/chat',
                 title: 'Chat',
             },
