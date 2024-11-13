@@ -1,6 +1,6 @@
 services:
   ocrmypdf:
-    image: jbarlow83/ocrmypdf:v16.3.1
+    image: jbarlow83/ocrmypdf:v16.6.1
     security_opt:
       - no-new-privileges:true
     user: "1001:1001"
