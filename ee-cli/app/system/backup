@@ -4,7 +4,7 @@ DATE=$(date +"%d%m%Y_%H%M%S")
 BACKUPDIR=${SITE_DIR}backup/$DATE/
 
 THISDIR=$(cd `dirname $0` && pwd)
-source $THISDIR/common.sh
+source $THISDIR/.common.sh
 
 sepline
 echo "# $DATE Elexis-Environment Backup"

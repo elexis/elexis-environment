@@ -3,7 +3,7 @@
 export T="### [RESTORE]"
 SOURCE="${1/$'\r'/}"
 THISDIR=$(cd $(dirname $0) && pwd)
-source $THISDIR/common.sh
+source $THISDIR/.common.sh
 
 # test arg not empty
 if [ -z "$SOURCE" ]; then
