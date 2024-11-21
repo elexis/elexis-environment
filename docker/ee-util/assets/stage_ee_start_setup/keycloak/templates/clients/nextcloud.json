@@ -13,7 +13,22 @@
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": false,
     "serviceAccountsEnabled": false,
+    "fullScopeAllowed": false,
     "redirectUris": [
         "/cloud/*"
-    ]
+    ],
+    "defaultClientScopes": [
+        "nextcloud",
+        "web-origins",
+        "acr",
+        "profile",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
 }

@@ -7,7 +7,22 @@
     "secret": "$(env:ELEXIS_WEB_API_CLIENT_SECRET)",
     "publicClient": false,
     "directAccessGrantsEnabled": false,
+    "fullScopeAllowed": false,
     "redirectUris": [
         "/api/elexisweb/oidc/callback"
-    ]
+    ],
+    "defaultClientScopes": [
+        "nextcloud",
+        "web-origins",
+        "profile",
+        "roles",
+        "basic",
+        "email"
+      ],
+      "optionalClientScopes": [
+        "address",
+        "phone",
+        "offline_access",
+        "microprofile-jwt"
+      ]
 }

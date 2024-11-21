@@ -6,7 +6,7 @@ services:
         security_opt:
             - no-new-privileges:true
         volumes:
-            - ./assets/nextcloud/config/oidc_user.config.php:/var/www/html/config/oidc_user.config.php:ro
+            - ./assets/nextcloud/config/user_oidc.config.php:/var/www/html/config/user_oidc.config.php:ro
             - nextcloud_html:/var/www/html
             - nextcloud_data:/var/www/html/data
             - nextcloud_php_socket:/var/run/php-fpm-sock
@@ -34,7 +34,7 @@ services:
             - OBJECTSTORE_S3_SECRET=$NEXTCLOUD_S3_STORAGE_SECRET
             - OBJECTSTORE_S3_OBJECT_PREFIX=nc_ # must not be urn:oid: which cannot be stored on NTFS
             - OBJECTSTORE_S3_USEPATH_STYLE=true
-            - OBJECTSTORE_S3_LEGACYAUTH=true
+            - OBJECTSTORE_S3_LEGACYAUTH=false
         # https://docs.nextcloud.com/server/latest/admin_manual/installation/system_requirements.html
         mem_limit: 2G
         memswap_limit: 2G
