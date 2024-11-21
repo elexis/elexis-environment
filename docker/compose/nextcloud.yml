@@ -1,10 +1,12 @@
 # https://hub.docker.com/_/nextcloud
+# https://github.com/nextcloud/docker
 services:
     nextcloud:
         build: ../nextcloud
         security_opt:
             - no-new-privileges:true
         volumes:
+            - ./assets/nextcloud/config/oidc_user.config.php:/var/www/html/config/oidc_user.config.php:ro
             - nextcloud_html:/var/www/html
             - nextcloud_data:/var/www/html/data
             - nextcloud_php_socket:/var/run/php-fpm-sock
