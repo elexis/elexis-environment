@@ -13,9 +13,37 @@ secret_key = \$S3_SECRET_ACCESS_KEY
 # Enable S3 v4 signature APIs
 signature_v2 = True
 EOF
-if [ "$1" == "test" ]; then
-    ${INSTALL_DIR}ee system cmd run -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro --rm --no-deps ee-config s3cmd -q ls > /dev/null 2>&1
-    # see https://github.com/s3tools/s3cmd/blob/master/S3/ExitCodes.py for exit codes
-    exit $?
+
+S3_CMD="${INSTALL_DIR}ee system cmd run -T -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro"
+if [ -f ${INSTALL_DIR}/site/s3/service-cert.pem ]; then
+    S3_CMD="$S3_CMD -v ${INSTALL_DIR}site/s3/service-cert.pem:/tmp/service-cert.pem:ro"
+    S3_CMD="$S3_CMD --rm --no-deps ee-config s3cmd --ca-certs=/tmp/service-cert.pem"
+else
+    echo "[WARN] Applying --no-check-certificate"
+    S3_CMD="$S3_CMD --rm --no-deps ee-config s3cmd --no-check-certificate"
 fi
-${INSTALL_DIR}ee system cmd run -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro --rm --no-deps ee-config s3cmd $@
+
+# Install the currently used s3 certificate as the valid one
+# Does not work correctly for correct certificas, as it can't extract the full chain
+if [ "$1" == "install-cert" ]; then
+    mkdir -p site/s3
+    S3_IP=${S3_LIKE_SERVICE_ENDPOINT_URL#https://}
+    echo "Trying to fetch certificate from $S3_IP"
+    openssl s_client -showcerts -connect $S3_IP </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > site/s3/service-cert.pem
+    VALID_UNTIL=$(openssl x509 -enddate -noout -in site/s3/service-cert.pem | cut -d= -f2)
+    echo "Certificate is valid until: $VALID_UNTIL"
+    exit 0
+fi
+
+# Test the connection and exit with the EXIT_CODE
+if [ "$1" == "assert" ]; then
+    $S3_CMD -q ls < /dev/null
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+        # see https://github.com/s3tools/s3cmd/blob/master/S3/ExitCodes.py for exit codes
+        echo "[ERROR] S3 Endpoint ${S3_LIKE_SERVICE_ENDPOINT_URL} - Exit Code $EXIT_CODE"
+    fi
+    exit $EXIT_CODE
+fi
+
+$S3_CMD $@
