@@ -1,4 +1,4 @@
-FROM docker.io/matrixdotorg/synapse:v1.114.0
+FROM docker.io/matrixdotorg/synapse:v1.118.0
 RUN /usr/local/bin/pip install synapse-s3-storage-provider
 RUN mkdir /data && chown -R 991:991 /data
 # workaround until https://github.com/matrix-org/synapse-s3-storage-provider/pull/101

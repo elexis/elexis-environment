@@ -1,12 +1,18 @@
 {
 	"default_server_config": {
-        	"m.homeserver": {
-            		"base_url": "https://$host",
-            		"server_name": "$host"
-        	}
+		"m.homeserver": {
+			"base_url": "https://$host",
+			"server_name": "$host"
+		}
 	},
 	"branding": {
 		"auth_header_logo_url": "https://$host/b_pub/img/2E_transparent.png"
+	},
+	"io.element.e2ee": {
+		"default": false
+	},
+	"sso_redirect_options": {
+		"immediate": true
 	},
 	"embedded_pages": {
 		"login_for_welcome": true

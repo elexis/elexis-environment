@@ -1,0 +1,1 @@
+( mc command | ee-initialize [access-key access-secret] | install-cert)
