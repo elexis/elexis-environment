@@ -3,7 +3,7 @@ export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
 export $(grep ^X_EE_S3 ${INSTALL_DIR}.env | xargs)
 cat <<EOF | envsubst > ${INSTALL_DIR}.s3cfg
 # Setup endpoint
-host_base = \$S3_LIKE_SERVICE_ENDPOINT_URL
+host_base = \$S3_HOST:\$S3_PORT
 host_bucket = \$X_EE_S3_BUCKET_NAME
 use_https = True
 

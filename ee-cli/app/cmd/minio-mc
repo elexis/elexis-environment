@@ -40,7 +40,7 @@ EOF
 }
 
 function cmd {
-    docker run --rm -v ${INSTALL_DIR}/.mc/config.json:/root/.mc/config.json:ro -v ${INSTALL_DIR}/.mc/policy.json:/root/.mc/policy.json minio/mc "$@"
+    docker run --rm -v ${INSTALL_DIR}/.mc/config.json:/root/.mc/config.json:ro -v ${INSTALL_DIR}/.mc/policy.json:/root/.mc/policy.json minio/mc --insecure "$@"
 }
 
 if [ "$1" == "ee-initialize" ]; then
