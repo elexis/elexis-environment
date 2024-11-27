@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
+export $(grep ^X_EE_S3 ${INSTALL_DIR}.env | xargs)
 cat <<EOF | envsubst > ${INSTALL_DIR}.s3cfg
 # Setup endpoint
 host_base = \$S3_LIKE_SERVICE_ENDPOINT_URL
-host_bucket = \$S3_BUCKET_NAME
+host_bucket = \$X_EE_S3_BUCKET_NAME
 use_https = True
 
 # Setup access keys
-access_key = \$S3_ACCESS_KEY_ID
-secret_key = \$S3_SECRET_ACCESS_KEY
+access_key = \$X_EE_S3_ACCESS_KEY_ID
+secret_key = \$X_EE_S3_ACCESS_KEY_SECRET
 
 # Enable S3 v4 signature APIs
 signature_v2 = True
@@ -23,17 +24,7 @@ else
     S3_CMD="$S3_CMD --rm --no-deps ee-config s3cmd --no-check-certificate"
 fi
 
-# Install the currently used s3 certificate as the valid one
-# Does not work correctly for correct certificas, as it can't extract the full chain
-if [ "$1" == "install-cert" ]; then
-    mkdir -p site/s3
-    S3_IP=${S3_LIKE_SERVICE_ENDPOINT_URL#https://}
-    echo "Trying to fetch certificate from $S3_IP"
-    openssl s_client -showcerts -connect $S3_IP </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > site/s3/service-cert.pem
-    VALID_UNTIL=$(openssl x509 -enddate -noout -in site/s3/service-cert.pem | cut -d= -f2)
-    echo "Certificate is valid until: $VALID_UNTIL"
-    exit 0
-fi
+
 
 # Test the connection and exit with the EXIT_CODE
 if [ "$1" == "assert" ]; then

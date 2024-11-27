@@ -1,1 +1,1 @@
-(install-cert | execute s3cmd in default bucket)
+(execute s3cmd in ee-system bucket)

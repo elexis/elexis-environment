@@ -3,6 +3,7 @@ services:
   # Synapse Matrix server, requires postgres database
   #   Database is initialized during ./ee setup configure
   #   Configuration file homeserver.yaml is written during startup 
+  #   media_store is held in container, and uploaded to s3 (deleted on system clean)
   synapse:
     build: ../synapse
     security_opt:
