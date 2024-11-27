@@ -41,9 +41,10 @@ After initial startup, there will be two users available. The admin user with us
 
 * Keycloak with browser via https://yourhost/keycloak
 * Bookstack with browser via https://yourhost/bookstack (if enabled)
-* Rocketchat with browser via https://yourhost/chat (if enabled)
+* Synapse with browser via https://yourhost/chat (if enabled)
 * Nextcloud with browser via https://yourhost/cloud (if enabled)
 * Elexis server via https://yourhost/fhir and https://yourhost/services respectively (if enabled)
+
 ### Maintenance
 
 Please see [maintenance](docs/maintenance.md).
