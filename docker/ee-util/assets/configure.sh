@@ -47,6 +47,9 @@ sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/
 # remove all dashes from X_EE_ELEXIS_WEB_API_APP_KEY
 sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env
 
+# fix permissions for .env file
+chown --reference=/installdir/.env.bkup /installdir/.env
+chmod --reference=/installdir/.env.bkup /installdir/.env
 
 #
 # TEST PRECONDITIONS
