@@ -39,7 +39,7 @@ services:
     command: >
       /bin/sh -c "cd /var/www/html
       && VERSION=$(wget -qO- https://app.element.io/version)
-      && wget https://github.com/element-hq/element-web/releases/download/v$${VERSION}/element-v$${VERSION}.tar.gz -O - | tar  --strip-components 1 -xzf - "
+      && wget https://github.com/element-hq/element-web/releases/download/v$${VERSION}/element-$${VERSION}.tar.gz -O - | tar  --strip-components 1 -xzf - "
     volumes:
       - element_html:/var/www/html
 
