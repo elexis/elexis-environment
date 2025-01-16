@@ -4,7 +4,7 @@ services:
   # https://www.keycloak.org/server/all-config
   # https://www.keycloak.org/server/reverseproxy
   keycloak: 
-    image: quay.io/keycloak/keycloak:25.0
+    image: quay.io/keycloak/keycloak:26.0
     security_opt:
       - no-new-privileges:true
     networks:
