@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
+export ACCESS_KEY=$1
+export ACCESS_SECRET=$2
+
+if [ -z "$ACCESS_KEY" ] || [ -z "$ACCESS_SECRET" ]; then
+    echo "Please provide ACCESS_KEY and ACCESS_SECRET"
+    exit 1
+fi
+
+shift
+shift
+
+# mc config file is in ~/.mc/config.json
+mkdir -p ${INSTALL_DIR}/.mc
+cat <<EOF | envsubst >${INSTALL_DIR}/.mc/config.json
+{
+	"version": "10",
+	"aliases": {
+		"minio": {
+			"url": "https://\$S3_HOST:\$S3_PORT",
+			"accessKey": "\$ACCESS_KEY",
+			"secretKey": "\$ACCESS_SECRET",
+			"api": "s3v4",
+			"path": "auto"
+		}
+	}
+}
+EOF
+
+function write_policy {
+cat <<EOF | envsubst >${INSTALL_DIR}/.mc/policy.json
+{
+ "Version": "2012-10-17",
+ "Statement": [
+  {
+   "Effect": "Allow",
+   "Action": [
+    "s3:*"
+   ],
+   "Resource": [
+    "arn:aws:s3:::$1/*"
+   ]
+  }
+ ]
+}
+EOF
+}
+
+function cmd {
+    docker run --rm -v ${INSTALL_DIR}/.mc/config.json:/root/.mc/config.json:ro -v ${INSTALL_DIR}/.mc/policy.json:/root/.mc/policy.json minio/mc --insecure "$@"
+}
+
+if [ "$1" == "ee-initialize" ]; then
+
+    NOW=$(date)
+
+    # elexis-environment system storage
+    # used for backups etc.
+    echo "### Creating/Updating accesskey for ee-system ..."
+    X_EE_S3_ACCESS_KEY_SECRET=$(randomSecret | cut -c 1-40)
+    write_policy $X_EE_S3_BUCKET_NAME
+    cmd admin accesskey remove -q minio $X_EE_S3_ACCESS_KEY_ID
+    cmd admin accesskey create -q --access-key $X_EE_S3_ACCESS_KEY_ID --secret-key $X_EE_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
+    sed -i -e 's/\(X_EE_S3_ACCESS_KEY_SECRET=\).*$/\1'"${X_EE_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    cmd mb --ignore-existing minio/$X_EE_S3_BUCKET_NAME
+
+    # nextcloud file storage
+    echo "### Creating/Updating accesskey for ee-nextcloud ..."
+    NEXTCLOUD_S3_ACCESS_KEY_SECRET=$(randomSecret | cut -c 1-40)
+    write_policy $NEXTCLOUD_S3_BUCKET_NAME
+    cmd admin accesskey remove -q minio $NEXTCLOUD_S3_ACCESS_KEY_ID
+    cmd admin accesskey create -q --access-key $NEXTCLOUD_S3_ACCESS_KEY_ID --secret-key $NEXTCLOUD_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
+    sed -i -e 's/\(NEXTCLOUD_S3_ACCESS_KEY_SECRET=\).*$/\1'"${NEXTCLOUD_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    cmd mb --ignore-existing minio/$NEXTCLOUD_S3_BUCKET_NAME
+
+    # synapse file storage
+    echo "### Creating/Updating accesskey for ee-synapse ..."
+    write_policy $MATRIX_S3_BUCKET_NAME
+    MATRIX_S3_ACCESS_KEY_SECRET=$(randomSecret | cut -c 1-40)
+    cmd admin accesskey remove -q minio $MATRIX_S3_ACCESS_KEY_ID
+    cmd admin accesskey create -q --access-key $MATRIX_S3_ACCESS_KEY_ID --secret-key $MATRIX_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
+    sed -i -e 's/\(MATRIX_S3_ACCESS_KEY_SECRET=\).*$/\1'"${MATRIX_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    cmd mb --ignore-existing minio/$MATRIX_S3_BUCKET_NAME
+
+    # TODO bookstack (EER4)
+
+    echo "### Initialization done."
+    echo "### Please delete accesskey $ACCESS_KEY"
+
+    rm -f ${INSTALL_DIR}/.mc/config.json ${INSTALL_DIR}/.mc/policy.json
+    rmdir ${INSTALL_DIR}/.mc/
+    exit 0
+fi
+
+cmd $@ minio

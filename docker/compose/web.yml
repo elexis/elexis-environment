@@ -90,11 +90,13 @@ services:
       - ENABLE_ELEXIS_WEB
       - ENABLE_OCRMYPDF
       - ENABLE_GUACAMOLE
+      - ENABLE_MATRIX
       - WG_ACCESS_ELEXIS_SERVER
       - WG_ACCESS_BOOKSTACK
       - WG_ACCESS_NEXTCLOUD
       - WG_ACCESS_ELEXIS_WEB
       - WG_ACCESS_GUACAMOLE
+      - WG_ACCESS_MATRIX
 
 networks:
   backend:

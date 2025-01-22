@@ -7,6 +7,8 @@ services:
       - myelexis_bridge
     cap_add:
       - NET_ADMIN
+    volumes:
+      - ../../site/:/site/
     depends_on:
       keycloak:
         condition: service_healthy
@@ -32,6 +34,18 @@ services:
       - RDBMS_NEXTCLOUD_PASSWORD
       - RDBMS_HOST
       - RDBMS_PORT
+      - S3_HOST
+      - S3_PORT
+      - X_EE_S3_BUCKET_NAME
+      - X_EE_S3_ACCESS_KEY_ID
+      - X_EE_S3_ACCESS_KEY_SECRET
+      - MATRIX_S3_LIKE_SERVICE_ENDPOINT_URL=${MATRIX_S3_LIKE_SERVICE_ENDPOINT_URL:-https://$S3_HOST:$S3_PORT}
+      - MATRIX_S3_BUCKET_NAME
+      - MATRIX_S3_ACCESS_KEY_ID
+      - MATRIX_S3_ACCESS_KEY_SECRET
+      - NEXTCLOUD_S3_BUCKET_NAME
+      - NEXTCLOUD_S3_ACCESS_KEY_ID
+      - NEXTCLOUD_S3_ACCESS_KEY_SECRET
       - ENABLE_ELEXIS_SERVER
       - ENABLE_ELEXIS_RCP
       - ENABLE_BOOKSTACK
@@ -40,10 +54,13 @@ services:
       - ENABLE_SOLR
       - ENABLE_3RDPARTY_HEUREKA
       - ENABLE_GUACAMOLE
+      - ENABLE_MATRIX
+      - ENABLE_MATRIX_FEDERATION
       - ELEXIS_SERVER_CLIENT_SECRET
       - ELEXIS_WEB_API_CLIENT_SECRET
       - OAUTH2_PROXY_CLIENT_SECRET
       - NEXTCLOUD_CLIENT_SECRET
+      - SYNAPSE_CLIENT_SECRET
       - HEUREKA_3RDPARTY_CLIENT_SECRET
       - ELEXIS_RCP_CLIENT_SECRET
       - X_EE_SITE_UUID

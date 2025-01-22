@@ -1,0 +1,53 @@
+services:
+
+  # Synapse Matrix server, requires postgres database
+  #   Database is initialized during ./ee setup configure
+  #   Configuration file homeserver.yaml is written during startup 
+  #   media_store is held in container, and uploaded to s3 (deleted on system clean)
+  synapse:
+    build: ../synapse
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - 8008
+    volumes:
+      - ../../site/matrix/synapse/data/:/site/data/
+      - ../../site/matrix/synapse/homeserver.yaml:/site/homeserver.yaml:ro
+    networks:
+      - backend
+    depends_on:
+      ee-config: 
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "curl", "-fSs", "http://localhost:8008/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    environment:
+      - SYNAPSE_CONFIG_PATH=/site/homeserver.yaml
+      - SYNAPSE_SERVER_NAME=${EE_HOSTNAME}
+      - SYNAPSE_REPORT_STATS=yes
+      - TZ=Europe/Zurich
+    mem_limit: 1G
+    memswap_limit: 1G
+
+  element-init:
+    image: docker.io/alpine:3
+    # we determine the newest version of element by contacting
+    # the hosted copy, see https://github.com/element-hq/element-web?tab=readme-ov-file#getting-started
+    command: >
+      /bin/sh -c "cd /var/www/html
+      && VERSION=$(wget -qO- https://app.element.io/version)
+      && wget https://github.com/element-hq/element-web/releases/download/$${VERSION}/element-$${VERSION}.tar.gz -O - | tar  --strip-components 1 -xzf - "
+    volumes:
+      - element_html:/var/www/html
+
+
+  # contribute to the web container
+  web:
+    volumes:
+      - element_html:/var/www/html/chat:ro
+
+volumes:
+  element_html:
