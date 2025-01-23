@@ -16,3 +16,4 @@ if [ $ENABLE_MATRIX == true ]; then
 fi
 
 docker image prune -f
+docker builder prune -f
