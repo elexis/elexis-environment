@@ -12,3 +12,4 @@ if [ $ENABLE_NEXTCLOUD == true ]; then
 fi
 
 docker image prune -f
+docker builder prune -f
