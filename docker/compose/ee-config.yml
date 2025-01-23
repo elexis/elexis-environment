@@ -37,6 +37,7 @@ services:
       - RDBMS_NEXTCLOUD_PASSWORD
       - RDBMS_HOST
       - RDBMS_PORT
+      - RDBMS_TYPE
       - S3_HOST
       - S3_PORT
       - X_EE_S3_BUCKET_NAME
