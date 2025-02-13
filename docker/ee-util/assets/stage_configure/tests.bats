@@ -27,11 +27,6 @@
     [[ "$output" == *"12358"* ]]
 }
 
-# Is the Keycloak DB accessible
-@test "Check RDBMS_KEYCLOAK_DATABASE accessible" {
-    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_KEYCLOAK_USERNAME}:${RDBMS_KEYCLOAK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_KEYCLOAK_DATABASE} -c "SELECT 1=1"
-}
-
 # Is the Bookstack DB accessible
 @test "Check RDBMS_BOOKSTACK_DATABASE accessible" {
     if [ $ENABLE_BOOKSTACK == false ]; then
@@ -54,17 +49,17 @@
         skip "Nextcloud module not enabled"
     fi
 
-    resource="/${NEXTCLOUD_S3_STORAGE_BUCKETNAME}/"
+    resource="/${NEXTCLOUD_S3_BUCKET_NAME}/"
     content_type="application/octet-stream"
     date=`date -R`
     _signature="HEAD\n\n${content_type}\n${date}\n${resource}"
-    signature=`echo -en ${_signature} | openssl sha1 -hmac ${NEXTCLOUD_S3_STORAGE_SECRET} -binary | base64`
+    signature=`echo -en ${_signature} | openssl sha1 -hmac ${NEXTCLOUD_S3_ACCESS_KEY_SECRET} -binary | base64`
     
     curl -k -I -w ''%{http_code}'' \
           -H "Host: ${NEXTCLOUD_S3_STORAGE_HOSTNAME}" \
           -H "Date: ${date}" \
           -H "Content-Type: ${content_type}" \
-          -H "Authorization: AWS ${NEXTCLOUD_S3_STORAGE_KEY}:${signature}" \
+          -H "Authorization: AWS ${NEXTCLOUD_S3_ACCESS_KEY_ID}:${signature}" \
           https://${NEXTCLOUD_S3_STORAGE_HOSTNAME}:9000${resource}
 }
 

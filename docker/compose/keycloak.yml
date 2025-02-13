@@ -11,18 +11,18 @@ services:
       - backend
     expose:
       - 8080
+    depends_on:
+      postgres:
+        condition: service_healthy
     command:
       - start
     volumes:
       - ./assets/keycloak/providers:/opt/keycloak/providers
     environment:
-      - KC_DB=$RDBMS_TYPE
-      - KC_DB_URL_HOST=$RDBMS_HOST
-      - KC_DB_URL_PORT=$RDBMS_PORT
-      - KC_DB_URL_DATABASE=$RDBMS_KEYCLOAK_DATABASE
-      - KC_DB_URL_PROPERTIES=?$RDBMS_KEYCLOAK_JDBC_PARAMETER_STRING
-      - KC_DB_USERNAME=$RDBMS_KEYCLOAK_USERNAME
-      - KC_DB_PASSWORD=$RDBMS_KEYCLOAK_PASSWORD
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres/keycloak
+      - KC_DB_USERNAME=keycloak_user
+      - KC_DB_PASSWORD=$X_EE_RDBMS_KEYCLOAK_PASSWORD
       - KC_HOSTNAME=$EE_HOSTNAME
       - KEYCLOAK_ADMIN=KeycloakAdmin # Fallback local admin
       - KEYCLOAK_ADMIN_PASSWORD=$ADMIN_PASSWORD
@@ -34,6 +34,6 @@ services:
     memswap_limit: 1G
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'HEAD /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"]
-      interval: 20s
+      interval: 30s
       timeout: 5s
       retries: 30
