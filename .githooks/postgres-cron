@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
+# run this script daily
 
 POSTGRES_RUNNING=$(docker ps --filter label=com.docker.compose.project=elexis-environment --filter label=com.docker.compose.service=postgres --format "{{.ID}}")
 if [ -n "${POSTGRES_RUNNING}" ]; then
+     ~/ee cmd postgres vacuum
+
      ~/ee cmd postgres backup
 
      mkdir -p ~/site/backup/daily/
