@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 if [ "$1" == "backup" ]; then
-    docker exec -u postgres elexis-environment-postgres-1 pg_dumpall  > site/backup/elexis-environment-postgres-1-backup.sql
+    # see https://www.postgresql.org/docs/16/backup-dump.html#BACKUP-DUMP-ALL
+    docker exec -u postgres elexis-environment-postgres-1 pg_dumpall | gzip > site/backup/elexis-environment-postgres-1-backup.sql.gz
     exit 0
+fi
+if [ "$1" == "vacuum" ]; then
+    # see https://www.postgresql.org/docs/current/routine-vacuuming.html
+    docker exec -u postgres elexis-environment-postgres-1 vacuumdb --analyze --all --quiet
 fi
 docker exec -u postgres -it elexis-environment-postgres-1 $@

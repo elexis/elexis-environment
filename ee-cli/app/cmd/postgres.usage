@@ -1,1 +1,1 @@
-( backup | execute command in postgres console)
+( backup | vacuum | execute command in postgres console)

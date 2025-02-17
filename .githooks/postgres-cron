@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+POSTGRES_RUNNING=$(docker ps --filter label=com.docker.compose.project=elexis-environment --filter label=com.docker.compose.service=postgres --format "{{.ID}}")
+if [ -n "${POSTGRES_RUNNING}" ]; then
+     ~/ee cmd postgres backup
+
+     mkdir -p ~/site/backup/daily/
+     mkdir -p ~/site/backup/weekly/
+     mv ~/site/backup/elexis-environment-postgres-1-backup.sql.gz ~/site/backup/daily/elexis-environment-postgres-1-backup.sql.gz
+     if [[ $(date +%u) -eq 7 ]]; then cp  ~/site/backup/daily/elexis-environment-postgres-1-backup.sql.gz ~/site/backup/weekly/elexis-environment-postgres-1-backup.sql.gz; fi
+fi
