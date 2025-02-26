@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
+export $(grep ^X_EE_S3 ${INSTALL_DIR}.env | xargs)
+
+export BUCKET_NAME=""
+export ACCESS_KEY_ID=""
+export ACCESS_KEY_SECRET=""
+if [ "$1" == "ee" ]; then
+    BUCKET_NAME=$X_EE_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$X_EE_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$X_EE_S3_ACCESS_KEY_SECRET
+elif [ "$1" == "synapse" ]; then
+    BUCKET_NAME=$MATRIX_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$MATRIX_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$MATRIX_S3_ACCESS_KEY_SECRET
+elif [ "$1" == "nextcloud" ]; then
+    BUCKET_NAME=$NEXTCLOUD_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$NEXTCLOUD_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$NEXTCLOUD_S3_ACCESS_KEY_SECRET
+else
+    echo "Usage: $0 ee|synapse|nextcloud cmd_to_execute"
+    exit 1
+fi
+shift;
+
+cat <<EOF | envsubst > ${INSTALL_DIR}.s3cfg
+# Setup endpoint
+host_base = \$S3_HOST:\$S3_PORT
+host_bucket = \$BUCKET_NAME
+use_https = True
+
+# Setup access keys
+access_key = \$ACCESS_KEY_ID
+secret_key = \$ACCESS_KEY_SECRET
+
+# Enable S3 v4 signature APIs
+signature_v2 = True
+EOF
+
+S3_CMD="${INSTALL_DIR}ee system cmd run -T -v ${INSTALL_DIR}.s3cfg:/root/.s3cfg:ro"
+if [ -f ${INSTALL_DIR}/site/s3/service-cert.pem ]; then
+    S3_CMD="$S3_CMD -v ${INSTALL_DIR}site/s3/service-cert.pem:/tmp/service-cert.pem:ro"
+    S3_CMD="$S3_CMD --rm --no-deps ee-config s3cmd --ca-certs=/tmp/service-cert.pem"
+else
+    echo "[WARN] Applying --no-check-certificate"
+    S3_CMD="$S3_CMD --rm --no-deps ee-config s3cmd --no-check-certificate"
+fi
+
+
+
+# Test the connection and exit with the EXIT_CODE
+if [ "$1" == "assert" ]; then
+    $S3_CMD -q ls < /dev/null
+    EXIT_CODE=$?
+    if [ $EXIT_CODE -ne 0 ]; then
+        # see https://github.com/s3tools/s3cmd/blob/master/S3/ExitCodes.py for exit codes
+        echo "[ERROR] S3 Endpoint ${S3_LIKE_SERVICE_ENDPOINT_URL} - Exit Code $EXIT_CODE"
+    fi
+    exit $EXIT_CODE
+fi
+
+$S3_CMD $@

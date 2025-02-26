@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+if [ "$1" == "s3_media_upload" ]; then
+    # See https://github.com/matrix-org/synapse-s3-storage-provider/blob/04341fb9d6a476331bcf3cb1c5af3076fe706a0e/scripts/s3_media_upload
+    # Upload all files accessed not used within 1 second to s3, it should be save to remove the local cache anytime (i.e. to remove the volume)
+    # TODO do we need a volume for the media store at all?
+    SYNAPSE_RUNNING=$(docker ps --filter label=com.docker.compose.project=elexis-environment --filter label=com.docker.compose.service=synapse --format "{{.ID}}")
+    if [ -n "${SYNAPSE_RUNNING}" ]; then
+            docker exec -u 991:991 -w /site/data elexis-environment-synapse-1 /usr/local/bin/s3_media_upload update --homeserver-config-path /site/homeserver.yaml /data/media_store/ 1s
+    fi
+    exit 0
+fi
