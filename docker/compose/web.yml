@@ -82,7 +82,6 @@ services:
     environment:
       - EE_HOSTNAME
       - ORGANISATION_NAME
-      - ORGANSATION_DOMAIN
       - ENABLE_BOOKSTACK
       - ENABLE_ELEXIS_SERVER
       - ENABLE_NEXTCLOUD
