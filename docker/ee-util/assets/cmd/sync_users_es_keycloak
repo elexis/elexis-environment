@@ -13,4 +13,8 @@ fi
 sed -i '/^$/d' ./users.csv
 cat ./users.csv
 
+# Assert header is uppercase
+mv ./users.csv ./users.csv.tmp
+(head -n 1 users.csv.tmp | tr '[:lower:]' '[:upper:]'; tail -n +2 users.csv.tmp) > users.csv
+
 java -jar /ee-bin/keycloak/util/KeycloakUtil.jar -l KeycloakAdmin -t -v -p $ADMIN_PASSWORD -u https://$EE_HOSTNAME/keycloak/auth -c syncUsersFromElexisCsv -f ./users.csv
