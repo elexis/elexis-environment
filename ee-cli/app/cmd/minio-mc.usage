@@ -1,1 +1,1 @@
-( mc command | ee-initialize [access-key access-secret])
+(access-key) (access-secret) ( mc-command | ee-initialize )

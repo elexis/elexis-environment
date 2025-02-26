@@ -1,1 +1,1 @@
-(execute s3cmd in ee-system bucket)
+(service: ee | synapse | nextcloud) cmd_to_execute

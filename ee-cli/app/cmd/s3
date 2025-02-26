@@ -1,15 +1,37 @@
 #!/usr/bin/env bash
 export $(grep ^S3 ${INSTALL_DIR}.env | xargs)
 export $(grep ^X_EE_S3 ${INSTALL_DIR}.env | xargs)
+
+export BUCKET_NAME=""
+export ACCESS_KEY_ID=""
+export ACCESS_KEY_SECRET=""
+if [ "$1" == "ee" ]; then
+    BUCKET_NAME=$X_EE_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$X_EE_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$X_EE_S3_ACCESS_KEY_SECRET
+elif [ "$1" == "synapse" ]; then
+    BUCKET_NAME=$MATRIX_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$MATRIX_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$MATRIX_S3_ACCESS_KEY_SECRET
+elif [ "$1" == "nextcloud" ]; then
+    BUCKET_NAME=$NEXTCLOUD_S3_BUCKET_NAME
+    ACCESS_KEY_ID=$NEXTCLOUD_S3_ACCESS_KEY_ID
+    ACCESS_KEY_SECRET=$NEXTCLOUD_S3_ACCESS_KEY_SECRET
+else
+    echo "Usage: $0 ee|synapse|nextcloud cmd_to_execute"
+    exit 1
+fi
+shift;
+
 cat <<EOF | envsubst > ${INSTALL_DIR}.s3cfg
 # Setup endpoint
 host_base = \$S3_HOST:\$S3_PORT
-host_bucket = \$X_EE_S3_BUCKET_NAME
+host_bucket = \$BUCKET_NAME
 use_https = True
 
 # Setup access keys
-access_key = \$X_EE_S3_ACCESS_KEY_ID
-secret_key = \$X_EE_S3_ACCESS_KEY_SECRET
+access_key = \$ACCESS_KEY_ID
+secret_key = \$ACCESS_KEY_SECRET
 
 # Enable S3 v4 signature APIs
 signature_v2 = True
