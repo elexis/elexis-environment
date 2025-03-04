@@ -9,7 +9,9 @@ services:
     memswap_limit: 1G
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
+      start_period: 5s
+      start_interval: 2s
+      interval: 30s
       timeout: 5s
       retries: 5
     environment:

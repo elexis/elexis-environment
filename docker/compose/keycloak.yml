@@ -34,6 +34,8 @@ services:
     memswap_limit: 1G
     healthcheck:
       test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/9000;echo -e 'HEAD /health/ready HTTP/1.1\r\nHost: localhost:9000\r\nConnection: close\r\n\r\n' >&3;if [ $? -eq 0 ]; then echo 'Healthcheck Successful';exit 0;else echo 'Healthcheck Failed';exit 1;fi;"]
-      interval: 30s
+      interval: 60s
       timeout: 5s
       retries: 30
+      start_period: 10s
+      start_interval: 2s
