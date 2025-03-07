@@ -1,6 +1,7 @@
 {
   "realm": "ElexisEnvironment",
   "displayName": "Elexis-Environment $(date:yyyy-MM-dd HH:mm)",
+  "enabled": true,
   "internationalizationEnabled": true,
   "sslRequired": "none",
   "registrationAllowed": false,
