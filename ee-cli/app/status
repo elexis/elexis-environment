@@ -131,12 +131,17 @@ for key, value in os.environ.items():
 bridgestatus = {}
 ee['bridge'] = bridgestatus
 
-bridgestatus["status"] = "down"
+bridgestatus['status'] = "down"
 bridge_status = subprocess.run(["./ee", "bridge", "status", "json"], stdout=subprocess.PIPE, text=True)
 # service "wireguard" is not running
 if bridge_status.returncode == 0:
-    bridgestatus["status"] = "up"
-    bridgestatus["state"] = json.loads(bridge_status.stdout)["wg0"]
+    bridgestatus['status'] = "up"
+    try:
+        wgEndpoint = os.environ.get('WG_SERVER_ENDPOINT', 'bridge.myelexis.ch')
+        bridgestatus['remote-dns'] = socket.gethostbyname(wgEndpoint)
+    except:
+        bridgestatus['remote-dns'] = "error "+wgEndpoint
+    bridgestatus['state'] = json.loads(bridge_status.stdout)["wg0"]
 
 # ee.site
 site = {}

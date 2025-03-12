@@ -53,5 +53,12 @@ def checkNotifications(site_status):
                     "reason": "invalid_cert"}
         status.append(certInfo)
 
+    # is the bridge active but the name resolution fails
+    if site_status['ee']['bridge']['status'] == "up":
+        if site_status['ee']['bridge']['remote-dns'].startswith("error"):
+            bridgeInfo = {"level": "WARN", "element": "ee.bridge.remote-dns",
+                    "reason": "bridge_remote_dns_resolve_error"}
+            status.append(bridgeInfo)
+
     if(status):
         site_status['status'] = status
