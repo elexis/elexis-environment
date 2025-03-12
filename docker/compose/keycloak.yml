@@ -27,9 +27,10 @@ services:
       - KEYCLOAK_ADMIN=KeycloakAdmin # Fallback local admin
       - KEYCLOAK_ADMIN_PASSWORD=$ADMIN_PASSWORD
       - KC_PROXY_HEADERS=xforwarded
-      - KC_PROXY=edge
       - KC_HTTP_RELATIVE_PATH=/keycloak/auth
       - KC_HEALTH_ENABLED=true
+      - KC_HTTP_ENABLED=true # Explicitely enable HTTP instead of HTTPS
+      - KC_FEATURES=token-exchange,admin-fine-grained-authz
     mem_limit: 1G
     memswap_limit: 1G
     healthcheck:

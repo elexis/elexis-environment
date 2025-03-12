@@ -163,6 +163,7 @@
   "clients": [],
   "components": {},
   "identityProviders": [],
+  "identityProviderMappers": [],
   "groups": [
     {
       "name": "GroupArzt",

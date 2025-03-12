@@ -17,8 +17,17 @@ services:
       - REDMINE_APIKEY
       - MIS_APIKEY
       - MIS_PROJECTID
-      - OAUTH_SECRET_ELEXIS-SERVER.FHIR-API=${ELEXIS_SERVER_CLIENT_SECRET-""}
-      - OAUTH_SECRET_ELEXIS_SERVER.JAXRS-API=${ELEXIS_SERVER_CLIENT_SECRET-""}
+      - OAUTH_SECRET_ELEXIS-SERVER=${ELEXIS_SERVER_CLIENT_SECRET-""} # Server acts as requesting instance
+      - OAUTH_FILTER_services_audience=elexis-server.jaxrs-api
+      - OAUTH_FILTER_services_issuer=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment
+      - OAUTH_FILTER_services_jsonWebKeysPath=/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OAUTH_FILTER_services_oauthHost=${EE_HOSTNAME}
+      - OAUTH_FILTER_services_oauthPort=443
+      - OAUTH_FILTER_fhir_audience=elexis-server.fhir-api
+      - OAUTH_FILTER_fhir_issuer=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment
+      - OAUTH_FILTER_fhir_jsonWebKeysPath=/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OAUTH_FILTER_fhir_oauthHost=${EE_HOSTNAME}
+      - OAUTH_FILTER_fhir_oauthPort=443
       - CUPS_SERVER
       - IPP_PORT
       - X_EE_SOLR_ELEXIS_SERVER_PASSWORD
