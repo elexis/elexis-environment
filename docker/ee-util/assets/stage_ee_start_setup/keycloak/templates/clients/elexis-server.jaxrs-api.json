@@ -2,6 +2,8 @@
     "clientId": "elexis-server.jaxrs-api",
     "description": "Elexis-Server JAXRS API (Bearer only)",
     "enabled": "$(env:ENABLE_ELEXIS_SERVER)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/services",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",

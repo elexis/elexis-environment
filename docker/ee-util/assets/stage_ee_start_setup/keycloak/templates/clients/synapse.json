@@ -3,6 +3,7 @@
     "description": "Synapse, a Matrix homeserver implementation",
     "enabled": "$(env:ENABLE_MATRIX)",
     "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/chat",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:SYNAPSE_CLIENT_SECRET)",

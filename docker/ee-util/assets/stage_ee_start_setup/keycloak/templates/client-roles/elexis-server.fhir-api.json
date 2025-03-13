@@ -1,0 +1,10 @@
+{
+    "elexis-server.fhir-api": [
+        {
+            "name": "user",
+            "description": "Is allowed to use this service",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}

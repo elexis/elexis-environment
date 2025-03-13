@@ -72,89 +72,54 @@
     "client": {}
   },
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
-  "clientScopes": [
-    {
-      "id": "cs-nextcloud",
-      "name": "nextcloud",
-      "description": "Access to Nextcloud",
-      "protocol": "openid-connect",
-      "attributes": {
-        "include.in.token.scope": "false",
-        "display.on.consent.screen": "false",
-        "gui.order": "",
-        "consent.screen.text": ""
-      },
-      "protocolMappers": [
-        {
-          "id": "cs-nextcloud-pm-aud",
-          "name": "aud",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-audience-mapper",
-          "consentRequired": false,
-          "config": {
-            "included.client.audience": "nextcloud",
-            "id.token.claim": "true",
-            "lightweight.claim": "false",
-            "access.token.claim": "true",
-            "introspection.token.claim": "true"
-          }
-        },
-        {
-          "id": "cs-nextcloud-pm-client-roles",
-          "name": "client roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-client-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "introspection.token.claim": "true",
-            "multivalued": "true",
-            "userinfo.token.claim": "false",
-            "user.attribute": "foo",
-            "id.token.claim": "true",
-            "lightweight.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "nextcloud-groups",
-            "jsonType.label": "String",
-            "usermodel.clientRoleMapping.clientId": "nextcloud"
-          }
-        },
-        {
-          "id": "cs-nextcloud-pm-realm-roles",
-          "name": "realm roles",
-          "protocol": "openid-connect",
-          "protocolMapper": "oidc-usermodel-realm-role-mapper",
-          "consentRequired": false,
-          "config": {
-            "introspection.token.claim": "true",
-            "multivalued": "true",
-            "userinfo.token.claim": "false",
-            "user.attribute": "foo",
-            "id.token.claim": "true",
-            "lightweight.claim": "false",
-            "access.token.claim": "true",
-            "claim.name": "nextcloud-groups",
-            "jsonType.label": "String"
-          }
-        }
-      ]
-    }
-  ],
   "scopeMappings": [
+    {
+      "client": "elexis-web-api",
+      "roles": [
+        "mandator",
+        "medical-assistant",
+        "bot",
+        "ict-administrator",
+        "mpk",
+        "medical-practitioner",
+        "medical-user",
+        "user",
+        "poweruser",
+        "mpa"
+      ]
+    },
     {
       "clientScope": "nextcloud",
       "roles": [
-        "medical-user",
-        "medical-practitioner",
-        "medical-assistant",
-        "mpa",
-        "mpk",
         "mandator",
-        "user"
+        "medical-assistant",
+        "mpk",
+        "medical-practitioner",
+        "medical-user",
+        "user",
+        "mpa"
       ]
     }
   ],
+  "clientScopeMappings": {
+    "elexis-server.fhir-api": [
+      {
+        "client": "elexis-web-api",
+        "roles": [
+          "user"
+        ]
+      }
+    ],
+    "nextcloud": [
+      {
+        "client": "elexis-web-api",
+        "roles": [
+          "user"
+        ]
+      }
+    ]
+  },
   "defaultOptionalClientScopes": [
-    "nextcloud",
     "microprofile-jwt",
     "address",
     "offline_access",

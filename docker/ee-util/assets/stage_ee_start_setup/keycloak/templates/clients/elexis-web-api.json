@@ -2,6 +2,8 @@
     "clientId": "elexis-web-api",
     "description": "Elexis-Web",
     "enabled": "$(env:ENABLE_ELEXIS_WEB)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/elexisweb",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:ELEXIS_WEB_API_CLIENT_SECRET)",

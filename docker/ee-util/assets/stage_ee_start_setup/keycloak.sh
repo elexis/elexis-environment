@@ -72,6 +72,14 @@ java -jar $KC_CONFIG_CLI_JAR \
     --import.files.locations=$RESULT_FILE
 
 #
+# Prepare IdP registration file
+#
+mkdir -p /site/keycloak
+echo "$T Provide idp-client-registration.json in site/keycloak/ ..."
+jq -n --arg hostname ${EE_HOSTNAME} --arg hostname_short ${EE_HOSTNAME_SHORT}  -f keycloak/templates/idp-client-registration/idp-client-registration.json.template > /site/keycloak/idp-client-registration.json
+
+
+#
 # Provide Elexis-Environment realm keys to other services
 # used by Elexis self and rocketchat
 #

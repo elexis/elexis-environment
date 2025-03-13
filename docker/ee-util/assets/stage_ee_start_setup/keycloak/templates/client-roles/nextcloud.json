@@ -1,6 +1,12 @@
 {
     "nextcloud": [
         {
+            "name": "user",
+            "description": "Is allowed to use this service",
+            "composite": false,
+            "clientRole": true
+        },
+        {
             "name": "admin",
             "description": "User with full administrator privileges",
             "composite": false,
