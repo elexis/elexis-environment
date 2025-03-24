@@ -1,6 +1,6 @@
 {
     "clientId": "elexis-server.jaxrs-api",
-    "description": "Elexis-Server JAXRS API (Bearer only)",
+    "description": "Elexis-Server JAXRS API (Bearer only, Token Exchange)",
     "enabled": "$(env:ENABLE_ELEXIS_SERVER)",
     "rootUrl": "https://$(env:EE_HOSTNAME)",
     "baseUrl": "/services",
@@ -9,7 +9,7 @@
     "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",
     "fullScopeAllowed": false,
     "bearerOnly": false,
-    "publicClient": false,
+    "publicClient": true,
     "consentRequired": false,
     "standardFlowEnabled": false,
     "implicitFlowEnabled": false,

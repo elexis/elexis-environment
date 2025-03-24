@@ -1,0 +1,108 @@
+{
+    "clientId": "realm-management",
+    "authorizationSettings": {
+        "allowRemoteResourceManagement": false,
+        "policyEnforcementMode": "ENFORCING",
+        "resources": [
+            {
+                "name": "idp.resource.$keycloak-medelexis",
+                "type": "IdentityProvider",
+                "ownerManagedAccess": false,
+                "scopes": [
+                    {
+                        "name": "token-exchange"
+                    }
+                ]
+            },
+            {
+                "name": "client.resource.$elexis-server.jaxrs-api",
+                "type": "Client",
+                "ownerManagedAccess": false,
+                "attributes": {},
+                "uris": [],
+                "scopes": [
+                    {
+                        "name": "view"
+                    },
+                    {
+                        "name": "map-roles-client-scope"
+                    },
+                    {
+                        "name": "configure"
+                    },
+                    {
+                        "name": "map-roles"
+                    },
+                    {
+                        "name": "manage"
+                    },
+                    {
+                        "name": "token-exchange"
+                    },
+                    {
+                        "name": "map-roles-composite"
+                    }
+                ]
+            }
+        ],
+        "policies": [
+            {
+                "name": "medelexis-token-exchange",
+                "description": "",
+                "type": "client",
+                "logic": "POSITIVE",
+                "decisionStrategy": "UNANIMOUS",
+                "config": {
+                    "clients": "[\"elexis-server.jaxrs-api\"]"
+                }
+            },
+            {
+                "name": "token-exchange.permission.idp.$keycloak-medelexis",
+                "type": "scope",
+                "logic": "POSITIVE",
+                "decisionStrategy": "UNANIMOUS",
+                "config": {
+                    "resources": "[\"idp.resource.$keycloak-medelexis\"]",
+                    "scopes": "[\"token-exchange\"]",
+                    "applyPolicies": "[\"medelexis-token-exchange\"]"
+                }
+            },
+            {
+                "name": "token-exchange.permission.client.$elexis-server.jaxrs-api",
+                "description": "",
+                "type": "scope",
+                "logic": "POSITIVE",
+                "decisionStrategy": "UNANIMOUS",
+                "config": {
+                    "resources": "[\"client.resource.$elexis-server.jaxrs-api\"]",
+                    "scopes": "[\"token-exchange\"]",
+                    "applyPolicies": "[\"medelexis-token-exchange\"]"
+                }
+            }
+        ],
+        "scopes": [
+            {
+                "name": "token-exchange"
+            },
+            {
+                "name": "manage"
+            },
+            {
+                "name": "view"
+            },
+            {
+                "name": "map-roles"
+            },
+            {
+                "name": "map-roles-client-scope"
+            },
+            {
+                "name": "map-roles-composite"
+            },
+            {
+                "name": "configure"
+            }
+        ],
+        "decisionStrategy": "UNANIMOUS"
+    }
+}
