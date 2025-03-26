@@ -74,6 +74,14 @@
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
   "scopeMappings": [
     {
+      "client": "elexis-server.jaxrs-api",
+      "roles": [
+        "ict-administrator",
+        "user",
+        "bot"
+      ]
+    },
+    {
       "client": "elexis-web-api",
       "roles": [
         "mandator",

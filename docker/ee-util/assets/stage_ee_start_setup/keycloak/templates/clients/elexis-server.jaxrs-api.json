@@ -8,7 +8,7 @@
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:ELEXIS_SERVER_CLIENT_SECRET)",
     "fullScopeAllowed": false,
-    "bearerOnly": false,
+    "bearerOnly": true,
     "publicClient": true,
     "consentRequired": false,
     "standardFlowEnabled": false,

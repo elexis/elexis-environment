@@ -11,6 +11,17 @@
     }
   },
   {
+    "id": "5662182f-c4b9-4699-a81f-b7a73990a9d1",
+    "name": "medelexis-username-template",
+    "identityProviderAlias": "keycloak-medelexis",
+    "identityProviderMapper": "oidc-username-idp-mapper",
+    "config": {
+      "syncMode": "INHERIT",
+      "template": "mdlxs-${CLAIM.preferred_username}",
+      "target": "LOCAL"
+    }
+  },
+  {
     "id": "09ca3034-2067-4ae7-bcac-5eeaaa8dc161",
     "name": "medelexis-ict-administrator-mapper",
     "identityProviderAlias": "keycloak-medelexis",
@@ -28,7 +39,7 @@
     "identityProviderMapper": "hardcoded-attribute-idp-mapper",
     "config": {
       "syncMode": "INHERIT",
-      "attribute.value": "medelexis-ict-administrator",
+      "attribute.value": "medelexis-ict-admin",
       "attribute": "elexisContactId"
     }
   }
