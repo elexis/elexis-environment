@@ -1,0 +1,30 @@
+services:
+  myelexis-server:
+    image: gitlab.medelexis.ch:4567/myelexis-d/server:latest
+    security_opt:
+      - no-new-privileges:true
+    expose:
+      - 8080
+    depends_on:
+      keycloak:
+        condition: service_started
+    networks:
+      - backend
+    mem_limit: 2G
+    memswap_limit: 2G
+    environment:
+      - EE_HOSTNAME
+      - QUARKUS_DATASOURCE_JDBC_URL=jdbc:${RDBMS_ELEXIS_TYPE-$RDBMS_TYPE}://${RDBMS_ELEXIS_HOST-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT-$RDBMS_PORT}/$RDBMS_ELEXIS_DATABASE
+      - QUARKUS_DATASOURCE_USERNAME=$RDBMS_ELEXIS_USERNAME
+      - QUARKUS_DATASOURCE_PASSWORD=$RDBMS_ELEXIS_PASSWORD
+      - QUARKUS_KEYCLOAK_ADMIN_CLIENT_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth
+      - QUARKUS_KEYCLOAK_ADMIN_CLIENT_REALM=ElexisEnvironment
+      - QUARKUS_KEYCLOAK_ADMIN_CLIENT_CLIENT=quarkus-client:x
+      - MP_JWT_VERIFY_ISSUER=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment
+      - MP_JWT_VERIFY_PUBLICKEY_LOCATION=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      # https://quarkus.io/guides/http-reference#reverse-proxy
+      - QUARKUS_HTTP_PROXY_PROXY_ADDRESS-FORWARDING=true
+      - QUARKUS_HTTP_PROXY_ALLOW_X_FORWARDED=true
+      - QUARKUS_HTTP_PROXY_X_FORWARDED-PROTO=true
+      - QUARKUS_HTTP_PROXY_ENABLE_FORWARDED_HOST=true
+      - QUARKUS_HTTP_PROXY_ENABLE_FORWARDED_PREFIX=true
