@@ -1,6 +1,6 @@
 services:
   elexis-server:
-    image: medevit/elexis-server:3.12
+    image: ghcr.io/elexis/elexis-server:3.12
     security_opt:
       - no-new-privileges:true
     volumes:
