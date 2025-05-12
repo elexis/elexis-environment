@@ -58,7 +58,16 @@
       },
       {
         "name": "medical-user",
-        "description": "Medizinisches Personal mit Zugriff auf medizinische Daten"
+        "description": "Medizinisches Personal mit Zugriff auf medizinische Daten",
+        "clientRole": false,
+        "composite": true,
+        "composites": {
+          "client": {
+            "myelexis-server": [
+              "fhir-r4-access"
+            ]
+          }
+        }
       },
       {
         "name": "mandator",

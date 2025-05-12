@@ -34,7 +34,6 @@ services:
       - elexis-web-api_php:/www
     depends_on:
       - keycloak
-      - elexis-server
     networks:
       - backend
     mem_limit: 512M
@@ -66,14 +65,14 @@ services:
       - PUSHER_APP_HOST_NAME=elexis-web-websockets
       - SUBSCRIPTION_KEY=85102C81-C73A-44FC-B5AE-1C7FEBE5EF07
       - ENABLE_API_COMPONENT_AGENDA=true
-      - ENABLE_API_COMPONENT_CONSULTATIONS=false
+      - ENABLE_API_COMPONENT_CONSULTATIONS=true
       - ENABLE_API_COMPONENT_CONTACTS=true
-      - ENABLE_API_COMPONENT_DASHBOARD=false
+      - ENABLE_API_COMPONENT_DASHBOARD=true
       - ENABLE_API_COMPONENT_DOCUMENTS=true
       - ENABLE_API_COMPONENT_INBOX=true
       - ENABLE_API_COMPONENT_NEXTCLOUD=true
-      - ENABLE_API_COMPONENT_SETTINGS=false
-      - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir}
+      - ENABLE_API_COMPONENT_SETTINGS=true
+      - FHIR_API_URL=${FHIR_API_URL-https://$EE_HOSTNAME/fhir/r4}
       - CLOUD_API_URL=${CLOUD_API_URL-https://$EE_HOSTNAME/cloud}
 
   # restart elexis-web-api-php on an ee-config run
