@@ -7,7 +7,7 @@ services:
       - 8080
     depends_on:
       keycloak:
-        condition: service_started
+        condition: service_healthy
     networks:
       - backend
     mem_limit: 2G
