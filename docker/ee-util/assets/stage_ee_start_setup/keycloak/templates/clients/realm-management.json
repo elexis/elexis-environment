@@ -15,7 +15,7 @@
                 ]
             },
             {
-                "name": "client.resource.$elexis-server.jaxrs-api",
+                "name": "client.resource.$medelexis-support",
                 "type": "Client",
                 "ownerManagedAccess": false,
                 "attributes": {},
@@ -53,7 +53,7 @@
                 "logic": "POSITIVE",
                 "decisionStrategy": "UNANIMOUS",
                 "config": {
-                    "clients": "[\"elexis-server.jaxrs-api\"]"
+                    "clients": "[\"medelexis-support\"]"
                 }
             },
             {
