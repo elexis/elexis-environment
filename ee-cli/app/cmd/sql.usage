@@ -1,1 +1,1 @@
-(sql console to selected service: keycloak | bookstack | elexis-server | guacamole | nextcloud)
+(sql console to selected service: bookstack | elexis-server |  guacamole | keycloak | nextcloud | synapse)

@@ -76,7 +76,6 @@ assertMatrixDatabase() {
 
     mkdir -p ${INSTALL_DIR}site/matrix/synapse
     echo $SYNAPSE_USER_DATABASE_PASSWORD >${INSTALL_DIR}site/matrix/synapse/postgres_password
-    chmod go-r ${INSTALL_DIR}site/matrix/synapse/postgres_password
 
     # assert database exists
     DATABASE_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_database WHERE datname='synapse'")

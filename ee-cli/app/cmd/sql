@@ -8,7 +8,10 @@ elif [ "$1" == "guacamole" ]; then
 elif [ "$1" == "bookstack" ]; then
     USQL_PARAM="mysql://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE}"
 elif [ "$1" == "keycloak" ]; then
-    USQL_PARAM="postgres://keycloak_user:${X_EE_RDBMS_KEYCLOAK_PASSWORD}@postgres:5432/keycloak"
+    USQL_PARAM="postgres://keycloak_user:${X_EE_RDBMS_KEYCLOAK_PASSWORD}@postgres:5432/keycloak?sslmode=disable"
+elif [ "$1" == "synapse" ]; then
+    SYNAPSE_DB_PASSWORD=$(cat ${INSTALL_DIR}site/matrix/synapse/postgres_password)
+    USQL_PARAM="postgres://synapse_user:${SYNAPSE_DB_PASSWORD}@postgres:5432/synapse?sslmode=disable"
 else 
     exit -1;
 fi;
