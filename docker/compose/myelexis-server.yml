@@ -18,6 +18,7 @@ services:
       - QUARKUS_DATASOURCE_USERNAME=$RDBMS_ELEXIS_USERNAME
       - QUARKUS_DATASOURCE_PASSWORD=$RDBMS_ELEXIS_PASSWORD
       - QUARKUS_OIDC_CLIENT_ID=myelexis-server
+      - QUARKUS_OIDC_CREDENTIALS_SECRET=${MYELEXIS_SERVER_CLIENT_SECRET-ToHideTheWarnMessage}
       - QUARKUS_OIDC_AUTH_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment
       - QUARKUS_KEYCLOAK_ADMIN_CLIENT_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth
       # https://quarkus.io/guides/http-reference#reverse-proxy

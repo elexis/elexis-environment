@@ -1,0 +1,20 @@
+{
+    "clientId": "medelexis-support",
+    "description": "Medelexis support token exchange",
+    "enabled": "$(env:ENABLE_MEDELEXIS_SUPPORT)",
+    "rootUrl": "https://$(env:EE_HOSTNAME)",
+    "baseUrl": "/services",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "fullScopeAllowed": false,
+    "bearerOnly": false,
+    "publicClient": true,
+    "consentRequired": false,
+    "standardFlowEnabled": true,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": false,
+    "webOrigins": [
+        "https://swagger.medelexis.ch"
+    ]
+}

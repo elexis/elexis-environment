@@ -68,13 +68,13 @@
                 }
             },
             {
-                "name": "token-exchange.permission.client.$elexis-server.jaxrs-api",
+                "name": "token-exchange.permission.client.$medelexis-support",
                 "description": "",
                 "type": "scope",
                 "logic": "POSITIVE",
                 "decisionStrategy": "UNANIMOUS",
                 "config": {
-                    "resources": "[\"client.resource.$elexis-server.jaxrs-api\"]",
+                    "resources": "[\"client.resource.$medelexis-support\"]",
                     "scopes": "[\"token-exchange\"]",
                     "applyPolicies": "[\"medelexis-token-exchange\"]"
                 }
