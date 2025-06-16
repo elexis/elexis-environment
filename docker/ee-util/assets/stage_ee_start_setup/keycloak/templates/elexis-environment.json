@@ -65,6 +65,9 @@
           "client": {
             "myelexis-server": [
               "fhir-r4-access"
+            ],
+            "elexis-server.fhir-api": [
+              "user"
             ]
           }
         }
@@ -118,24 +121,6 @@
       ]
     }
   ],
-  "clientScopeMappings": {
-    "elexis-server.fhir-api": [
-      {
-        "client": "elexis-web-api",
-        "roles": [
-          "user"
-        ]
-      }
-    ],
-    "nextcloud": [
-      {
-        "client": "elexis-web-api",
-        "roles": [
-          "user"
-        ]
-      }
-    ]
-  },
   "defaultOptionalClientScopes": [
     "microprofile-jwt",
     "address",
