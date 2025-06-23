@@ -12,7 +12,11 @@ shift
 shift
 
 # mc config file is in ~/.mc/config.json
+rm -Rf ${INSTALL_DIR}/.mc
 mkdir -p ${INSTALL_DIR}/.mc
+touch ${INSTALL_DIR}/.mc/config.json
+touch ${INSTALL_DIR}/.mc/policy.json
+
 cat <<EOF | envsubst >${INSTALL_DIR}/.mc/config.json
 {
 	"version": "10",
@@ -83,13 +87,9 @@ if [ "$1" == "ee-initialize" ]; then
     sed -i -e 's/\(MATRIX_S3_ACCESS_KEY_SECRET=\).*$/\1'"${MATRIX_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
     cmd mb --ignore-existing minio/$MATRIX_S3_BUCKET_NAME
 
-    # TODO bookstack (EER4)
-
     echo "### Initialization done."
     echo "### Please delete accesskey $ACCESS_KEY"
 
-    rm -f ${INSTALL_DIR}/.mc/config.json ${INSTALL_DIR}/.mc/policy.json
-    rmdir ${INSTALL_DIR}/.mc/
     exit 0
 fi
 
