@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR-Code Scanner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #message {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            font-size: large;
+        }
+        #qrcode-reader {
+            width: 500px;
+            margin: 0 auto;
+        }
+        #result {
+            margin-top: 10px;
+            font-size: large;
+        }
+
+    </style>
+
+    <script src="js/html5-qrcode.min.js" type="text/javascript"></script>
+    <script src="js/config.js" type="text/javascript"></script>
+    <script src="js/app-fhir.js" type="text/javascript"></script>
+    <script src="js/app-qr.js" type="text/javascript"></script>
+    <script>
+        function init() {
+            initToken();
+            initQr("qrcode-reader", "result");
+        } 
+    </script>
+</head>
+<body onload = init()>
+    <h1>Ihr Elexis Termin QR-Code Scanner</h1>
+    <div id="message">Bitte halten Sie den Elexis Termin QR-Code vor den Scanner um automatisch in der Praxis ein zu checken.</div>
+    <div id="qrcode-reader"></div>
+    <div id="result"></div>
+</body>
+</html>
