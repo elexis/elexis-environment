@@ -10,5 +10,5 @@
     "standardFlowEnabled": false,
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": false,
-    "serviceAccountsEnabled": false
+    "serviceAccountsEnabled": true
 }
