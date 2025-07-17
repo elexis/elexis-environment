@@ -7,8 +7,8 @@ echo "" >/etc/nginx/ext_modules.conf
 
 if [ $ENABLE_MYELEXIS_SERVER == "true" ]; then
     echo 'include conf/myelexis-server.conf;' >>/etc/nginx/modules.conf
-    case $WG_ACCESS_MYELEXIS_SERVER in *wg*) echo 'include conf/myelexis-server.conf;' >>/etc/nginx/wg_modules.conf ;; esac
-    case $WG_ACCESS_MYELEXIS_SERVER in *pub*) echo 'include conf/myelexis-server.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+    case $WG_ACCESS_MYELEXIS_SERVER in *wg*) echo 'include conf/myelexis-server-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
+    case $WG_ACCESS_MYELEXIS_SERVER in *pub*) echo 'include conf/myelexis-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi
 
 if [ $ENABLE_ELEXIS_SERVER == "true" ]; then

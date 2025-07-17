@@ -13,6 +13,8 @@ services:
     mem_limit: 2G
     memswap_limit: 2G
     environment:
+      - LANG=de_CH.UTF-8
+      - LANGUAGE=de_CH:de
       - EE_HOSTNAME
       - QUARKUS_DATASOURCE_JDBC_URL=jdbc:${RDBMS_ELEXIS_TYPE-$RDBMS_TYPE}://${RDBMS_ELEXIS_HOST-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT-$RDBMS_PORT}/$RDBMS_ELEXIS_DATABASE
       - QUARKUS_DATASOURCE_USERNAME=$RDBMS_ELEXIS_USERNAME
@@ -22,6 +24,7 @@ services:
       - QUARKUS_OIDC_AUTH_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment
       - QUARKUS_KEYCLOAK_ADMIN_CLIENT_SERVER_URL=https://${EE_HOSTNAME}/keycloak/auth
       - QUARKUS_KEYCLOAK_ADMIN_CLIENT_CLIENT_SECRET=${MYELEXIS_SERVER_CLIENT_SECRET:-ToHideTheWarnMessage}
+      - QUARKUS_REST_CLIENT__CH_ELEXIS_CORE_SERVICES_EENV_IREMOTEOCRMYPDFSERVICE__URL=https://${EE_HOSTNAME}/ocrmypdf
       # https://quarkus.io/guides/http-reference#reverse-proxy
       - QUARKUS_HTTP_PROXY_PROXY_ADDRESS-FORWARDING=true
       - QUARKUS_HTTP_PROXY_ALLOW_X_FORWARDED=true
