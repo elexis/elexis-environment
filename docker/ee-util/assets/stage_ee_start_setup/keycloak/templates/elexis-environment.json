@@ -84,6 +84,40 @@
     "client": {}
   },
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
+  "users": [
+    {
+      "id": "68f195df-17ad-444f-b8b2-a06c2b59610d",
+      "username": "service-account-myelexis-server",
+      "emailVerified": false,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "myelexis-server",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-elexisenvironment"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users",
+          "query-users"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
+  "clientScopeMappings": {
+    "realm-management": [
+      {
+        "client": "myelexis-server",
+        "roles": [
+          "view-users",
+          "query-users"
+        ]
+      }
+    ]
+  },
   "scopeMappings": [
     {
       "client": "elexis-server.jaxrs-api",

@@ -13,6 +13,7 @@ services:
     mem_limit: 2G
     memswap_limit: 2G
     environment:
+      - TZ=Europe/Zurich
       - LANG=de_CH.UTF-8
       - LANGUAGE=de_CH:de
       - EE_HOSTNAME

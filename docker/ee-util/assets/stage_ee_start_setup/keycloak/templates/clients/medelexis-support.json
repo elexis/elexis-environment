@@ -2,8 +2,6 @@
     "clientId": "medelexis-support",
     "description": "Medelexis support token exchange",
     "enabled": "$(env:ENABLE_MEDELEXIS_SUPPORT)",
-    "rootUrl": "https://$(env:EE_HOSTNAME)",
-    "baseUrl": "/services",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "fullScopeAllowed": false,
