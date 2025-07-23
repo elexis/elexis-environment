@@ -3,7 +3,7 @@
 # modify resulting script to remove guacadmin
 services:
   guacamole-guacd:
-    image: guacamole/guacd:1.5.4
+    image: guacamole/guacd:1.5.5
     security_opt:
       - no-new-privileges:true
     expose:
@@ -17,7 +17,7 @@ services:
     memswap_limit: 1G
 
   guacamole-guacamole:
-    image: guacamole/guacamole:1.5.4
+    image: guacamole/guacamole:1.5.5
     security_opt:
       - no-new-privileges:true
     expose:
