@@ -1,0 +1,81 @@
+{
+  "clientId": "checkin-app",
+  "name": "",
+  "description": "Patienten CheckIn als Standalone Lösung",
+  "rootUrl": "https://$(env:EE_HOSTNAME)/checkin",
+  "adminUrl": "",
+  "baseUrl": "",
+  "surrogateAuthRequired": false,
+  "enabled": "$(env:ENABLE_CHECKIN_APP)",
+  "alwaysDisplayInConsole": false,
+  "clientAuthenticatorType": "client-secret",
+  "secret": "FIXME_NO_SUFFICIENT_SECURITY_HERE",
+  "redirectUris": [
+    "https://$(env:EE_HOSTNAME)/checkin/*"
+  ],
+  "webOrigins": [
+    "https://$(env:EE_HOSTNAME)"
+  ],
+  "notBefore": 0,
+  "bearerOnly": false,
+  "consentRequired": false,
+  "standardFlowEnabled": false,
+  "implicitFlowEnabled": false,
+  "directAccessGrantsEnabled": false,
+  "serviceAccountsEnabled": true,
+  "publicClient": false,
+  "frontchannelLogout": true,
+  "protocol": "openid-connect",
+  "attributes": {
+    "realm_client": "false",
+    "oidc.ciba.grant.enabled": "false",
+    "client.secret.creation.time": "1753362388",
+    "backchannel.logout.session.required": "true",
+    "frontchannel.logout.session.required": "true",
+    "oauth2.device.authorization.grant.enabled": "false",
+    "display.on.consent.screen": "false",
+    "backchannel.logout.revoke.offline.tokens": "false",
+    "login_theme": "",
+    "consent.screen.text": "",
+    "frontchannel.logout.url": ""
+  },
+  "authenticationFlowBindingOverrides": {},
+  "fullScopeAllowed": false,
+  "nodeReRegistrationTimeout": -1,
+  "protocolMappers": [
+    {
+      "name": "elexisContactId",
+      "protocol": "openid-connect",
+      "protocolMapper": "oidc-usermodel-attribute-mapper",
+      "consentRequired": false,
+      "config": {
+        "aggregate.attrs": "false",
+        "introspection.token.claim": "true",
+        "multivalued": "false",
+        "userinfo.token.claim": "true",
+        "user.attribute": "elexisContactId",
+        "id.token.claim": "true",
+        "lightweight.claim": "false",
+        "access.token.claim": "true",
+        "claim.name": "elexisContactId",
+        "jsonType.label": "String"
+      }
+    }
+  ],
+  "defaultClientScopes": [
+    "web-origins",
+    "service_account",
+    "acr",
+    "roles",
+    "profile",
+    "basic",
+    "email"
+  ],
+  "optionalClientScopes": [
+    "address",
+    "phone",
+    "offline_access",
+    "microprofile-jwt"
+  ],
+  "authorizationServicesEnabled": false
+}

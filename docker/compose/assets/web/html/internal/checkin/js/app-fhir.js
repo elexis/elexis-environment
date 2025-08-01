@@ -24,7 +24,7 @@ function updateAppointment(fhirAppointment) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
-    xhr.open("PUT", (typeof SERVER_HOST !== 'undefined' ? SERVER_HOST : "") + "/fhir/Appointment/" + fhirAppointment.id, false);
+    xhr.open("PUT", (typeof SERVER_HOST !== 'undefined' ? SERVER_HOST : "") + "/fhir/r4/Appointment/" + fhirAppointment.id, false);
     xhr.setRequestHeader('Authorization', 'Bearer ' + jwttoken.access_token);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Cache-Control", "no-cache, no-store, max-age=0");
@@ -37,7 +37,7 @@ function getAppointment(appointmentId) {
     var xhr = new XMLHttpRequest();
     xhr.withCredentials = true;
 
-    xhr.open("GET", (typeof SERVER_HOST !== 'undefined' ? SERVER_HOST : "") + "/fhir/Appointment/" + appointmentId, false);
+    xhr.open("GET", (typeof SERVER_HOST !== 'undefined' ? SERVER_HOST : "") + "/fhir/r4/Appointment/" + appointmentId, false);
     xhr.setRequestHeader('Authorization', 'Bearer ' + jwttoken.access_token);
     xhr.setRequestHeader("Cache-Control", "no-cache, no-store, max-age=0");
 

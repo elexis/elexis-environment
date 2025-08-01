@@ -43,6 +43,13 @@ if [[ $ENABLE_BOOKSTACK == true ]]; then
     check_status "bookstack.sh" $status
 fi
 
+if [[ $ENABLE_CHECKIN_APP == true ]]; then
+    echo "$B"
+    ./checkin_app.sh
+    status=$?
+    check_status "checkin_app.sh" $status
+fi
+
 if [[ $ENABLE_SOLR == true ]]; then
     echo "$B"
     ./solr.sh

@@ -1,0 +1,10 @@
+#!/bin/bash
+T="[CHECKIN-APP] "
+echo "$T $(date)"
+
+# PREPARE ELEXIS USER
+echo "$T insert or update checkin-app elexis user contact"
+LASTUPDATE=$(date +%s)000
+CHECKINAPP_CONTACT_ID="mngd1CheckinApp100000000"
+MYSQL_STRING="INSERT INTO KONTAKT(ID,LASTUPDATE,ISTORGANISATION,LAND,BEZEICHNUNG1,STRASSE,PLZ,ORT,TELEFON1,EMAIL,WEBSITE) VALUES ('${CHECKINAPP_CONTACT_ID}', '${LASTUPDATE}', '1', 'CH', 'Checkin-App (Medelexis)', 'Taefernstrasse 16', '5405', 'Baden-Dätwil', '+41 56 483 50 60', 'info@medelexis.ch', 'www.medelexis.ch') ON DUPLICATE KEY UPDATE LASTUPDATE='${LASTUPDATE}'"
+/usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "$MYSQL_STRING"

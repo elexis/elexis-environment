@@ -15,10 +15,21 @@
   "adminTheme": "keycloak",
   "emailTheme": "elexis-environment",
   "defaultLocale": "de",
+  "userManagedAccessAllowed": true,
   "supportedLocales": [
     "de",
     "en"
   ],
+  "localizationTexts": {
+    "de": {
+      "profile.attributes.associated-contact-id": "Zugeordneter Kontakt",
+      "profile.attributes.aobo-mandator-ids": "Tätig für Mandanten"
+    },
+    "en": {
+      "profile.attributes.associated-contact-id": "Associated contact",
+      "profile.attributes.aobo-mandator-ids": "Acting on behalf of mandators"
+    }
+  },
   "ssoSessionIdleTimeout": 7200,
   "ssoSessionMaxLifespan": 86400,
   "authenticationFlows": [],
@@ -104,6 +115,34 @@
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
   "users": [
     {
+      "id": "d6f139fb-f507-4cc4-aa35-b86f05aa0925",
+      "username": "service-account-checkin-app",
+      "emailVerified": false,
+      "attributes": {
+        "associated-contact-id": [
+          "mngd1CheckinApp100000000"
+        ]
+      },
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "checkin-app",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "bot"
+      ],
+      "clientRoles": {
+        "elexis-server.fhir-api": [
+          "user"
+        ],
+        "myelexis-server": [
+          "fhir-r4-access"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    },
+    {
       "id": "68f195df-17ad-444f-b8b2-a06c2b59610d",
       "username": "service-account-myelexis-server",
       "emailVerified": false,
@@ -126,6 +165,14 @@
     }
   ],
   "clientScopeMappings": {
+    "elexis-server.fhir-api": [
+      {
+        "client": "checkin-app",
+        "roles": [
+          "user"
+        ]
+      }
+    ],
     "realm-management": [
       {
         "client": "myelexis-server",
@@ -134,9 +181,23 @@
           "query-users"
         ]
       }
+    ],
+    "myelexis-server": [
+      {
+        "client": "checkin-app",
+        "roles": [
+          "fhir-r4-access"
+        ]
+      }
     ]
   },
   "scopeMappings": [
+    {
+      "client": "checkin-app",
+      "roles": [
+        "bot"
+      ]
+    },
     {
       "client": "elexis-server.jaxrs-api",
       "roles": [
@@ -180,7 +241,20 @@
     "phone"
   ],
   "clients": [],
-  "components": {},
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "id": "8811f94a-1aee-45e3-b05d-ec4e4824770b",
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"associated-contact-id\",\"displayName\":\"${profile.attributes.associated-contact-id}\",\"validations\":{},\"annotations\":{},\"permissions\":{\"view\":[\"user\"],\"edit\":[\"admin\"]},\"group\":\"user-metadata\",\"multivalued\":false},{\"name\":\"aobo-mandator-ids\",\"displayName\":\"${profile.attributes.aobo-mandator-ids}\",\"validations\":{},\"annotations\":{},\"permissions\":{\"view\":[\"user\"],\"edit\":[\"admin\"]},\"group\":\"user-metadata\",\"multivalued\":true}],\"groups\":[{\"name\":\"user-metadata\",\"displayHeader\":\"User metadata\",\"displayDescription\":\"Attributes, which refer to user metadata\"}],\"unmanagedAttributePolicy\":\"ENABLED\"}"
+          ]
+        }
+      }
+    ]
+  },
   "identityProviders": [],
   "identityProviderMappers": [],
   "groups": [
