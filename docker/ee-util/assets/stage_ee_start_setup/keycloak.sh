@@ -62,6 +62,7 @@ java -jar $KC_CONFIG_CLI_JAR \
   	--keycloak.password=${ADMIN_PASSWORD} \
  	--import.validate=true \
     --import.var-substitution.enabled=true \
+    --import.managed.group=no-delete \
     --import.files.locations=$RESULT_FILE
 
 #
