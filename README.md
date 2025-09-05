@@ -19,6 +19,8 @@ Copy the file `.env.template` to `.env` and adapt the variables to your installa
 
 **IMPORTANT** Set a STRONG password for `ADMIN_PASSWORD` and consider changing `ADMIN_USERNAME`. Obtaining these credentials allows administrator access to **all services**! In order to minimize the potential impact of a security bug in one of the services, you should also create a separate database user and strong password for each of the services.
 
+**SECURITY CRITICAL**: After initial startup, there will be two users available: the admin user with userid `ADMIN_USERNAME` and your set password, and a `demouser` with password `demouser`. **THE DEMO USER ACCOUNT MUST BE DISABLED IMMEDIATELY IN PRODUCTION** as it provides unrestricted access with well-known credentials. See [SECURITY_WARNING.md](SECURITY_WARNING.md) for detailed security instructions.
+
 Be sure to have the values right - re-configuration is NOT supported!
 
 By default only the `elexis-server` service is active. To activate other services, set the respective variable to `true` in section 3 of `.env`.
