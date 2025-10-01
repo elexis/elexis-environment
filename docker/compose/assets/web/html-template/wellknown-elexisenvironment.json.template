@@ -1,0 +1,11 @@
+{
+    "ee": {
+        "git": {
+            "branch": "master"
+        },
+        "config": {
+            "organisation-name": "${ORGANISATION_NAME}"
+        }
+    },
+    "openid-configuration": "https://${EE_HOSTNAME}/keycloak/auth/realms/ElexisEnvironment/.well-known/openid-configuration"
+}

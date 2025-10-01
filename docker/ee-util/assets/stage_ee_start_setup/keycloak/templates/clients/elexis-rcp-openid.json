@@ -7,13 +7,17 @@
     "secret": "$(env:ELEXIS_RCP_CLIENT_SECRET)",
     "publicClient": false,
     "consentRequired": false,
-    "standardFlowEnabled": false,
+    "standardFlowEnabled": true,
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": true,
     "serviceAccountsEnabled": false,
+    "fullScopeAllowed": false,
     "authenticationFlowBindingOverrides": {
         "direct_grant": "direct grant password only"
     },
+   "redirectUris": [
+        "http://localhost*"
+    ],
     "protocolMappers": [
         {
             "name": "solr-client-role-mapper",

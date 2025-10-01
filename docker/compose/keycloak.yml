@@ -4,7 +4,7 @@ services:
   # https://www.keycloak.org/server/all-config
   # https://www.keycloak.org/server/reverseproxy
   keycloak: 
-    image: quay.io/keycloak/keycloak:26.1
+    image: quay.io/keycloak/keycloak:26.2
     security_opt:
       - no-new-privileges:true
     networks:
@@ -30,6 +30,7 @@ services:
       - KC_HTTP_RELATIVE_PATH=/keycloak/auth
       - KC_HEALTH_ENABLED=true
       - KC_HTTP_ENABLED=true # Explicitely enable HTTP instead of HTTPS
+      - KC_FEATURES=token-exchange:v1,admin-fine-grained-authz:v1
       - KC_FEATURES=token-exchange,admin-fine-grained-authz
     mem_limit: 1G
     memswap_limit: 1G

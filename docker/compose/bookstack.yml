@@ -1,6 +1,6 @@
 services:
   bookstack:
-    image: marcode79/bookstack:v23.02.3-ee
+    image: marcode79/bookstack:v24.02.3-ee
     security_opt:
       - no-new-privileges:true
     volumes:
