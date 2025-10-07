@@ -31,7 +31,7 @@ services:
       - KC_HEALTH_ENABLED=true
       - KC_HTTP_ENABLED=true # Explicitely enable HTTP instead of HTTPS
       - KC_FEATURES=token-exchange:v1,admin-fine-grained-authz:v1
-      - KC_FEATURES=token-exchange,admin-fine-grained-authz
+      # - KC_LOG_LEVEL_ORG_KEYCLOAK=debug
     mem_limit: 1G
     memswap_limit: 1G
     healthcheck:
