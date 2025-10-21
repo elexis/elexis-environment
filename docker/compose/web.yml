@@ -3,7 +3,7 @@ services:
   # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider#keycloak-oidc-auth-provider
   # https://github.com/bitnami/containers/tree/main/bitnami/oauth2-proxy
   oauth2-proxy:
-    image: bitnami/oauth2-proxy:7
+    image: bitnamilegacy/oauth2-proxy:7
     security_opt:
       - no-new-privileges:true
     networks:
