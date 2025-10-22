@@ -65,8 +65,11 @@ if os.path.isdir('/lost+found'):
 network = {}
 system['network'] = network
 
-external_ip = get('http://tools.myelexis.ch/myip').text
-network['external-ip'] = external_ip
+try:
+    external_ip = get('http://tools.myelexis.ch/myip').text
+    network['external-ip'] = external_ip
+except:
+    network['external-ip'] = "error_resolving_external_ip"
 
 # system.disk
 disk = {}

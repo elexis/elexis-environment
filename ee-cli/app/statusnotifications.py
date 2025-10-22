@@ -18,6 +18,12 @@ def checkNotifications(site_status):
                                "reason": "system_hostname_does_not_match_configuration"}
         status.append(hostnameConfigError)
 
+    # external hostname resolve error, dns problem?
+    if(site_status['system']['network']['external-ip'].startswith("error")):
+        extResolveIpError = {"level": "ERROR", "element": "network.external-ip",
+                       "reason": "external_ip_resolution_error"}
+        status.append(extResolveIpError)
+
     # are there any updates for EE.git
     if(site_status['ee']['git']['branch-head-commit'] != site_status['ee']['git']['origin-branch-head-commit']):
         gitUpdAvail = {"level": "INFO", "element": "ee.git",
