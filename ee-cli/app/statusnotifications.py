@@ -49,7 +49,11 @@ def checkNotifications(site_status):
     # is the certificate about to expire within 14 days or is it invalid
     try:
         cert_not_after = datetime.datetime.strptime(site_status['ee']['site']['cert-not-after'], '%Y-%m-%dT%H:%M:%S.%f')
-        if now + datetime.timedelta(days=14) >= cert_not_after:
+        if now + datetime.timedelta(days=1) >= cert_not_after:
+            certInfo= {"level": "ERROR", "element": "ee.site.cert_expired",
+                    "reason": "cert_expired"}
+            status.append(certInfo)
+        elif now + datetime.timedelta(days=14) >= cert_not_after:
             certInfo= {"level": "WARN", "element": "ee.site.cert_not_after",
                     "reason": "cert_about_to_expire"}
             status.append(certInfo)
