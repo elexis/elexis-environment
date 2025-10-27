@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+POSTGRES_CMD="docker exec -u postgres elexis-environment-postgres-1"
+
+if [ "$1" == "activate" ]; then
+    GUACADMIN_SALT_AND_PASSWORD=$(python3  ${INSTALL_DIR}/docker/ee-util/assets/stage_configure/guacamole/guacpass.py ${ADMIN_PASSWORD})
+    GUACADMIN_SALT=${GUACADMIN_SALT_AND_PASSWORD%,*}
+    GUACADMIN_PASSWORD_HASH=${GUACADMIN_SALT_AND_PASSWORD#*,}
+    PSQL_STRING="UPDATE guacamole_user SET password_salt=decode('${GUACADMIN_SALT}','hex'), password_hash=decode('${GUACADMIN_PASSWORD_HASH}','hex'), disabled=false WHERE (user_id = '1');"
+    $POSTGRES_CMD psql -U guacamole_user -d guacamole_db -c "$PSQL_STRING"
+    echo "Deactivated guacadmin login"
+    exit 0
+fi
+if [ "$1" == "deactivate" ]; then
+    GUACADMIN_SALT_AND_PASSWORD=$(python3  ${INSTALL_DIR}/docker/ee-util/assets/stage_configure/guacamole/guacpass.py $(randomSecret))
+    GUACADMIN_SALT=${GUACADMIN_SALT_AND_PASSWORD%,*}
+    GUACADMIN_PASSWORD_HASH=${GUACADMIN_SALT_AND_PASSWORD#*,}
+    PSQL_STRING="UPDATE guacamole_user SET password_salt=decode('${GUACADMIN_SALT}','hex'), password_hash=decode('${GUACADMIN_PASSWORD_HASH}','hex'), disabled=true WHERE (user_id = '1');"
+    $POSTGRES_CMD psql -U guacamole_user -d guacamole_db -c "$PSQL_STRING"
+    echo "Deactivated guacadmin login"
+    exit 0
+fi

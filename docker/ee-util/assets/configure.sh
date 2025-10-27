@@ -63,8 +63,6 @@ then
   exit -1
 fi
 
-echo "=== Executing initialization steps"
-/stage_configure/initializations.sh
 
 #
 # PERFORM CONFIGURATION

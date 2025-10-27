@@ -3,7 +3,7 @@
 # modify resulting script to remove guacadmin
 services:
   guacamole-guacd:
-    image: guacamole/guacd:1.5.5
+    image: guacamole/guacd:1.6.0
     security_opt:
       - no-new-privileges:true
     expose:
@@ -17,7 +17,7 @@ services:
     memswap_limit: 1G
 
   guacamole-guacamole:
-    image: guacamole/guacamole:1.5.5
+    image: guacamole/guacamole:1.6.0
     security_opt:
       - no-new-privileges:true
     expose:
@@ -28,13 +28,20 @@ services:
       - backend
     environment:
       - GUACD_HOSTNAME=guacamole-guacd
-      - MYSQL_HOSTNAME=$RDBMS_HOST
-      - MYSQL_DATABASE=$RDBMS_GUACAMOLE_DATABASE
-      - MYSQL_USER=$RDBMS_GUACAMOLE_USERNAME
-      - MYSQL_PASSWORD=$RDBMS_GUACAMOLE_PASSWORD
-      - MYSQL_AUTO_CREATE_ACCOUNTS=true
-      - HEADER_ENABLED=true
-      - HTTP_AUTH_HEADER=X-User
-      - EXTENSION_PRIORITY=header,* # protected via oauth2-proxy
+      - POSTGRESQL_ENABLED=true
+      - POSTGRESQL_DATABASE=guacamole_db
+      - POSTGRESQL_USERNAME=guacamole_user
+      - POSTGRESQL_PASSWORD=$X_EE_RDBMS_GUACAMOLE_PASSWORD
+      - POSTGRESQL_HOSTNAME=postgres
+      - OPENID_ENABLED=true
+      - OPENID_AUTHORIZATION_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
+      - OPENID_JWKS_ENDPOINT=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
+      - OPENID_ISSUER=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
+      - OPENID_CLIENT_ID=guacamole
+      - OPENID_REDIRECT_URI=https://$EE_HOSTNAME/rdp
+      - OPENID_USERNAME_CLAIM_TYPE=preferred_username
+      - RESTRICT_ENABLED=true
+      - EXTENSION_PRIORITY=openid
+      - WEBAPP_CONTEXT=rdp
     mem_limit: 2G
     memswap_limit: 2G

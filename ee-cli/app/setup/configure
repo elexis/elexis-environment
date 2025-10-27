@@ -89,6 +89,37 @@ assertMatrixDatabase() {
     echo "$T Synapse - Asserting synapse database done"
 }
 
+assertGuacamoleDatabase() {
+    echo "$T Guacamole - Asserting guacamole database"
+
+    GUACAMOLE_USER_DATABASE_PASSWORD=$(randomSecret)
+
+    # Check if the user exists and create if not,  update the password
+    USER_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='guacamole_user'")
+    if [ "$USER_EXISTS" != "1" ]; then
+        echo "$T Guacamole - Creating guacamole user"
+        $POSTGRES_CMD createuser guacamole_user
+        echo "$T Guacamole - Creating guacamole user done"
+    fi
+
+    echo "$T Guacamole - Updating guacamole user password"
+    $POSTGRES_CMD psql -c "ALTER USER guacamole_user WITH PASSWORD '${GUACAMOLE_USER_DATABASE_PASSWORD}';"
+    echo "$T Guacamole - Updating guacamole user password done"
+
+    sed -i -e 's/\(X_EE_RDBMS_GUACAMOLE_PASSWORD=\).*$/\1'"${GUACAMOLE_USER_DATABASE_PASSWORD}"'/' ${INSTALL_DIR}.env
+
+    # assert database exists
+    DATABASE_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_database WHERE datname='guacamole_db'")
+    if [ "$DATABASE_EXISTS" != "1" ]; then
+        echo "$T Guacamole - Creating guacamole database"
+        $POSTGRES_CMD createdb --encoding=UTF8 --owner=guacamole_user guacamole_db
+        $POSTGRES_CMD psql -U guacamole_user -d guacamole_db -f /assets/guacamole-postgres-initdb-1.6.0.sql
+        echo "$T Guacamole - Creating guacamole database done"
+    fi
+    
+    echo "$T Guacamole - Asserting guacamole database done"
+}
+
 #
 # Executed on the host system
 #
@@ -104,6 +135,7 @@ done
 
 assertKeycloakDatabase
 assertMatrixDatabase
+assertGuacamoleDatabase
 
 echo "$T stopping"
 ./ee system cmd stop postgres
