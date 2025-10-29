@@ -1,11 +1,11 @@
 {
     "clientId": "guacamole",
     "description": "Guacamole Remote Desktop Gateway",
-    "rootUrl": "https://$(env:EE_HOSTNAME)/rdp",
+    "rootUrl": "https://$(env:EE_HOSTNAME)/rdp/",
     "publicClient": true,
     "enabled": "$(env:ENABLE_GUACAMOLE)",
     "redirectUris": [
-        "https://$(env:EE_HOSTNAME)/rdp"
+        "https://$(env:EE_HOSTNAME)/rdp/"
     ],
     "webOrigins": [
         "https://$(env:EE_HOSTNAME)"
