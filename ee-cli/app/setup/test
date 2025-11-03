@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+# Requires dig comman
+# as user debian: sudo apt-get install dnsutils
+
+# if the dig command is not found, show user info
+if ! command -v dig &> /dev/null
+then
+    echo -e -e "dig command could not be found, please install dnsutils package."
+    echo -e -e "\tas user debian: sudo apt-get install dnsutils"
+    exit -1
+fi
+
+echo "Testing system setup ..."
+echo "======================"
+
+echo -n "1) System hostname IS $EE_HOSTNAME => "
+HOSTNAME=$(hostname -f)
+if [[ "$HOSTNAME" == "$EE_HOSTNAME" ]]; then
+    echo -e " OK"
+else
+    echo -e " ERROR Hostname is $HOSTNAME"
+    exit -1
+fi
+
+echo -n "2) Does $EE_HOSTNAME resolve to internal IP => "
+RESOLVED_IP=$(dig +short $EE_HOSTNAME | tail -n1)
+if [[ "$RESOLVED_IP" != "159.100.246.221" ]]; then
+    echo -e " OK $EE_HOSTNAME resolves to $RESOLVED_IP"
+else
+    echo -e " ERROR $EE_HOSTNAME resolves to myelexis bridge"
+    exit -1
+fi
+
+echo -n "3) Does tools.myelexis.ch resolve to 159.100.246.22 => "
+RESOLVED_IP=$(dig +short tools.myelexis.ch | tail -n1)
+if [[ "$RESOLVED_IP" == "159.100.246.221" ]]; then
+    echo -e " OK "
+else
+    echo -e " ERROR tools.myelexis.ch resolves to $RESOLVED_IP"
+    exit -1
+fi
+
+echo -n "4) Can DNS servers 1.1.1.1 and 8.8.8.8 be connected => "
+RESOLVE_1=$(dig @1.1.1.1 +short tools.myelexis.ch | tail -n1)
+if [[ "$RESOLVE_1" == "159.100.246.221" ]]; then
+    echo -n " OK "
+else
+    echo -n " ERROR 1.1.1.1 => $RESOLVE_1"
+    exit -1
+fi
+RESOLVE_2=$(dig @8.8.8.8 +short tools.myelexis.ch | tail -n1)
+if [[ "$RESOLVE_2" == "159.100.246.221" ]]; then
+    echo -n " OK "
+else
+    echo -n " ERROR 8.8.8.8 => $RESOLVE_2"
+    exit -1
+fi
+echo ""
+
+echo -n "5) Can system status be sent to ee.medelexis.ch => "
+~/ee cmd --no-output --generate-report --send-report
+echo -n " OK "
