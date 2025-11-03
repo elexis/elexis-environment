@@ -8,6 +8,7 @@ params+=(-f ${DOCKER_DIR}/keycloak.yml)
 params+=(-f ${DOCKER_DIR}/ee-config.yml)
 
 [[ $ENABLE_ELEXIS_SERVER == true ]] && params+=(-f ${DOCKER_DIR}/elexis-server.yml)
+[[ $ENABLE_MYELEXIS_SERVER == true ]] && params+=(-f ${DOCKER_DIR}/myelexis-server.yml)
 [[ $ENABLE_BOOKSTACK == true ]] && params+=(-f ${DOCKER_DIR}/bookstack.yml)
 [[ $ENABLE_NEXTCLOUD == true ]] && params+=(-f ${DOCKER_DIR}/nextcloud.yml)
 [[ $ENABLE_SOLR == true ]] && params+=(-f ${DOCKER_DIR}/solr.yml)

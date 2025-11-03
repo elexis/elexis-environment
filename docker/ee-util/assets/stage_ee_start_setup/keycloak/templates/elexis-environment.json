@@ -38,7 +38,25 @@
       },
       {
         "name": "ict-administrator",
-        "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten"
+        "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten",
+        "composite": true,
+        "composites": {
+          "client": {
+            "realm-management": [
+              "manage-users",
+              "view-users",
+              "query-users"
+            ],
+            "elexis-server.jaxrs-api": [
+              "user"
+            ],
+            "myelexis-server": [
+              "fhir-r4-access",
+              "fhir-r5-access",
+              "api-access"
+            ]
+          }
+        }
       },
       {
         "name": "mpk",
