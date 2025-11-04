@@ -90,6 +90,7 @@
     "client": {}
   },
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
+  "clientScopeMappings": {},
   "scopeMappings": [],
   "clients": [],
   "components": {},
