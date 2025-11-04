@@ -1,0 +1,11 @@
+{
+    "realm-management": [
+      {
+        "client": "myelexis-server",
+        "roles": [
+          "view-users",
+          "query-users"
+        ]
+      }
+    ]
+}
