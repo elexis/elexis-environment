@@ -5,6 +5,7 @@
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "secret": "$(env:MYELEXIS_SERVER_CLIENT_SECRET)",
+    "fullScopeAllowed": false,
     "publicClient": false,
     "consentRequired": false,
     "standardFlowEnabled": false,

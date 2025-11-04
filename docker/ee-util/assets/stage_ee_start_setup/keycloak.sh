@@ -49,14 +49,14 @@ for client_roles_file in keycloak/templates/client-roles/*.json; do
     jq --argjson clientroles "$(jq -c '.' "$client_roles_file")" '.roles.client += $clientroles' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
-for client_scope_mappings_files in keycloak/templates/client-scope-mappings/*.json; do
-    echo "$T client scope mappings $client_scope_mappings_files "
-    jq --argjson clientScopeMappings "$(jq -c '.' "$client_scope_mappings_files")" '.clientScopeMappings += $clientScopeMappings' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+for client_scope_mappings_file in keycloak/templates/client-scope-mappings/*.json; do
+    echo "$T client scope mappings $client_scope_mappings_file "
+    jq --argjson clientScopeMapping "$(jq -c '.' "$client_scope_mappings_file")" '.clientScopeMappings += $clientScopeMapping' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
-for scope_mappings_files in keycloak/templates/scope-mappings/*.json; do
-    echo "$T scope mappings $scope_mappings_files "
-    jq --argjson scopeMappings "$(jq -c '.' "$scope_mappings_files")" '.scopeMappings += [$scopeMappings]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+for scope_mappings_file in keycloak/templates/scope-mappings/*.json; do
+    echo "$T scope mappings $scope_mappings_file "
+    jq --argjson scopeMappings "$(jq -c '.' "$scope_mappings_file")" '.scopeMappings += [$scopeMappings]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
 for flows_file in keycloak/templates/flows/*.json; do
