@@ -2,6 +2,7 @@
     "clientId": "medelexis-support",
     "description": "Medelexis support token exchange",
     "enabled": "$(env:ENABLE_MEDELEXIS_SUPPORT)",
+    "rootUrl": "https://cockpit.medelexis.ch",
     "protocol": "openid-connect",
     "clientAuthenticatorType": "client-secret",
     "fullScopeAllowed": false,
@@ -13,6 +14,7 @@
     "directAccessGrantsEnabled": false,
     "serviceAccountsEnabled": false,
     "webOrigins": [
-        "https://swagger.medelexis.ch"
+        "https://swagger.medelexis.ch",
+        "https://cockpit.medelexis.ch"
     ]
 }

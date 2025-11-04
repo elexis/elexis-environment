@@ -1,0 +1,10 @@
+{
+    "elexis-server.fhir-api": [
+      {
+        "client": "checkin-app",
+        "roles": [
+          "user"
+        ]
+      }
+    ]
+}

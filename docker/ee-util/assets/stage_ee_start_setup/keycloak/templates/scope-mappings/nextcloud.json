@@ -1,0 +1,12 @@
+{
+    "clientScope": "nextcloud",
+    "roles": [
+        "mandator",
+        "medical-assistant",
+        "mpk",
+        "medical-practitioner",
+        "medical-user",
+        "user",
+        "mpa"
+    ]
+}

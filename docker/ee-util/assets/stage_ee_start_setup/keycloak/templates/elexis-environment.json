@@ -164,33 +164,7 @@
       "groups": []
     }
   ],
-  "clientScopeMappings": {
-    "elexis-server.fhir-api": [
-      {
-        "client": "checkin-app",
-        "roles": [
-          "user"
-        ]
-      }
-    ],
-    "realm-management": [
-      {
-        "client": "myelexis-server",
-        "roles": [
-          "view-users",
-          "query-users"
-        ]
-      }
-    ],
-    "myelexis-server": [
-      {
-        "client": "checkin-app",
-        "roles": [
-          "fhir-r4-access"
-        ]
-      }
-    ]
-  },
+  "clientScopeMappings": {},
   "scopeMappings": [
     {
       "client": "checkin-app",

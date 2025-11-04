@@ -1,0 +1,6 @@
+{
+    "client": "checkin-app",
+    "roles": [
+        "bot"
+    ]
+}

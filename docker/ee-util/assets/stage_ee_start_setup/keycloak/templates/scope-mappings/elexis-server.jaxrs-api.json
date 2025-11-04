@@ -1,0 +1,8 @@
+{
+    "client": "elexis-server.jaxrs-api",
+    "roles": [
+        "ict-administrator",
+        "user",
+        "bot"
+    ]
+}

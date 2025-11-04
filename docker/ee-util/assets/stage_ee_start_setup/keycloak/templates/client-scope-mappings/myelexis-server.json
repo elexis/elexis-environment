@@ -1,0 +1,10 @@
+{
+    "myelexis-server": [
+        {
+            "client": "checkin-app",
+            "roles": [
+                "fhir-r4-access"
+            ]
+        }
+    ]
+}

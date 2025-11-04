@@ -1,0 +1,15 @@
+{
+      "client": "elexis-web-api",
+      "roles": [
+        "mandator",
+        "medical-assistant",
+        "bot",
+        "ict-administrator",
+        "mpk",
+        "medical-practitioner",
+        "medical-user",
+        "user",
+        "poweruser",
+        "mpa"
+      ]
+    }
