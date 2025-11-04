@@ -1,7 +1,7 @@
 #!/bin/bash
 
 KCADM=/ee-bin/keycloak/kcadm/kcadm.sh
-KC_CONFIG_CLI_JAR=/ee-bin/keycloak/config-cli/keycloak-config-cli-26.0.5.jar
+KC_CONFIG_CLI_JAR=/ee-bin/keycloak/config-cli/keycloak-config-cli-26.1.0.jar
 
 S="[KEYCLOAK]"
 T=$S
