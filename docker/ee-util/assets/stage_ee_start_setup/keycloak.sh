@@ -78,7 +78,7 @@ java -jar $KC_CONFIG_CLI_JAR \
    	--keycloak.user=KeycloakAdmin \
   	--keycloak.password=${ADMIN_PASSWORD} \
  	--import.validate=true \
-#    --logging.level.keycloak-config-cli=debug \
+    --logging.level.keycloak-config-cli=debug \
     --import.var-substitution.enabled=true \
     --import.managed.group=no-delete \
     --import.files.locations=$RESULT_FILE
