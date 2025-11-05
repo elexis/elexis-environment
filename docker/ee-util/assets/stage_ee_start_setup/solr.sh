@@ -8,6 +8,14 @@ SOLR_BASEURL="http://solr:8983"
 T="[SOLR] "
 echo "$T $(date)"
 
+STATUS=0
+while [ $STATUS -ne 200 ]; do
+    echo -n "$T Waiting for solr ..."
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" --user SolrAdmin:${ADMIN_PASSWORD} $SOLR_BASEURL/solr/el-encounters/admin/ping || true)
+    sleep 2
+    echo " http status is [$STATUS]"
+done
+
 # Configure ELEXIS-SERVER User 
 # https://solr.apache.org/guide/8_11/basic-authentication-plugin.html#add-a-user-or-edit-a-password
 echo "$T Assert ELEXIS-SERVER user ..." 
