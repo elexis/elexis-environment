@@ -17,31 +17,44 @@ else
     echo "Host wireguard not resolvable. Not adding wg_services route."
 fi
 
+check_status() {
+    local name=$1
+    local status=$2
+    ((exit_status = exit_status || status))
+    if [[ $status -ne 0 ]]; then
+        echo "$T ERROR: $name failed with exit code $status"
+    fi
+}
 
 echo "$B"
 ./elexis_db.sh
-((exit_status = exit_status || $?))
+status=$?
+check_status "elexis_db.sh" $status
 
 echo "$B"
 ./keycloak.sh
-((exit_status = exit_status || $?))
+status=$?
+check_status "keycloak.sh" $status
 
 if [[ $ENABLE_BOOKSTACK == true ]]; then
     echo "$B"
     ./bookstack.sh
-    ((exit_status = exit_status || $?))
+    status=$?
+    check_status "bookstack.sh" $status
 fi
 
 if [[ $ENABLE_SOLR == true ]]; then
     echo "$B"
     ./solr.sh
-    ((exit_status = exit_status || $?))
+    status=$?
+    check_status "solr.sh" $status
 fi
 
 if [[ $ENABLE_MATRIX == true ]]; then
     echo "$B"
     ./matrix.sh
-    ((exit_status = exit_status || $?))
+    status=$?
+    check_status "matrix.sh" $status
 fi
 
 exit $exit_status # 0 if they all succeeded, 1 if any failed
