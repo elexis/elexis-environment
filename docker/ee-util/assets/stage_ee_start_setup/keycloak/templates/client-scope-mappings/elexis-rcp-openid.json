@@ -1,0 +1,10 @@
+{
+    "elexis-rcp-openid": [
+        {
+            "client": "solr",
+            "roles": [
+                "user"
+            ]
+        }
+    ]
+}
