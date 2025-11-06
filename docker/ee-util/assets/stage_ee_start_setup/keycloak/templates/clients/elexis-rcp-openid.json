@@ -11,7 +11,7 @@
     "implicitFlowEnabled": false,
     "directAccessGrantsEnabled": true,
     "serviceAccountsEnabled": false,
-    "fullScopeAllowed": false,
+    "fullScopeAllowed": true,
     "authenticationFlowBindingOverrides": {
         "direct_grant": "direct grant password only"
     },
