@@ -12,6 +12,7 @@ fi
 # Initialize fresh client secrets on every start
 ELEXIS_RCP_CLIENT_SECRET=$(randomSecret) \
 ELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
+MYELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
 ELEXIS_WEB_API_CLIENT_SECRET=$(randomSecret) \
 OAUTH2_PROXY_COOKIE_SECRET=$(randomSecret | cut -c 1-32) \
 OAUTH2_PROXY_CLIENT_SECRET=$(randomSecret) \
