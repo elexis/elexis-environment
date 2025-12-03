@@ -98,6 +98,7 @@ services:
       - WG_ACCESS_ELEXIS_WEB
       - WG_ACCESS_GUACAMOLE
       - WG_ACCESS_MATRIX
+      - ELEXIS_RCP_ENABLE_LOCKSERVICE
 
 networks:
   backend:
