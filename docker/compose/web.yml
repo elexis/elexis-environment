@@ -1,45 +1,4 @@
 services:
-  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/overview
-  # https://oauth2-proxy.github.io/oauth2-proxy/docs/configuration/oauth_provider#keycloak-oidc-auth-provider
-  # https://github.com/bitnami/containers/tree/main/bitnami/oauth2-proxy
-  oauth2-proxy:
-    image: bitnamilegacy/oauth2-proxy:7
-    security_opt:
-      - no-new-privileges:true
-    networks:
-      - backend
-    expose:
-      - 4180
-    depends_on:
-      web:
-        condition: service_started
-    mem_limit: 512M
-    memswap_limit: 512M
-    environment:
-      - OAUTH2_PROXY_COOKIE_SECRET
-      - OAUTH2_PROXY_PROVIDER=keycloak-oidc
-      - OAUTH2_PROXY_CLIENT_ID=oauth2-proxy
-      - OAUTH2_PROXY_CLIENT_SECRET
-      - OAUTH2_PROXY_REDIRECT_URL=https://$EE_HOSTNAME/oauth2/callback
-      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment
-      - OAUTH2_PROXY_LOGIN_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/auth
-      - OAUTH2_PROXY_REDEEM_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/token
-      - OAUTH2_PROXY_OIDC_JWKS_URL=https://$EE_HOSTNAME/keycloak/auth/realms/ElexisEnvironment/protocol/openid-connect/certs
-      - OAUTH2_PROXY_SKIP_OIDC_DISCOVERY=true
-      - OAUTH2_PROXY_CODE_CHALLENGE_METHOD=S256
-      - OAUTH2_PROXY_SET_XAUTHREQUEST=true
-      - OAUTH2_PROXY_COOKIE_CSRF_PER_REQUEST=true
-      - OAUTH2_PROXY_COOKIE_CSRF_EXPIRE=5m
-      - OAUTH2_PROXY_EMAIL_DOMAINS=*
-      - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
-  
-  # restart oauth2-proxy on an ee-config run
-  # due to OAUTH2_PROXY_COOKIE_SECRET update
-  ee-config:
-    depends_on:
-      oauth2-proxy: 
-        condition: service_started
-
   web:
     image: nginx:1.26-alpine
     security_opt:
