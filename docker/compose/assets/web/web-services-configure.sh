@@ -2,6 +2,7 @@
 envsubst </template/eenv.properties.json.template >/usr/share/nginx/html/eenv.properties.json
 envsubst </template/elexisweb-env-config.json.template >/usr/share/nginx/html/env-config.json
 envsubst </template/wellknown-elexisenvironment.json.template >/usr/share/nginx/html/wellknown-elexisenvironment.json
+envsubst </template/wellknown-elexisrcp.json.template >/usr/share/nginx/html/wellknown-elexisrcp.json
 echo "" >/etc/nginx/modules.conf
 echo "" >/etc/nginx/wg_modules.conf
 echo "" >/etc/nginx/ext_modules.conf

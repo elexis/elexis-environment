@@ -34,3 +34,4 @@ services:
       - QUARKUS_HTTP_PROXY_ENABLE_FORWARDED_HOST=true
       - QUARKUS_HTTP_PROXY_ENABLE_FORWARDED_PREFIX=true
       - QUARKUS_HTTP_CORS_ORIGINS=/https://([a-z0-9\\-_]+)\\.medelexis\\.ch/
+      - QUARKUS_LIQUIBASE_ENABLED=false
