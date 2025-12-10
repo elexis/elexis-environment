@@ -14,11 +14,20 @@
   "accountTheme": "elexis-environment",
   "adminTheme": "keycloak",
   "emailTheme": "elexis-environment",
+  "userManagedAccessAllowed": true,
   "defaultLocale": "de",
   "supportedLocales": [
     "de",
     "en"
   ],
+  "localizationTexts": {
+    "de": {
+      "profile.attributes.associated-contact-id": "Zugeordneter Kontakt"
+    },
+    "en": {
+      "profile.attributes.associated-contact-id": "Associated contact"
+    }
+  },
   "ssoSessionIdleTimeout": 7200,
   "ssoSessionMaxLifespan": 86400,
   "authenticationFlows": [],
@@ -38,7 +47,25 @@
       },
       {
         "name": "ict-administrator",
-        "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten"
+        "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten",
+        "composite": true,
+        "composites": {
+          "client": {
+            "realm-management": [
+              "manage-users",
+              "view-users",
+              "query-users"
+            ],
+            "elexis-server.jaxrs-api": [
+              "user"
+            ],
+            "myelexis-server": [
+              "fhir-r4-access",
+              "fhir-r5-access",
+              "api-access"
+            ]
+          }
+        }
       },
       {
         "name": "mpk",
@@ -72,9 +99,46 @@
     "client": {}
   },
   "passwordPolicy": "notEmail(undefined) and notUsername(undefined) and passwordHistory(3) and length(8)",
+  "users": [
+    {
+      "id": "68f195df-17ad-444f-b8b2-a06c2b59610d",
+      "username": "service-account-myelexis-server",
+      "emailVerified": false,
+      "enabled": true,
+      "totp": false,
+      "serviceAccountClientId": "myelexis-server",
+      "disableableCredentialTypes": [],
+      "requiredActions": [],
+      "realmRoles": [
+        "default-roles-elexisenvironment"
+      ],
+      "clientRoles": {
+        "realm-management": [
+          "view-users",
+          "query-users"
+        ]
+      },
+      "notBefore": 0,
+      "groups": []
+    }
+  ],
+  "clientScopeMappings": {},
   "scopeMappings": [],
   "clients": [],
-  "components": {},
+  "components": {
+    "org.keycloak.userprofile.UserProfileProvider": [
+      {
+        "id": "6dc8642f-3b69-421d-a9cd-4495fca4b58f",
+        "providerId": "declarative-user-profile",
+        "subComponents": {},
+        "config": {
+          "kc.user.profile.config": [
+            "{\"attributes\":[{\"name\":\"username\",\"displayName\":\"${username}\",\"validations\":{\"length\":{\"min\":3,\"max\":255},\"username-prohibited-characters\":{},\"up-username-not-idn-homograph\":{}},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"email\",\"displayName\":\"${email}\",\"validations\":{\"email\":{},\"length\":{\"max\":255}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"firstName\",\"displayName\":\"${firstName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"lastName\",\"displayName\":\"${lastName}\",\"validations\":{\"length\":{\"max\":255},\"person-name-prohibited-characters\":{}},\"required\":{\"roles\":[\"user\"]},\"permissions\":{\"view\":[\"admin\",\"user\"],\"edit\":[\"admin\",\"user\"]},\"multivalued\":false},{\"name\":\"associated-contact-id\",\"displayName\":\"${profile.attributes.associated-contact-id}\",\"validations\":{},\"annotations\":{},\"permissions\":{\"view\":[\"user\"],\"edit\":[\"admin\"]},\"group\":\"user-metadata\",\"multivalued\":false}],\"groups\":[{\"name\":\"user-metadata\",\"displayHeader\":\"User metadata\",\"displayDescription\":\"Attributes, which refer to user metadata\"}]}"
+          ]
+        }
+      }
+    ]
+  },
   "identityProviders": [],
   "groups": [
     {

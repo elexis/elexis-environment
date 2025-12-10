@@ -1,0 +1,15 @@
+{
+    "clientId": "myelexis-server",
+    "description": "myElexis-Server",
+    "enabled": "$(env:ENABLE_MYELEXIS_SERVER)",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:MYELEXIS_SERVER_CLIENT_SECRET)",
+    "fullScopeAllowed": false,
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": true
+}

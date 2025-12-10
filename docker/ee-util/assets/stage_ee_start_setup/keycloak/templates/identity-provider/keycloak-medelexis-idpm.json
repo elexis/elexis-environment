@@ -1,0 +1,46 @@
+[
+  {
+    "id": "49451e07-723a-495a-b532-37f8e575bd26",
+    "name": "medelexis-admin-mapper",
+    "identityProviderAlias": "keycloak-medelexis",
+    "identityProviderMapper": "keycloak-oidc-role-to-role-idp-mapper",
+    "config": {
+      "syncMode": "INHERIT",
+      "external.role": "medelexis-ee-remote-realm-admin",
+      "role": "realm-management.realm-admin"
+    }
+  },
+  {
+    "id": "5662182f-c4b9-4699-a81f-b7a73990a9d1",
+    "name": "medelexis-username-template",
+    "identityProviderAlias": "keycloak-medelexis",
+    "identityProviderMapper": "oidc-username-idp-mapper",
+    "config": {
+      "syncMode": "INHERIT",
+      "template": "mdlxs-${CLAIM.preferred_username}",
+      "target": "LOCAL"
+    }
+  },
+  {
+    "id": "09ca3034-2067-4ae7-bcac-5eeaaa8dc161",
+    "name": "medelexis-ict-administrator-mapper",
+    "identityProviderAlias": "keycloak-medelexis",
+    "identityProviderMapper": "keycloak-oidc-role-to-role-idp-mapper",
+    "config": {
+      "syncMode": "INHERIT",
+      "external.role": "medelexis-ee-remote-ict-administrator",
+      "role": "ict-administrator"
+    }
+  },
+  {
+    "id": "39426347-97b3-460b-8410-72417a503c2b",
+    "name": "medelexis-ict-administrator-elexisContactId",
+    "identityProviderAlias": "keycloak-medelexis",
+    "identityProviderMapper": "hardcoded-attribute-idp-mapper",
+    "config": {
+      "syncMode": "INHERIT",
+      "attribute.value": "medelexis-ict-admin",
+      "attribute": "elexisContactId"
+    }
+  }
+]
