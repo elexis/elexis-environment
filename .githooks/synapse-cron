@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+~/ee cmd synapse s3_media_upload
