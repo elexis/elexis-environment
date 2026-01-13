@@ -1,0 +1,13 @@
+services:
+  samba:
+    image: dockurr/samba:4
+    volumes:
+      - ./assets/samba/smb.conf:/etc/samba/smb.conf
+      - samba_data:/storage
+    ports:
+      - 445:445
+    mem_limit: 512M
+    memswap_limit: 512M
+    
+volumes:
+  samba_data:
