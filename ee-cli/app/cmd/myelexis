@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [ "$1" == "update" ]; then
+    docker pull gitlab.medelexis.ch:4567/myelexis-d/cli:latest
+    exit 0
+fi
+MYELEXIS_CLI_CLIENT_SECRET=$(< ${SITE_DIR}/.myelexis_cli_client_secret)
+docker run  --env-file ${INSTALL_DIR}/.env -e MYELEXIS_CLI_CLIENT_SECRET=$MYELEXIS_CLI_CLIENT_SECRET --rm -it gitlab.medelexis.ch:4567/myelexis-d/cli:latest "$@"
