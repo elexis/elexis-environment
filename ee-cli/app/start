@@ -9,9 +9,14 @@ else
   COMMAND="${INSTALL_DIR}ee system cmd up --build $@"
 fi
 
+MYELEXIS_CLI_CLIENT_SECRET=$(randomSecret)
+echo $MYELEXIS_CLI_CLIENT_SECRET > ${SITE_DIR}/.myelexis_cli_client_secret
+
 # Initialize fresh client secrets on every start
 ELEXIS_RCP_CLIENT_SECRET=$(randomSecret) \
 ELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
+MYELEXIS_SERVER_CLIENT_SECRET=$(randomSecret) \
+MYELEXIS_CLI_CLIENT_SECRET=${MYELEXIS_CLI_CLIENT_SECRET} \
 ELEXIS_WEB_API_CLIENT_SECRET=$(randomSecret) \
 OAUTH2_PROXY_COOKIE_SECRET=$(randomSecret | cut -c 1-32) \
 OAUTH2_PROXY_CLIENT_SECRET=$(randomSecret) \
