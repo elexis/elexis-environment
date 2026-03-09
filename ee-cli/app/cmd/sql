@@ -4,7 +4,7 @@ if [ "$1" == "nextcloud" ]; then
 elif [ "$1" == "elexis-server" ]; then
     USQL_PARAM="${RDBMS_ELEXIS_TYPE-$RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_ELEXIS_HOST-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT-$RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE}"
 elif [ "$1" == "guacamole" ]; then
-    USQL_PARAM="mysql://${RDBMS_GUACAMOLE_USERNAME}:${RDBMS_GUACAMOLE_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_GUACAMOLE_DATABASE}"
+    USQL_PARAM="postgres://guacamole_user:${X_EE_RDBMS_GUACAMOLE_PASSWORD}@postgres:5432/guacamole_db?sslmode=disable"
 elif [ "$1" == "bookstack" ]; then
     USQL_PARAM="mysql://${RDBMS_BOOKSTACK_USERNAME}:${RDBMS_BOOKSTACK_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_BOOKSTACK_DATABASE}"
 elif [ "$1" == "keycloak" ]; then

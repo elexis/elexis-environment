@@ -1,0 +1,10 @@
+{
+    "guacamole": [
+        {
+            "name": "guacadmin",
+            "description": "Guacamole Administrator",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+# Guacamole intialization database
+
+sql file generated via
+
+docker run --rm guacamole/guacamole:1.6.0 /opt/guacamole/bin/initdb.sh --postgresql > initdb-1.6.0.sql
+
+see https://guacamole.apache.org/doc/gug/postgresql-auth.html
