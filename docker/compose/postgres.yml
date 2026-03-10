@@ -3,6 +3,7 @@ services:
     image: docker.io/postgres:16-alpine
     volumes:
       - postgres_pgdata:/var/lib/postgresql/data
+      - ./assets/postgres/:/assets/:ro
     networks:
       - backend
     mem_limit: 1G
