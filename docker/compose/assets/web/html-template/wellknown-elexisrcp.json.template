@@ -1,0 +1,5 @@
+{
+    "config": {
+        "enable-lock-service": "${ELEXIS_RCP_ENABLE_LOCKSERVICE}"
+    }
+}

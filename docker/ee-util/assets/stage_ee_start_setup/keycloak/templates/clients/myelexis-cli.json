@@ -1,0 +1,17 @@
+{
+    "clientId": "myelexis-cli",
+    "description": "local ee myelexis cmd",
+    "enabled": true,
+    "rootUrl": "",
+    "protocol": "openid-connect",
+    "clientAuthenticatorType": "client-secret",
+    "secret": "$(env:MYELEXIS_CLI_CLIENT_SECRET)",
+    "fullScopeAllowed": true,
+    "bearerOnly": false,
+    "publicClient": false,
+    "consentRequired": false,
+    "standardFlowEnabled": false,
+    "implicitFlowEnabled": false,
+    "directAccessGrantsEnabled": false,
+    "serviceAccountsEnabled": true
+}
