@@ -57,6 +57,23 @@
                 "jsonType.label": "String",
                 "usermodel.clientRoleMapping.clientId": "guacamole"
             }
+        },
+        {
+            "id": "feb26b06-3757-4139-a96a-293db8c9d590",
+            "name": "groups",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-group-membership-mapper",
+            "consentRequired": false,
+            "config": {
+                "full.path": "false",
+                "introspection.token.claim": "true",
+                "userinfo.token.claim": "true",
+                "multivalued": "true",
+                "id.token.claim": "true",
+                "lightweight.claim": "false",
+                "access.token.claim": "true",
+                "claim.name": "groups"
+            }
         }
     ]
 }

@@ -816,3 +816,34 @@ FROM (
         ('guacadmin', 'ADMINISTER')
 ) permissions (username, permission)
 JOIN guacamole_entity ON permissions.username = guacamole_entity.name AND guacamole_entity.type = 'USER_GROUP';
+
+--- MDE 18.3.26
+--- https://redmine.medelexis.ch/issues/28119
+---
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupArzt', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupArzt' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupAssistent', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupAssistent' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupMPA', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupMPA' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupMPK', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupMPK' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupPraktikant', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupPraktikant' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupIntern', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupIntern' AND guacamole_entity.type = 'USER_GROUP';
+
+INSERT INTO guacamole_entity (name, type) VALUES ('GroupThirdParty', 'USER_GROUP');
+INSERT INTO guacamole_user_group (entity_id) 
+SELECT entity_id FROM guacamole_entity WHERE name = 'GroupThirdParty' AND guacamole_entity.type = 'USER_GROUP';
