@@ -840,10 +840,6 @@ INSERT INTO guacamole_entity (name, type) VALUES ('GroupPraktikant', 'USER_GROUP
 INSERT INTO guacamole_user_group (entity_id) 
 SELECT entity_id FROM guacamole_entity WHERE name = 'GroupPraktikant' AND guacamole_entity.type = 'USER_GROUP';
 
-INSERT INTO guacamole_entity (name, type) VALUES ('GroupIntern', 'USER_GROUP');
-INSERT INTO guacamole_user_group (entity_id) 
-SELECT entity_id FROM guacamole_entity WHERE name = 'GroupIntern' AND guacamole_entity.type = 'USER_GROUP';
-
 INSERT INTO guacamole_entity (name, type) VALUES ('GroupThirdParty', 'USER_GROUP');
 INSERT INTO guacamole_user_group (entity_id) 
 SELECT entity_id FROM guacamole_entity WHERE name = 'GroupThirdParty' AND guacamole_entity.type = 'USER_GROUP';
