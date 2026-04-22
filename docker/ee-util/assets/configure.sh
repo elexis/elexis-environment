@@ -55,6 +55,13 @@ sed -i -e 's|\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$|\1'"${ADMIN_PASSWORD_HASH}"'|
 # .env.secrets
 sed -i -e 's|\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$|\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'|' /installdir/.env.secrets
 
+# generate X_EE_SOLR_ELEXIS_SERVER_PASSWORD on first setup
+# fills the missing value because the generation was previously placed on line 31, but only for .env 
+if grep -q 'X_EE_SOLR_ELEXIS_SERVER_PASSWORD=optional_not_set' /installdir/.env.secrets; then
+    SOLR_ELEXIS_SERVER_PASSWORD=$(cat /proc/sys/kernel/random/uuid)
+    sed -i -e 's|\(X_EE_SOLR_ELEXIS_SERVER_PASSWORD=\).*$|\1'"${SOLR_ELEXIS_SERVER_PASSWORD}"'|' /installdir/.env.secrets
+fi
+
 # fix permissions for .env file
 chown --reference=/installdir/.env.bkup /installdir/.env
 chmod --reference=/installdir/.env.bkup /installdir/.env
