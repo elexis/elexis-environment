@@ -48,12 +48,12 @@ ADMIN_PASSWORD_HASH_WITH_SPACE=$(java -jar /SolrPasswordHash.jar ${ADMIN_PASSWOR
 ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH_WITH_SPACE//\ /\_\_}
 # sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env
 # .env.secrets
-sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env.secrets
+sed -i -e 's|\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$|\1'"${ADMIN_PASSWORD_HASH}"'|' /installdir/.env.secrets
 
 # remove all dashes from X_EE_ELEXIS_WEB_API_APP_KEY
 # sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env
 # .env.secrets
-sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env.secrets
+sed -i -e 's|\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$|\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'|' /installdir/.env.secrets
 
 # fix permissions for .env file
 chown --reference=/installdir/.env.bkup /installdir/.env
