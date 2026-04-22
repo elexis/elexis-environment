@@ -66,7 +66,9 @@ if [ "$1" == "ee-initialize" ]; then
     write_policy $X_EE_S3_BUCKET_NAME
     cmd admin accesskey remove -q minio $X_EE_S3_ACCESS_KEY_ID
     cmd admin accesskey create -q --access-key $X_EE_S3_ACCESS_KEY_ID --secret-key $X_EE_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
-    sed -i -e 's/\(X_EE_S3_ACCESS_KEY_SECRET=\).*$/\1'"${X_EE_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # sed -i -e 's/\(X_EE_S3_ACCESS_KEY_SECRET=\).*$/\1'"${X_EE_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # .env.secrets
+    sed -i -e 's/\(X_EE_S3_ACCESS_KEY_SECRET=\).*$/\1'"${X_EE_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env.secrets
     cmd mb --ignore-existing minio/$X_EE_S3_BUCKET_NAME
 
     # nextcloud file storage
@@ -75,7 +77,9 @@ if [ "$1" == "ee-initialize" ]; then
     write_policy $NEXTCLOUD_S3_BUCKET_NAME
     cmd admin accesskey remove -q minio $NEXTCLOUD_S3_ACCESS_KEY_ID
     cmd admin accesskey create -q --access-key $NEXTCLOUD_S3_ACCESS_KEY_ID --secret-key $NEXTCLOUD_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
-    sed -i -e 's/\(NEXTCLOUD_S3_ACCESS_KEY_SECRET=\).*$/\1'"${NEXTCLOUD_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # sed -i -e 's/\(NEXTCLOUD_S3_ACCESS_KEY_SECRET=\).*$/\1'"${NEXTCLOUD_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # .env.secrets
+    sed -i -e 's/\(NEXTCLOUD_S3_ACCESS_KEY_SECRET=\).*$/\1'"${NEXTCLOUD_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env.secrets
     cmd mb --ignore-existing minio/$NEXTCLOUD_S3_BUCKET_NAME
 
     # synapse file storage
@@ -84,7 +88,9 @@ if [ "$1" == "ee-initialize" ]; then
     MATRIX_S3_ACCESS_KEY_SECRET=$(randomSecret | cut -c 1-40)
     cmd admin accesskey remove -q minio $MATRIX_S3_ACCESS_KEY_ID
     cmd admin accesskey create -q --access-key $MATRIX_S3_ACCESS_KEY_ID --secret-key $MATRIX_S3_ACCESS_KEY_SECRET --description "Generated $NOW" --policy /root/.mc/policy.json minio
-    sed -i -e 's/\(MATRIX_S3_ACCESS_KEY_SECRET=\).*$/\1'"${MATRIX_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # sed -i -e 's/\(MATRIX_S3_ACCESS_KEY_SECRET=\).*$/\1'"${MATRIX_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env
+    # .env.secrets
+    sed -i -e 's/\(MATRIX_S3_ACCESS_KEY_SECRET=\).*$/\1'"${MATRIX_S3_ACCESS_KEY_SECRET}"'/' ${INSTALL_DIR}/.env.secrets
     cmd mb --ignore-existing minio/$MATRIX_S3_BUCKET_NAME
 
     echo "### Initialization done."

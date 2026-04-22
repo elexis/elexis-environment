@@ -1,5 +1,6 @@
-!.env.template
 .env*
+!.env.template
+!.env.secrets.template
 .DS_Store
 __pycache__
 .bash*
@@ -8,3 +9,4 @@ __pycache__
 /.docker
 .enable-auto-git-pull
 .s3cfg
+.ssh/

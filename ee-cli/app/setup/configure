@@ -5,6 +5,14 @@ if [ $? -ne 0 ]; then
     echo "Failed to touch the .env file. Please check the permissions."
     exit 1
 fi
+# .env.secrets
+if [ ! -s ${INSTALL_DIR}.env.secrets ]; then
+    cp ${INSTALL_DIR}.env.secrets.template ${INSTALL_DIR}.env.secrets
+    if [ $? -ne 0 ]; then
+        echo "Failed to initialize .env.secrets from template. Please check the permissions."
+        exit 1
+    fi
+fi
 
 if [ "${EE_GITLAB_WEB_DOCKER_DEPLOY_TOKEN:-optional_not_set}" != "optional_not_set" ]; then
     echo "Logging in to gitlab.medelexis.ch"
@@ -14,7 +22,7 @@ fi
 pull_eenv-config
 docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
 PWD=$(pwd)
-docker run --rm --env-file ${INSTALL_DIR}.env -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh $@
+docker run --rm --env-file ${INSTALL_DIR}.env --env-file ${INSTALL_DIR}.env.secrets -v ${INSTALL_DIR}/docker/compose/assets/:/assets -v ${INSTALL_DIR}/site/:/site -v ${INSTALL_DIR}:/installdir -i ee-util /configure.sh $@
 
 #
 # Executed on the host system
@@ -54,7 +62,8 @@ assertKeycloakDatabase() {
         echo "$T Keycloak - Creating keycloak database done"
     fi
 
-    sed -i -e 's/\(X_EE_RDBMS_KEYCLOAK_PASSWORD=\).*$/\1'"${X_EE_RDBMS_KEYCLOAK_PASSWORD}"'/' ${INSTALL_DIR}.env
+    # sed -i -e 's/\(X_EE_RDBMS_KEYCLOAK_PASSWORD=\).*$/\1'"${X_EE_RDBMS_KEYCLOAK_PASSWORD}"'/' ${INSTALL_DIR}.env
+    sed -i -e 's/\(X_EE_RDBMS_KEYCLOAK_PASSWORD=\).*$/\1'"${X_EE_RDBMS_KEYCLOAK_PASSWORD}"'/' ${INSTALL_DIR}.env.secrets
 }
 
 assertMatrixDatabase() {
@@ -106,7 +115,8 @@ assertGuacamoleDatabase() {
     $POSTGRES_CMD psql -c "ALTER USER guacamole_user WITH PASSWORD '${GUACAMOLE_USER_DATABASE_PASSWORD}';"
     echo "$T Guacamole - Updating guacamole user password done"
 
-    sed -i -e 's/\(X_EE_RDBMS_GUACAMOLE_PASSWORD=\).*$/\1'"${GUACAMOLE_USER_DATABASE_PASSWORD}"'/' ${INSTALL_DIR}.env
+    # sed -i -e 's/\(X_EE_RDBMS_GUACAMOLE_PASSWORD=\).*$/\1'"${GUACAMOLE_USER_DATABASE_PASSWORD}"'/' ${INSTALL_DIR}.env
+    sed -i -e 's/\(X_EE_RDBMS_GUACAMOLE_PASSWORD=\).*$/\1'"${GUACAMOLE_USER_DATABASE_PASSWORD}"'/' ${INSTALL_DIR}.env.secrets
 
     # assert database exists
     DATABASE_EXISTS=$($POSTGRES_CMD psql -tAc "SELECT 1 FROM pg_database WHERE datname='guacamole_db'")

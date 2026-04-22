@@ -22,7 +22,7 @@ params+=(-f ${DOCKER_DIR}/ee-config.yml)
 if [ -e ${INSTALL_DIR}/.env.override ]
 then
     #echo "Using ${INSTALL_DIR}/.env.override"
-    docker compose -p elexis-environment --env-file ${INSTALL_DIR}/.env.override ${params[@]} "$@"
+    docker compose -p elexis-environment --env-file ${INSTALL_DIR}/.env.override --env-file ${INSTALL_DIR}/.env.secrets ${params[@]} "$@"
 else
-    docker compose -p elexis-environment ${params[@]} "$@"
+    docker compose -p elexis-environment --env-file ${INSTALL_DIR}/.env --env-file ${INSTALL_DIR}/.env.secrets ${params[@]} "$@"
 fi
