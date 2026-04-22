@@ -37,6 +37,10 @@ docker version >> ${BACKUPDIR}ee-backup.info
 FILENAME=${BACKUPDIR}env
 echo "$T .env file => $FILENAME"
 cp ${INSTALL_DIR}.env ${FILENAME}
+# .env.secrets
+FILENAME=${BACKUPDIR}env.secrets
+echo "$T .env.secrets file => $FILENAME"
+cp ${INSTALL_DIR}.env.secrets ${FILENAME}
 
 #
 # /site data

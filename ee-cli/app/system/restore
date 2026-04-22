@@ -60,6 +60,15 @@ if [ -f "${INSTALL_DIR}.env" ]; then
     mv ${INSTALL_DIR}.env $BACKUP_ENV_NAME
 fi
 cp ${FILENAME} ${INSTALL_DIR}.env
+# .env.secrets
+FILENAME=${SOURCE_DIR}/env.secrets
+echo "$T .env.secrets file <= $FILENAME"
+if [ -f "${INSTALL_DIR}.env.secrets" ]; then
+    BACKUP_ENV_SECRETS_NAME="${INSTALL_DIR}.env.secrets.$RANDOM"
+    echo "$T Backing up existing .env.secrets file to $BACKUP_ENV_SECRETS_NAME"
+    mv ${INSTALL_DIR}.env.secrets $BACKUP_ENV_SECRETS_NAME
+fi
+cp ${FILENAME} ${INSTALL_DIR}.env.secrets
 
 #
 # /site data

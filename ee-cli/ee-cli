@@ -12,6 +12,10 @@ else
 fi
 
 export $(egrep -v '^#' $ROOT_DIR/../.env | xargs)
+# .env.secrets
+if [[ -f "$ROOT_DIR/../.env.secrets" ]]; then
+    export $(egrep -v '^#' $ROOT_DIR/../.env.secrets | xargs)
+fi
 export INSTALL_DIR=${ROOT_DIR//ee-cli}
 export DOCKER_DIR=${INSTALL_DIR}/docker/compose/
 export SITE_DIR=${INSTALL_DIR}site/
@@ -33,7 +37,8 @@ ee_util() {
     pull_eenv-config
     docker build -q -t ee-util ${INSTALL_DIR}docker/ee-util/.
     tput sgr0
-    docker run --rm -v$PWD:/host_dir --network="host" --env-file ${INSTALL_DIR}.env ee-util $@
+    # .env.secrets
+    docker run --rm -v$PWD:/host_dir --network="host" --env-file ${INSTALL_DIR}.env --env-file ${INSTALL_DIR}.env.secrets ee-util $@
 }
 export -f ee_util
 
