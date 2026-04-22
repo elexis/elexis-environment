@@ -33,6 +33,8 @@ parser.add_argument('--send-report', default=False, action=argparse.BooleanOptio
 args = parser.parse_args()
 
 eeConfig = load_dotenv("${INSTALL_DIR}/.env")
+# .env.secrets
+load_dotenv("${INSTALL_DIR}/.env.secrets", override=True)
 INSTALL_DIR = os.environ.get('INSTALL_DIR')
 SITE_DIR = os.environ.get('SITE_DIR')
 site_status = {}
