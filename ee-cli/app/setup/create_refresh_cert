@@ -2,47 +2,65 @@
 
 # Is EE_TOOLS_CERTBOT_SHARED_SECRET set?
 if [[ "$EE_TOOLS_CERTBOT_SHARED_SECRET" =~ ^optional_not_set$ ]]; then
-    echo -e -e "\033[36mABORT\033[39m: EE_TOOLS_CERTBOT_SHARED_SECRET variable is not set."
+    echo -e "\033[36mABORT\033[39m: EE_TOOLS_CERTBOT_SHARED_SECRET variable is not set."
     exit -1
 fi
 
 # Is Hostname *.myelexis.ch
 if [[ ! "$EE_HOSTNAME" =~ ^.*\.myelexis.ch$ ]]; then
-    echo -e -e "\033[36mABORT\033[39m: Hostname is $EE_HOSTNAME, this script works for hostnames *.myelexis.ch only."
+    echo -e "\033[36mABORT\033[39m: Hostname is $EE_HOSTNAME, this script works for hostnames *.myelexis.ch only."
     exit -1
 fi
 
 export EXOSCALE_API_KEY=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f1 -d:)
 export EXOSCALE_API_SECRET=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f2 -d:)
 
-# run | renew
+LEGO_IMAGE="goacme/lego:v5"
+
 function run-goacme-lego {
-    docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego \
+    docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name lego \
+        -v "${SITE_DIR}goacme-lego:/goacme-lego" \
+        -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET ${LEGO_IMAGE} \
+        run \
         --email sysadmin-ee@medelexis.ch --accept-tos --dns exoscale --domains ${EE_HOSTNAME} \
         --dns.resolvers 1.1.1.1 --dns.resolvers 8.8.8.8 \
-        --path /goacme-lego $1
+        --path /goacme-lego
 }
 
-# TODO test X_EE_CERTBOT_SHARED_SECRET
+# for migration from goacme/lego v4 to v5
+function migrate-goacme-lego {
+    echo "Y" | docker run --rm -i -u $(id -u ${USER}):$(id -g ${USER}) --name lego \
+        -v "${SITE_DIR}goacme-lego:/goacme-lego" \
+        ${LEGO_IMAGE} migrate --path /goacme-lego
+}
+
 mkdir -p ${SITE_DIR}goacme-lego
 echo "=============================================================================================="
 echo "Creating/Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
 echo "=============================================================================================="
 
-docker pull goacme/lego
+docker pull ${LEGO_IMAGE}
 CERTFILE=${SITE_DIR}goacme-lego/certificates/$EE_HOSTNAME.crt
 
-if [ -f "$CERTFILE" ]; 
-then
-    echo "Existing cert found, calling renew ..."
-    run-goacme-lego renew
-else
-    echo "No existing cert found, calling run ..."
-    run-goacme-lego run
+# migrations check: looking for old v4 path format
+V4_ACCOUNT_KEY="${SITE_DIR}goacme-lego/accounts/acme-v02.api.letsencrypt.org/sysadmin-ee@medelexis.ch/keys/sysadmin-ee@medelexis.ch.key"
+if [ -f "$V4_ACCOUNT_KEY" ]; then
+    echo "Old v4 version found, migrating to v5 format..."
+    migrate-goacme-lego
+    if [ $? -ne 0 ]; then
+        echo -e "\033[36mABORT\033[39m: Migration to v5 format failed."
+        exit -1
+    fi
 fi
 
+CERT_MTIME_BEFORE=0
+[ -f "$CERTFILE" ] && CERT_MTIME_BEFORE=$(stat -c %Y "$CERTFILE")
+
+echo "Running lego ..."
+run-goacme-lego
+
 if [ ! -f $CERTFILE ]; then
-    echo -e -e "\033[36mABORT\033[39m: No generated certificate found, not installing symlinks"
+    echo -e "\033[36mABORT\033[39m: No generated certificate found, not installing symlinks"
     exit -1
 fi
 
@@ -56,4 +74,9 @@ FILE=${SITE_DIR}certificate.key
 [ -f $FILE ] && [ ! -L $FILE ] && mv -v $FILE $FILE.bkup
 ln -sf ${SITE_DIR}goacme-lego/certificates/$EE_HOSTNAME.key $FILE
 
-echo "=> Remember to restart web container to pick-up cert changes"
+CERT_MTIME_AFTER=$(stat -c %Y "$CERTFILE")
+if [ "$CERT_MTIME_BEFORE" -ne "$CERT_MTIME_AFTER" ]; then
+    echo "=> Certificate updated, remember to restart web container to pick-up cert changes"
+else
+    echo "=> Certificate is up to date, no action needed"
+fi
