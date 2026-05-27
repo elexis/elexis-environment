@@ -17,7 +17,7 @@ export EXOSCALE_API_SECRET=$(echo $EE_TOOLS_CERTBOT_SHARED_SECRET | cut -f2 -d:)
 
 # run | renew
 function run-goacme-lego {
-    docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego \
+    docker run --rm -u $(id -u ${USER}):$(id -g ${USER}) --name lego -v "${SITE_DIR}goacme-lego:/goacme-lego" -e EXOSCALE_API_KEY -e EXOSCALE_API_SECRET goacme/lego:v4 \
         --email sysadmin-ee@medelexis.ch --accept-tos --dns exoscale --domains ${EE_HOSTNAME} \
         --dns.resolvers 1.1.1.1 --dns.resolvers 8.8.8.8 \
         --path /goacme-lego $1
@@ -29,7 +29,7 @@ echo "==========================================================================
 echo "Creating/Refreshing cert for ${EE_HOSTNAME}... this can take up to 2 minutes!"
 echo "=============================================================================================="
 
-docker pull goacme/lego
+docker pull goacme/lego:v4
 CERTFILE=${SITE_DIR}goacme-lego/certificates/$EE_HOSTNAME.crt
 
 if [ -f "$CERTFILE" ]; 
