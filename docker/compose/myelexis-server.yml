@@ -1,6 +1,6 @@
 services:
   myelexis-server:
-    image: gitlab.medelexis.ch:4567/myelexis-d/server:latest
+    image: gitlab.medelexis.ch:4567/myelexis-d/server:1.0
     security_opt:
       - no-new-privileges:true
     expose:
