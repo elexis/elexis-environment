@@ -1,4 +1,4 @@
-https://github.com/adorsys/keycloak-config-cli/blob/v6.4.0/CHANGELOG.md
+https://github.com/adorsys/keycloak-config-cli/blob/v6.5.1/CHANGELOG.md
 
 Fetch from https://github.com/adorsys/keycloak-config-cli/releases
 must fetch version of keycloak as defined in keycloak.yml
