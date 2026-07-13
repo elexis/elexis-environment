@@ -113,7 +113,7 @@ services:
 
   # api-nginx
   elexis-web-api-nginx:
-    image: nginx:1.20-alpine
+    image: nginx:1.28-alpine
     security_opt:
       - no-new-privileges:true
     depends_on:
