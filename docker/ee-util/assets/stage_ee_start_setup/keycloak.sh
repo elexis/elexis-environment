@@ -35,6 +35,9 @@ cp $TEMPLATE_FILE $RESULT_FILE
 #
 # Generate ElexisEnvironment.json input file for keycloak-config-cli
 #
+EE_HOSTNAME_SHORT=${EE_HOSTNAME//.myelexis.ch/}
+export EE_HOSTNAME_SHORT
+
 echo "$T Determine ElexisEnvironment realm settings ... "
 for client_file in keycloak/templates/clients/*.json; do
     echo "$T client $client_file"
@@ -46,10 +49,24 @@ for client_roles_file in keycloak/templates/client-roles/*.json; do
     jq --argjson clientroles "$(jq -c '.' "$client_roles_file")" '.roles.client += $clientroles' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
 
+for client_scope_mappings_file in keycloak/templates/client-scope-mappings/*.json; do
+    echo "$T client scope mappings $client_scope_mappings_file "
+    jq --argjson clientScopeMapping "$(jq -c '.' "$client_scope_mappings_file")" '.clientScopeMappings += $clientScopeMapping' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+done
+
+for scope_mappings_file in keycloak/templates/scope-mappings/*.json; do
+    echo "$T scope mappings $scope_mappings_file "
+    jq --argjson scopeMappings "$(jq -c '.' "$scope_mappings_file")" '.scopeMappings += [$scopeMappings]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+done
+
 for flows_file in keycloak/templates/flows/*.json; do
     echo "$T flow $flows_file "
     jq --argjson authflow "$(jq -c '.' "$flows_file")" '.authenticationFlows += [$authflow]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 done
+
+# Medelexis IdP basic configuration
+jq --argjson medelexisidp "$(jq -c '.' "keycloak/templates/identity-provider/keycloak-medelexis-idp.json")" '.identityProviders += [$medelexisidp]' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
+jq --argjson medelexisidpm "$(jq -c '.' "keycloak/templates/identity-provider/keycloak-medelexis-idpm.json")" '.identityProviderMappers += $medelexisidpm' "$RESULT_FILE" > temp.json && mv temp.json "$RESULT_FILE"
 
 #
 # Execute keycloak-config-cli
@@ -61,6 +78,7 @@ java -jar $KC_CONFIG_CLI_JAR \
    	--keycloak.user=KeycloakAdmin \
   	--keycloak.password=${ADMIN_PASSWORD} \
  	--import.validate=true \
+    --logging.level.keycloak-config-cli=debug \
     --import.var-substitution.enabled=true \
     --import.managed.group=no-delete \
     --import.files.locations=$RESULT_FILE
@@ -72,7 +90,7 @@ java -jar $KC_CONFIG_CLI_JAR \
 echo "$T Output realm keys to /ElexisEnvironmentRealmKeys.json ..."
 $KCADM get keys -r ElexisEnvironment >/ElexisEnvironmentRealmKeys.json
 echo "$T Add realm public key to DB ${RDBMS_ELEXIS_DATABASE}"
-REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
+REALM_PUBLIC_KEY=$(jq '.keys[] | select(.algorithm == "RS256") | select(.status == "ACTIVE") | select(.use == "SIG") | .publicKey' -r /ElexisEnvironmentRealmKeys.json)
 LASTUPDATE=$(date +%s)000
 
 

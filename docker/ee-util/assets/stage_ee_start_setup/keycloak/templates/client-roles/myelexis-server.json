@@ -1,0 +1,22 @@
+{
+    "myelexis-server": [
+        {
+            "name": "api-access",
+            "description": "Access to the /api endpoint",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "fhir-r4-access",
+            "description": "Access to the /fhir/r4 endpoint",
+            "composite": false,
+            "clientRole": true
+        },
+        {
+            "name": "fhir-r5-access",
+            "description": "Access to the /fhir/r5 endpoint",
+            "composite": false,
+            "clientRole": true
+        }
+    ]
+}

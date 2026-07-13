@@ -1,9 +1,17 @@
 #!/bin/sh
 envsubst </template/eenv.properties.json.template >/usr/share/nginx/html/eenv.properties.json
 envsubst </template/elexisweb-env-config.json.template >/usr/share/nginx/html/env-config.json
+envsubst </template/wellknown-elexisenvironment.json.template >/usr/share/nginx/html/wellknown-elexisenvironment.json
+envsubst </template/wellknown-elexisrcp.json.template >/usr/share/nginx/html/wellknown-elexisrcp.json
 echo "" >/etc/nginx/modules.conf
 echo "" >/etc/nginx/wg_modules.conf
 echo "" >/etc/nginx/ext_modules.conf
+
+if [ $ENABLE_MYELEXIS_SERVER == "true" ]; then
+    echo 'include conf/myelexis-server.conf;' >>/etc/nginx/modules.conf
+    case $WG_ACCESS_MYELEXIS_SERVER in *wg*) echo 'include conf/myelexis-server-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
+    case $WG_ACCESS_MYELEXIS_SERVER in *pub*) echo 'include conf/myelexis-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+fi
 
 if [ $ENABLE_ELEXIS_SERVER == "true" ]; then
     echo 'include conf/elexis-server.conf;' >>/etc/nginx/modules.conf
