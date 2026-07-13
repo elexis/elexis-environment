@@ -1,6 +1,6 @@
 services:
   web:
-    image: nginx:1.26-alpine
+    image: nginx:1.28-alpine
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -38,6 +38,8 @@ services:
         max-size: "20m"
         max-file: "10"
         compress: "false"
+    extra_hosts:
+      - ${EE_HOSTNAME}:${EE_HOST_INTERNAL_IP}
     environment:
       - EE_HOSTNAME
       - ORGANISATION_NAME
