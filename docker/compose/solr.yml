@@ -1,6 +1,6 @@
 services:
     solr:
-        image: solr:9.4
+        image: solr:9.10.1
         security_opt:
             - no-new-privileges:true
         expose:
