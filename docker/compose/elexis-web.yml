@@ -39,8 +39,8 @@ services:
     mem_limit: 512M
     memswap_limit: 512M
     environment:
-      - APP_DEBUG=true
-      - APP_ENV="local"
+      - APP_DEBUG=false
+      - APP_ENV="production"
       - APP_KEY=$X_EE_ELEXIS_WEB_API_APP_KEY
       - APP_NAME="Elexis Web"
       - APP_URL=https://$EE_HOSTNAME/api/elexisweb/
@@ -98,9 +98,9 @@ services:
     mem_limit: 512M
     memswap_limit: 512M
     environment:
-      - APP_DEBUG=true
+      - APP_DEBUG=false
       - APP_NAME="Lumen"
-      - APP_ENV="local"
+      - APP_ENV="production"
       - APP_URL=https://$EE_HOSTNAME/api/elexisweb
       - BROADCAST_DRIVER=pusher
       - PUSHER_APP_CLUSTER=mt1
