@@ -37,7 +37,7 @@ services:
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true
       - FILE_UPLOAD_SIZE_LIMIT=10
-      - APP_DEBUG=true
+      - APP_DEBUG=false
     mem_limit: 512M
     memswap_limit: 512M
     extra_hosts:
