@@ -37,7 +37,7 @@ if [ $ENABLE_NEXTCLOUD == "true" ]; then
     echo 'include conf/nextcloud.conf;' >>/etc/nginx/modules.conf
     echo 'include conf/code-server.conf;' >>/etc/nginx/modules.conf
     case $WG_ACCESS_NEXTCLOUD in *wg*) echo 'include conf/nextcloud.conf;' >>/etc/nginx/wg_modules.conf ;; esac
-    case $WG_ACCESS_NEXTCLOUD in *wg*) echo 'include conf/code-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
+    case $WG_ACCESS_NEXTCLOUD in *wg*) echo 'include conf/code-server-ext.conf;' >>/etc/nginx/wg_modules.conf ;; esac
     case $WG_ACCESS_NEXTCLOUD in *pub*) echo 'include conf/nextcloud.conf;' >>/etc/nginx/ext_modules.conf ;; esac
     case $WG_ACCESS_NEXTCLOUD in *pub*) echo 'include conf/code-server-ext.conf;' >>/etc/nginx/ext_modules.conf ;; esac
 fi
