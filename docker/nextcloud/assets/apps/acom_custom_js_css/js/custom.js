@@ -453,7 +453,7 @@ function createNavBtn(navWrap) {
 function tooltips() {
     let sidebarItems = document.querySelectorAll('.app-navigation-entry-link'),
         sidebarWithoutClass = document.querySelectorAll('.app-navigation li  a'),
-        sidebarSettings = document.querySelectorAll('.app-navigation .settings-button'),
+        sidebarSettings = document.querySelectorAll('.app-navigation .account-management__settings-toggle'),
         body = document.querySelector('body');
 
     function tooltip(arrayOfTooltips) {
@@ -516,12 +516,12 @@ function hideNotice() {
 
     menuToggle.forEach(toggle => {
         toggle.addEventListener('click', () => {
-           setTimeout(()=>{
-               let rename = document.querySelector('.action.files-list__row-action-rename');
-               rename.addEventListener('click', () => {
-                   rename.closest('.action-item__popper').remove();
-               })
-           },10)
+            setTimeout(()=>{
+                let rename = document.querySelector('.action.files-list__row-action-rename');
+                rename.addEventListener('click', () => {
+                    rename.closest('.action-item__popper').remove();
+                })
+            },10)
         })
     })
 }
