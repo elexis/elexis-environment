@@ -133,7 +133,17 @@
       "groups": []
     }
   ],
-  "clientScopeMappings": {},
+  "clientScopeMappings": {
+    "account": [
+      {
+        "client": "account-console",
+        "roles": [
+          "manage-account",
+          "view-groups"
+        ]
+      }
+    ]
+  },
   "scopeMappings": [],
   "clients": [],
   "components": {
