@@ -40,14 +40,6 @@
         "description": "Bot Benutzer, keine reale Person, kann sich nicht in Elexis RCP anmelden"
       },
       {
-        "name": "guacamole",
-        "description": "Benutzer des Guacamole Remote Desktop Client"
-      },
-      {
-        "name": "guacamole-admin",
-        "description": "Administrator des Guacamole Remote Desktop Client"
-      },
-      {
         "name": "ict-administrator",
         "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten",
         "composite": true,
@@ -164,50 +156,18 @@
       "groups": []
     }
   ],
-  "clientScopeMappings": {},
-  "scopeMappings": [
-    {
-      "client": "checkin-app",
-      "roles": [
-        "bot"
-      ]
-    },
-    {
-      "client": "elexis-server.jaxrs-api",
-      "roles": [
-        "ict-administrator",
-        "user",
-        "bot"
-      ]
-    },
-    {
-      "client": "elexis-web-api",
-      "roles": [
-        "mandator",
-        "medical-assistant",
-        "bot",
-        "ict-administrator",
-        "mpk",
-        "medical-practitioner",
-        "medical-user",
-        "user",
-        "poweruser",
-        "mpa"
-      ]
-    },
-    {
-      "clientScope": "nextcloud",
-      "roles": [
-        "mandator",
-        "medical-assistant",
-        "mpk",
-        "medical-practitioner",
-        "medical-user",
-        "user",
-        "mpa"
-      ]
-    }
-  ],
+  "clientScopeMappings": {
+    "account": [
+      {
+        "client": "account-console",
+        "roles": [
+          "manage-account",
+          "view-groups"
+        ]
+      }
+    ]
+  },
+  "scopeMappings": [],
   "defaultOptionalClientScopes": [
     "microprofile-jwt",
     "address",
