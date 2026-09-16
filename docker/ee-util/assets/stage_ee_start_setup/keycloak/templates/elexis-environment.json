@@ -38,14 +38,6 @@
         "description": "Bot Benutzer, keine reale Person, kann sich nicht in Elexis RCP anmelden"
       },
       {
-        "name": "guacamole",
-        "description": "Benutzer des Guacamole Remote Desktop Client"
-      },
-      {
-        "name": "guacamole-admin",
-        "description": "Administrator des Guacamole Remote Desktop Client"
-      },
-      {
         "name": "ict-administrator",
         "description": "Admin-Rechte ohne Zugriff/ Einsicht auf medizinische Daten",
         "composite": true,
