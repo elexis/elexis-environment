@@ -1,6 +1,6 @@
 services:
   myelexis-server:
-    image: gitlab.medelexis.ch:4567/myelexis-d/server:latest
+    image: gitlab.medelexis.ch:4567/myelexis-d/server:latest${MYELEXIS_SERVER_IMAGE_TAG_APPEND-}
     security_opt:
       - no-new-privileges:true
     expose:
