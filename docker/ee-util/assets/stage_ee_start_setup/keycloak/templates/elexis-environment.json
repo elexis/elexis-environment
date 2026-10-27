@@ -76,6 +76,25 @@
         "description": "Personal mit der Tätigkeit einer Medizinische Praxis Assistentin"
       },
       {
+        "name": "default-roles-elexisenvironment",
+        "description": "${role_default-roles}",
+        "clientRole": false,
+        "composite": true,
+        "composites": {
+          "realm": [
+            "offline_access",
+            "uma_authorization",
+            "user"
+          ],
+          "client": {
+            "account": [
+              "view-profile",
+              "manage-account"
+            ]
+          }
+        }
+      },
+      {
         "name": "medical-user",
         "description": "Medizinisches Personal mit Zugriff auf medizinische Daten"
       },
