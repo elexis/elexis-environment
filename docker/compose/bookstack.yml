@@ -1,6 +1,6 @@
 services:
   bookstack:
-    image: marcode79/bookstack:v24.02.3-ee
+    image: marcode79/bookstack:v25.11.6-ee
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -37,7 +37,8 @@ services:
       - SAML2_GROUP_ATTRIBUTE=Role
       - SAML2_REMOVE_FROM_GROUPS=true
       - FILE_UPLOAD_SIZE_LIMIT=10
-      - APP_DEBUG=true
+      - SAML2_ONELOGIN_OVERRIDES={"baseurl":"https://$EE_HOSTNAME/bookstack"}
+      - APP_DEBUG=false
     mem_limit: 512M
     memswap_limit: 512M
     extra_hosts:

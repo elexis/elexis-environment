@@ -15,7 +15,7 @@
         "saml.force.post.binding": "true",
         "saml.multivalued.roles": "false",
         "saml.encrypt": "false",
-        "saml_assertion_consumer_url_post": "https://$(env:EE_HOSTNAME)/bookstack/saml2/asc",
+        "saml_assertion_consumer_url_post": "https://$(env:EE_HOSTNAME)/bookstack/saml2/acs",
         "saml.server.signature": "true",
         "saml.server.signature.keyinfo.ext": "false",
         "exclude.session.state.from.auth.response": "false",
