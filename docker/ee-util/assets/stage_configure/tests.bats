@@ -12,7 +12,7 @@
     if [ $ENABLE_ELEXIS_SERVER != true ] && [ $ENABLE_MYELEXIS_SERVER != true ]; then
         skip "Elexis-Server and MyElexis-Server modules not enabled"
     fi
-    timeout 5 ./usql ${RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "SELECT 1=1"
+    timeout 5 ./usql ${RDBMS_ELEXIS_TYPE:-$RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_ELEXIS_HOST:-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT:-$RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -c "SELECT 1=1"
 }
 
 # Does an Elexis database exist here? New not yet supported.
@@ -22,7 +22,7 @@
     fi
 
     MYSQL_STRING="SELECT 12358 AS AVAILABLE FROM CONFIG WHERE PARAM = 'dbversion'"
-    run timeout 5 /usql mysql://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_HOST}:${RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$MYSQL_STRING"
+    run timeout 5 /usql ${RDBMS_ELEXIS_TYPE:-$RDBMS_TYPE}://${RDBMS_ELEXIS_USERNAME}:${RDBMS_ELEXIS_PASSWORD}@${RDBMS_ELEXIS_HOST:-$RDBMS_HOST}:${RDBMS_ELEXIS_PORT:-$RDBMS_PORT}/${RDBMS_ELEXIS_DATABASE} -t -c "$SQL_STRING"
     echo "output = ${output}"
     [[ "$output" == *"12358"* ]]
 }
