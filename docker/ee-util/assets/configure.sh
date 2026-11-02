@@ -42,10 +42,10 @@ export $(grep -v '^#' /installdir/.env | xargs)
 # contains space, which cannot be written into .env file
 ADMIN_PASSWORD_HASH_WITH_SPACE=$(java -jar /SolrPasswordHash.jar ${ADMIN_PASSWORD})
 ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH_WITH_SPACE//\ /\_\_}
-sed -i -e 's/\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$/\1'"${ADMIN_PASSWORD_HASH}"'/' /installdir/.env
+sed -i -e 's|\(X_EE_SOLR_ADMIN_PASSWORD_HASH=\).*$|\1'"${ADMIN_PASSWORD_HASH}"'|' /installdir/.env
 
 # remove all dashes from X_EE_ELEXIS_WEB_API_APP_KEY
-sed -i -e 's/\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$/\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'/' /installdir/.env
+sed -i -e 's|\(X_EE_ELEXIS_WEB_API_APP_KEY=\).*$|\1'"${X_EE_ELEXIS_WEB_API_APP_KEY//-}"'|' /installdir/.env
 
 # fix permissions for .env file
 chown --reference=/installdir/.env.bkup /installdir/.env
