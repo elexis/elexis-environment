@@ -7,6 +7,8 @@ RDBMS_ELEXIS_TYPE=postgresql
 RDBMS_ELEXIS_PORT=5432
 MYELEXIS_SERVER_IMAGE_TAG_APPEND=-postgres
 ```
+> [!CAUTION]
+> **Diese Settings sind case-sensitiv! beachten!**
 
 If the host differs from `$RDBMS_HOST`, also set:
 
